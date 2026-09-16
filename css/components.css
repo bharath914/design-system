@@ -1,0 +1,171 @@
+/* ============================================================
+   Gani Design System — Components
+   Top bar, specimen cards, curve plotter.
+   ============================================================ */
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;
+  top:env(safe-area-inset-top,0px);
+  z-index:20;
+  margin-inline:-20px;
+  padding-inline:20px;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.topbar-inner{
+  max-width:1180px;margin:0 auto;
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+  padding-block:14px;
+}
+.brand{
+  display:flex;align-items:baseline;gap:9px;
+  font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:.2px;
+  white-space:nowrap;
+}
+.brand-mark{
+  display:inline-block;width:11px;height:11px;border-radius:3px;background:var(--accent);
+  transform:rotate(45deg);
+}
+.brand-sub{
+  font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-faint);
+}
+
+.tabs{display:flex;gap:4px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:9px;padding:3px;}
+.tab{
+  border:none;background:transparent;color:var(--ink-soft);
+  font-size:13px;font-weight:600;letter-spacing:.2px;
+  padding:7px 14px;border-radius:7px;cursor:pointer;
+}
+.tab.active{background:var(--bg-raised);color:var(--ink);box-shadow:0 1px 0 var(--border-strong);}
+
+.search-wrap{flex:1 1 180px;min-width:140px;max-width:320px;}
+#search{
+  width:100%;border:1px solid var(--border);border-radius:8px;
+  background:var(--bg-raised);color:var(--ink);
+  font-family:var(--font-mono);font-size:13px;
+  padding:8px 11px;outline:none;
+}
+#search:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+#search::placeholder{color:var(--ink-faint);}
+
+.counter{
+  font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.08em;
+  color:var(--accent);white-space:nowrap;
+  padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--accent-soft);
+}
+
+/* ---------- specimen grid ---------- */
+.group{margin-bottom:34px;}
+.group h3{
+  font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
+  display:flex;align-items:baseline;gap:9px;margin-bottom:12px;
+}
+.group h3 .tally{
+  font-family:var(--font-mono);font-weight:500;color:var(--ink-faint);font-size:12px;letter-spacing:0;
+}
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;
+}
+.card{
+  border:1px solid var(--border);border-radius:11px;background:var(--bg-raised);
+  padding:10px;display:flex;flex-direction:column;gap:8px;
+}
+.stage{
+  position:relative;height:88px;border-radius:8px;background:var(--bg-sunken);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  perspective:600px;
+}
+/* ruler ticks along the stage floor — every specimen sits on the same scale */
+.stage::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:5px;
+  background-image:repeating-linear-gradient(to right, var(--border-strong) 0 1px, transparent 1px 8px);
+  opacity:.7;
+}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:6px;}
+.card-meta code{font-size:11.5px;color:var(--ink);word-break:break-word;}
+
+.replay{
+  flex:none;width:22px;height:22px;border-radius:6px;border:1px solid var(--border);
+  background:var(--bg-sunken);color:var(--ink-soft);cursor:pointer;font-size:12px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.replay:hover{color:var(--accent);border-color:var(--accent);}
+.replay:focus-visible, .tab:focus-visible, #search:focus-visible, .preset:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px;
+}
+
+/* ---------- demo subjects ---------- */
+.shape{
+  width:42px;height:42px;border-radius:10px;background:var(--accent);
+  transform-style:preserve-3d;
+}
+.type-demo{font-family:var(--font-mono);font-size:12px;color:var(--accent);white-space:nowrap;overflow:hidden;max-width:92%;}
+.cursor-demo{font-family:var(--font-mono);font-size:26px;color:var(--accent);font-weight:600;}
+.shimmer-demo{
+  width:78%;height:14px;border-radius:5px;background:var(--border);
+  background-image:linear-gradient(100deg, transparent 30%, var(--accent-soft) 45%, var(--accent) 50%, var(--accent-soft) 55%, transparent 70%);
+  background-size:220% 100%;
+}
+.marquee-wrap{width:100%;overflow:hidden;}
+.marquee-text{display:inline-block;font-family:var(--font-mono);font-size:12px;color:var(--accent);white-space:nowrap;}
+.ripple-demo{position:relative;width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.ripple-core{width:14px;height:14px;border-radius:50%;background:var(--accent);z-index:1;}
+.ripple-ring{position:absolute;width:14px;height:14px;border-radius:50%;border:2px solid var(--accent);}
+
+/* ---------- curve plotter ---------- */
+.plotter{
+  display:grid;grid-template-columns:minmax(240px,340px) 1fr;gap:22px;
+  border:1px solid var(--border);border-radius:14px;background:var(--bg-raised);
+  padding:18px;margin-bottom:30px;
+}
+@media (max-width:640px){.plotter{grid-template-columns:1fr;}}
+.plotter-graph svg{width:100%;height:auto;display:block;touch-action:none;user-select:none;-webkit-user-select:none;}
+.plotter-side{display:flex;flex-direction:column;gap:14px;}
+.readout-row{display:flex;align-items:center;gap:12px;}
+
+.track{position:relative;flex:1;height:26px;background:var(--bg-sunken);border-radius:13px;border:1px solid var(--border);}
+.dot{position:absolute;top:50%;left:0;width:16px;height:16px;border-radius:50%;background:var(--accent);transform:translate(-2px,-50%);}
+
+#bezCode{
+  display:block;font-size:13.5px;background:var(--bg-sunken);border:1px solid var(--border);
+  border-radius:8px;padding:9px 12px;color:var(--accent);
+}
+.anatomy{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--ink-soft);}
+.anatomy b{color:var(--ink);font-family:var(--font-mono);font-weight:600;}
+.preset-row{display:flex;flex-wrap:wrap;gap:6px;}
+.preset{
+  border:1px solid var(--border);background:var(--bg-sunken);color:var(--ink-soft);
+  font-family:var(--font-mono);font-size:11.5px;padding:6px 10px;border-radius:7px;cursor:pointer;
+}
+.preset:hover{color:var(--accent);border-color:var(--accent);}
+
+/* SVG parts */
+.grid-path{fill:none;stroke:var(--border);stroke-width:1;}
+.diag-path{fill:none;stroke:var(--border);stroke-width:1;stroke-dasharray:3 4;}
+.curve-path{fill:none;stroke:var(--accent);stroke-width:2.4;stroke-linecap:round;}
+.handle-line{stroke:var(--amber);stroke-width:1.4;}
+.handle{cursor:grab;fill:var(--amber);}
+.handle:active{cursor:grabbing;}
+.anchor{fill:var(--ink-faint);}
+.axis-label{font-family:var(--font-mono);font-size:9px;fill:var(--ink-faint);}
+
+/* ---------- curve specimens ---------- */
+.curve-stage{position:relative;}
+.curve-svg{width:100%;height:64px;display:block;}
+.mini-track{position:relative;height:8px;margin-top:4px;background:var(--bg-raised);border-radius:4px;}
+
+/* Both dot types ride the same `sweep` keyframe; only the timing function
+   differs, which is the whole point of the demo. */
+.mini-dot{
+  position:absolute;top:50%;left:0;width:8px;height:8px;border-radius:50%;background:var(--amber);
+  transform:translate(-1px,-50%);
+  animation-name:sweep;animation-duration:var(--dur-demo);animation-timing-function:var(--tf, linear);
+  animation-iteration-count:infinite;animation-direction:alternate;
+}
+#bezDot{
+  animation-name:sweep;animation-duration:var(--dur-demo);animation-timing-function:var(--bez, ease);
+  animation-iteration-count:infinite;animation-direction:alternate;
+}

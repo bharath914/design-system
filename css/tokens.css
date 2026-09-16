@@ -1,0 +1,78 @@
+/* ============================================================
+   Gani Design System — Tokens
+   Every colour, type family and theme state lives here.
+   Components must never hardcode a colour; read a token instead.
+   ============================================================ */
+
+:root{
+  /* surfaces */
+  --bg:#eef0f2;
+  --bg-raised:#ffffff;
+  --bg-sunken:#e4e7ea;
+  --grid-line:rgba(27,32,35,0.07);
+
+  /* ink */
+  --ink:#1b2023;
+  --ink-soft:#5b6470;
+  --ink-faint:#8b939c;
+
+  /* lines */
+  --border:rgba(27,32,35,0.14);
+  --border-strong:rgba(27,32,35,0.26);
+
+  /* accent — teal carries every moving element */
+  --accent:#0e7c86;
+  --accent-ink:#ffffff;
+  --accent-soft:rgba(14,124,134,0.12);
+
+  /* secondary — amber marks anything you can grab or drag */
+  --amber:#a8650f;
+  --amber-soft:rgba(168,101,15,0.14);
+
+  /* type */
+  --font-display:'IBM Plex Sans Condensed','IBM Plex Sans',sans-serif;
+  --font-body:'IBM Plex Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+
+  /* motion scale — the durations this system animates on */
+  --dur-quick:180ms;
+  --dur-base:320ms;
+  --dur-slow:640ms;
+  --dur-demo:1700ms;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10141a;
+    --bg-raised:#161c23;
+    --bg-sunken:#0c1015;
+    --grid-line:rgba(255,255,255,0.06);
+    --ink:#e8eaec;
+    --ink-soft:#a3acb5;
+    --ink-faint:#6d7680;
+    --border:rgba(255,255,255,0.12);
+    --border-strong:rgba(255,255,255,0.24);
+    --accent:#3fd0cd;
+    --accent-ink:#0a1517;
+    --accent-soft:rgba(63,208,205,0.16);
+    --amber:#e8ac54;
+    --amber-soft:rgba(232,172,84,0.16);
+  }
+}
+
+:root[data-theme="dark"]{
+  --bg:#10141a;
+  --bg-raised:#161c23;
+  --bg-sunken:#0c1015;
+  --grid-line:rgba(255,255,255,0.06);
+  --ink:#e8eaec;
+  --ink-soft:#a3acb5;
+  --ink-faint:#6d7680;
+  --border:rgba(255,255,255,0.12);
+  --border-strong:rgba(255,255,255,0.24);
+  --accent:#3fd0cd;
+  --accent-ink:#0a1517;
+  --accent-soft:rgba(63,208,205,0.16);
+  --amber:#e8ac54;
+  --amber-soft:rgba(232,172,84,0.16);
+}

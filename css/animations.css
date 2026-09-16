@@ -1,0 +1,110 @@
+/* ============================================================
+   Gani Design System — Animation Library
+   42 named keyframes plus a `.k-<name>` utility class for each.
+   Drop this file into any project and add the class to an element:
+       <div class="card k-fadeInUp"></div>
+   Requires tokens.css only for --accent-soft (used by k-glow).
+   ============================================================ */
+
+/* ================= ENTRANCES ================= */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.k-fadeIn{animation:fadeIn 1.1s ease both;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.k-fadeInUp{animation:fadeInUp 1s ease both;}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:translateY(0)}}
+.k-fadeInDown{animation:fadeInDown 1s ease both;}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-34px)}to{opacity:1;transform:translateX(0)}}
+.k-fadeInLeft{animation:fadeInLeft 1s ease both;}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(34px)}to{opacity:1;transform:translateX(0)}}
+.k-fadeInRight{animation:fadeInRight 1s ease both;}
+@keyframes zoomIn{from{opacity:0;transform:scale(.35)}to{opacity:1;transform:scale(1)}}
+.k-zoomIn{animation:zoomIn .9s cubic-bezier(.32,1.15,.6,1) both;}
+@keyframes slideInUp{from{transform:translateY(64px)}to{transform:translateY(0)}}
+.k-slideInUp{animation:slideInUp .8s ease both;}
+@keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{opacity:1;transform:scale(1.09)}70%{transform:scale(.94)}100%{transform:scale(1)}}
+.k-bounceIn{animation:bounceIn 1.05s both;}
+@keyframes rotateIn{from{opacity:0;transform:rotate(-190deg)}to{opacity:1;transform:rotate(0)}}
+.k-rotateIn{animation:rotateIn 1s ease both;}
+@keyframes flipInX{from{opacity:0;transform:rotateX(90deg)}to{opacity:1;transform:rotateX(0)}}
+.k-flipInX{animation:flipInX .9s ease both;}
+
+/* ================= EXITS ================= */
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+.k-fadeOut{animation:fadeOut 1.1s ease both;}
+@keyframes fadeOutUp{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-24px)}}
+.k-fadeOutUp{animation:fadeOutUp 1s ease both;}
+@keyframes zoomOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.35)}}
+.k-zoomOut{animation:zoomOut .9s ease both;}
+@keyframes slideOutDown{from{transform:translateY(0)}to{transform:translateY(64px)}}
+.k-slideOutDown{animation:slideOutDown .8s ease both;}
+@keyframes bounceOut{0%{transform:scale(1)}30%{transform:scale(1.06)}100%{opacity:0;transform:scale(.3)}}
+.k-bounceOut{animation:bounceOut 1.05s both;}
+@keyframes rotateOut{from{opacity:1;transform:rotate(0)}to{opacity:0;transform:rotate(190deg)}}
+.k-rotateOut{animation:rotateOut 1s ease both;}
+@keyframes flipOutX{from{opacity:1;transform:rotateX(0)}to{opacity:0;transform:rotateX(90deg)}}
+.k-flipOutX{animation:flipOutX .9s ease both;}
+@keyframes lightSpeedOut{from{opacity:1;transform:translateX(0) skewX(0)}to{opacity:0;transform:translateX(90px) skewX(-25deg)}}
+.k-lightSpeedOut{animation:lightSpeedOut .9s ease-in both;}
+
+/* ================= ATTENTION SEEKERS ================= */
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.k-pulse{animation:pulse 1.2s ease both;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.k-shake{animation:shake 1s both;}
+@keyframes headShake{0%{transform:translateX(0)}6.5%{transform:translateX(-6px) rotate(-9deg)}18.5%{transform:translateX(5px) rotate(7deg)}31.5%{transform:translateX(-3px) rotate(-5deg)}43.5%{transform:translateX(2px) rotate(3deg)}50%,100%{transform:translateX(0)}}
+.k-headShake{animation:headShake 1.2s ease-in-out both;}
+@keyframes swing{20%{transform:rotate(14deg)}40%{transform:rotate(-9deg)}60%{transform:rotate(6deg)}80%{transform:rotate(-3deg)}100%{transform:rotate(0)}}
+.k-swing{transform-origin:top center;animation:swing 1.2s ease both;}
+@keyframes tada{0%,100%{transform:scale(1) rotate(0)}10%,20%{transform:scale(.92) rotate(-4deg)}30%,50%,70%,90%{transform:scale(1.08) rotate(4deg)}40%,60%,80%{transform:scale(1.08) rotate(-4deg)}}
+.k-tada{animation:tada 1.2s both;}
+@keyframes wobble{0%,100%{transform:translateX(0) rotate(0)}15%{transform:translateX(-14px) rotate(-5deg)}30%{transform:translateX(9px) rotate(3deg)}45%{transform:translateX(-9px) rotate(-3deg)}60%{transform:translateX(6px) rotate(2deg)}75%{transform:translateX(-4px) rotate(-1deg)}}
+.k-wobble{animation:wobble 1.2s both;}
+@keyframes jello{0%,100%{transform:skew(0,0)}22%{transform:skew(-11deg,-11deg)}44%{transform:skew(6deg,6deg)}66%{transform:skew(-3deg,-3deg)}88%{transform:skew(1deg,1deg)}}
+.k-jello{animation:jello 1.2s both;}
+@keyframes heartBeat{0%,100%{transform:scale(1)}14%{transform:scale(1.28)}28%{transform:scale(1)}42%{transform:scale(1.28)}70%{transform:scale(1)}}
+.k-heartBeat{animation:heartBeat 1.3s ease-in-out both;}
+@keyframes flash{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
+.k-flash{animation:flash 1.1s both;}
+@keyframes rubberBand{0%,100%{transform:scale(1,1)}30%{transform:scale(1.25,.75)}40%{transform:scale(.75,1.25)}55%{transform:scale(1.15,.85)}70%{transform:scale(.95,1.05)}}
+.k-rubberBand{animation:rubberBand 1.1s both;}
+
+/* ================= CONTINUOUS ================= */
+@keyframes spin{to{transform:rotate(360deg)}}
+.k-spin{animation:spin 2.2s linear infinite;}
+@keyframes spinReverse{to{transform:rotate(-360deg)}}
+.k-spinReverse{animation:spinReverse 2.6s linear infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.k-float{animation:float 2.6s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.k-bob{animation:bob 1s ease-in-out infinite;}
+@keyframes glow{0%,100%{box-shadow:0 0 2px 0 var(--accent-soft)}50%{box-shadow:0 0 20px 4px var(--accent-soft)}}
+.k-glow{animation:glow 1.8s ease-in-out infinite;}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:.82}50%{transform:scale(1.16);opacity:1}}
+.k-breathe{animation:breathe 3.2s ease-in-out infinite;}
+@keyframes pingRing{0%{transform:scale(.6);opacity:.85}70%{transform:scale(1.7);opacity:0}100%{opacity:0}}
+.k-ping{animation:pingRing 1.6s cubic-bezier(0,0,.2,1) infinite;}
+@keyframes morphBlob{0%,100%{border-radius:10px}50%{border-radius:50% 30% 60% 40%/40% 60% 30% 50%}}
+.k-morphBlob{animation:morphBlob 4s ease-in-out infinite;}
+
+/* ================= SPECIAL ================= */
+@keyframes typewriter{from{width:0}to{width:9.5em}}
+.k-typewriter{animation:typewriter 2.6s steps(19) infinite alternate;}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.k-blink{animation:blink 1s steps(1) infinite;}
+@keyframes shimmer{from{background-position:120% 0}to{background-position:-40% 0}}
+.k-shimmer{animation:shimmer 1.7s linear infinite;}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.k-marquee{animation:marquee 5.5s linear infinite;}
+@keyframes ripple{0%{transform:scale(.4);opacity:.8}100%{transform:scale(2.1);opacity:0}}
+.k-ripple{animation:ripple 1.8s ease-out infinite;}
+@keyframes skewPulse{0%,100%{transform:skewX(0)}50%{transform:skewX(-13deg)}}
+.k-skewPulse{animation:skewPulse 1.4s ease-in-out infinite;}
+
+/* ================= CURVE DEMO TRACK ================= */
+@keyframes sweep{from{left:0}to{left:100%}}
+
+/* ================= ACCESSIBILITY ================= */
+@media (prefers-reduced-motion: reduce){
+  .shape,.type-demo,.cursor-demo,.shimmer-demo,.marquee-text,.ripple-ring,.dot,.mini-dot,
+  [class*="k-"]{animation:none !important;}
+}
