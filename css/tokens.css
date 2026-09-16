@@ -1,78 +1,300 @@
 /* ============================================================
-   Gani Design System — Tokens
-   Every colour, type family and theme state lives here.
-   Components must never hardcode a colour; read a token instead.
+   Gani Design System — Variables
+   Palette primitives, then colour roles per mode, then type,
+   spacing, radius, sizing, elevation and motion.
+   A [data-theme] attribute on any element forces a mode inside it.
    ============================================================ */
 
 :root{
-  /* surfaces */
-  --bg:#eef0f2;
-  --bg-raised:#ffffff;
-  --bg-sunken:#e4e7ea;
-  --grid-line:rgba(27,32,35,0.07);
+  /* ---------- palette: the one accent ---------- */
+  --accent-50:#eefafa;
+  --accent-100:#d3f2f2;
+  --accent-200:#a8e4e5;
+  --accent-300:#72cfd2;
+  --accent-400:#3fb6bb;
+  --accent-500:#1d9aa1;
+  --accent-600:#0e7c86;
+  --accent-700:#0f636c;
+  --accent-800:#124f56;
+  --accent-900:#123f45;
+  --accent-950:#07282d;
 
-  /* ink */
-  --ink:#1b2023;
-  --ink-soft:#5b6470;
-  --ink-faint:#8b939c;
+  /* ---------- palette: neutrals (cool, biased toward the accent) ---------- */
+  --neutral-0:#ffffff;
+  --neutral-50:#f6f7f8;
+  --neutral-100:#eef0f2;
+  --neutral-200:#e1e5e8;
+  --neutral-300:#c9cfd4;
+  --neutral-400:#9aa3ab;
+  --neutral-500:#6b747e;
+  --neutral-600:#545c65;
+  --neutral-700:#3b4249;
+  --neutral-800:#232a31;
+  --neutral-900:#161c23;
+  --neutral-950:#10141a;
+  --neutral-1000:#0b0e12;
 
-  /* lines */
-  --border:rgba(27,32,35,0.14);
-  --border-strong:rgba(27,32,35,0.26);
+  /* ---------- palette: status (never used as accent) ---------- */
+  --success-600:#2e7a4d;
+  --success-400:#5fcf8a;
+  --warning-600:#a8650f;
+  --warning-400:#e8ac54;
+  --danger-800:#82271d;
+  --danger-700:#9c2f23;
+  --danger-600:#b83a2c;
+  --danger-400:#f07a6a;
+  --danger-300:#f49a8d;
+  --danger-200:#f8b9b0;
 
-  /* accent — teal carries every moving element */
-  --accent:#0e7c86;
-  --accent-ink:#ffffff;
-  --accent-soft:rgba(14,124,134,0.12);
+  /* ---------- typeface ---------- */
+  --font:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
 
-  /* secondary — amber marks anything you can grab or drag */
-  --amber:#a8650f;
-  --amber-soft:rgba(168,101,15,0.14);
+  /* ---------- type styles (web) — size / line height ---------- */
+  --display-size:48px;  --display-line:56px;
+  --h1-size:36px;       --h1-line:44px;
+  --h2-size:28px;       --h2-line:36px;
+  --h3-size:22px;       --h3-line:30px;
+  --title-size:18px;    --title-line:26px;
+  --body-lg-size:16px;  --body-lg-line:26px;
+  --body-size:14px;     --body-line:22px;
+  --label-size:13px;    --label-line:18px;
+  --caption-size:12px;  --caption-line:16px;
+  --overline-size:11px; --overline-line:16px;
 
-  /* type */
-  --font-display:'IBM Plex Sans Condensed','IBM Plex Sans',sans-serif;
-  --font-body:'IBM Plex Sans',sans-serif;
-  --font-mono:'IBM Plex Mono',monospace;
+  /* ---------- spacing ---------- */
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-12:48px;
+  --space-16:64px;
 
-  /* motion scale — the durations this system animates on */
-  --dur-quick:180ms;
-  --dur-base:320ms;
-  --dur-slow:640ms;
-  --dur-demo:1700ms;
+  /* ---------- radius ---------- */
+  --radius-none:0;
+  --radius-xs:4px;
+  --radius-sm:6px;
+  --radius-md:8px;
+  --radius-lg:12px;
+  --radius-xl:16px;
+  --radius-2xl:24px;
+  --radius-full:999px;
+
+  /* ---------- sizing ---------- */
+  --control-sm:32px;
+  --control-md:40px;
+  --control-lg:48px;
+  --touch-min:44px;
+  --icon-xs:14px;
+  --icon-sm:16px;
+  --icon-md:20px;
+  --icon-lg:24px;
+
+  /* ---------- border ---------- */
+  --border-width:1px;
+  --border-width-strong:2px;
+  --focus-offset:2px;
+
+  /* ---------- motion ---------- */
+  --duration-instant:100ms;
+  --duration-fast:150ms;
+  --duration-base:250ms;
+  --duration-slow:400ms;
+  --duration-slower:600ms;
+
+  --ease-standard:cubic-bezier(0.2,0,0,1);
+  --ease-enter:cubic-bezier(0.05,0.7,0.1,1);
+  --ease-exit:cubic-bezier(0.3,0,0.8,0.15);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-linear:linear;
+
+  /* ---------- opacity ---------- */
+  --opacity-hover:.08;
+  --opacity-pressed:.12;
+  --opacity-disabled:.4;
 }
 
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#10141a;
-    --bg-raised:#161c23;
-    --bg-sunken:#0c1015;
-    --grid-line:rgba(255,255,255,0.06);
-    --ink:#e8eaec;
-    --ink-soft:#a3acb5;
-    --ink-faint:#6d7680;
-    --border:rgba(255,255,255,0.12);
-    --border-strong:rgba(255,255,255,0.24);
-    --accent:#3fd0cd;
-    --accent-ink:#0a1517;
-    --accent-soft:rgba(63,208,205,0.16);
-    --amber:#e8ac54;
-    --amber-soft:rgba(232,172,84,0.16);
+/* ---------- mobile type styles: below 640px ---------- */
+@media (max-width:639px){
+  :root{
+    --display-size:34px;  --display-line:40px;
+    --h1-size:28px;       --h1-line:34px;
+    --h2-size:24px;       --h2-line:30px;
+    --h3-size:20px;       --h3-line:26px;
+    --title-size:17px;    --title-line:24px;
+    --body-lg-size:17px;  --body-lg-line:26px;
+    --body-size:16px;     --body-line:24px;
+    --label-size:15px;    --label-line:20px;
+    --caption-size:13px;  --caption-line:18px;
+    --overline-size:12px; --overline-line:16px;
   }
 }
 
-:root[data-theme="dark"]{
-  --bg:#10141a;
-  --bg-raised:#161c23;
-  --bg-sunken:#0c1015;
-  --grid-line:rgba(255,255,255,0.06);
-  --ink:#e8eaec;
-  --ink-soft:#a3acb5;
-  --ink-faint:#6d7680;
-  --border:rgba(255,255,255,0.12);
-  --border-strong:rgba(255,255,255,0.24);
-  --accent:#3fd0cd;
-  --accent-ink:#0a1517;
-  --accent-soft:rgba(63,208,205,0.16);
-  --amber:#e8ac54;
-  --amber-soft:rgba(232,172,84,0.16);
+/* ============================================================
+   Colour roles — light
+   ============================================================ */
+:root,
+[data-theme="light"]{
+  color-scheme:light;
+
+  --bg:var(--neutral-100);
+  --surface:var(--neutral-0);
+  --surface-sunken:var(--neutral-100);
+  --surface-hover:var(--neutral-200);
+  --surface-pressed:var(--neutral-300);
+
+  --text:var(--neutral-900);
+  --text-secondary:var(--neutral-600);
+  --text-tertiary:var(--neutral-500);
+  --on-accent:var(--neutral-0);
+
+  --border:rgba(22,28,35,.12);
+  --border-strong:rgba(22,28,35,.24);
+  --grid-line:rgba(22,28,35,.045);
+
+  --accent:var(--accent-600);
+  --accent-hover:var(--accent-700);
+  --accent-pressed:var(--accent-800);
+  --accent-tint:var(--accent-100);
+  --accent-tint-strong:var(--accent-200);
+  --accent-text:var(--accent-700);
+  --focus-ring:var(--accent-500);
+
+  --success:var(--success-600);
+  --success-tint:rgba(46,122,77,.12);
+  --warning:var(--warning-600);
+  --warning-tint:rgba(168,101,15,.12);
+  --danger:var(--danger-600);
+  --danger-hover:var(--danger-700);
+  --danger-pressed:var(--danger-800);
+  --danger-tint:rgba(184,58,44,.10);
+  --on-danger:var(--neutral-0);
+
+  --disabled-bg:var(--neutral-200);
+  --disabled-text:var(--neutral-400);
+
+  --inverse-surface:var(--neutral-900);
+  --inverse-text:var(--neutral-100);
+  --inverse-accent:var(--accent-300);
+
+  --scrim:rgba(16,20,26,.48);
+
+  --shadow-1:0 1px 2px rgba(16,20,26,.08);
+  --shadow-2:0 2px 6px rgba(16,20,26,.08),0 1px 2px rgba(16,20,26,.06);
+  --shadow-3:0 8px 20px rgba(16,20,26,.10),0 2px 6px rgba(16,20,26,.06);
+  --shadow-4:0 20px 48px rgba(16,20,26,.16),0 4px 12px rgba(16,20,26,.08);
+}
+
+/* ============================================================
+   Colour roles — dark (system preference, and forced)
+   ============================================================ */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+
+    --bg:var(--neutral-950);
+    --surface:var(--neutral-900);
+    --surface-sunken:var(--neutral-1000);
+    --surface-hover:var(--neutral-800);
+    --surface-pressed:var(--neutral-700);
+
+    --text:var(--neutral-100);
+    --text-secondary:var(--neutral-300);
+    --text-tertiary:var(--neutral-400);
+    --on-accent:var(--neutral-1000);
+
+    --border:rgba(255,255,255,.10);
+    --border-strong:rgba(255,255,255,.22);
+    --grid-line:rgba(255,255,255,.035);
+
+    --accent:var(--accent-400);
+    --accent-hover:var(--accent-300);
+    --accent-pressed:var(--accent-200);
+    --accent-tint:rgba(63,182,187,.16);
+    --accent-tint-strong:rgba(63,182,187,.28);
+    --accent-text:var(--accent-300);
+    --focus-ring:var(--accent-300);
+
+    --success:var(--success-400);
+    --success-tint:rgba(95,207,138,.14);
+    --warning:var(--warning-400);
+    --warning-tint:rgba(232,172,84,.14);
+    --danger:var(--danger-400);
+    --danger-hover:var(--danger-300);
+    --danger-pressed:var(--danger-200);
+    --danger-tint:rgba(240,122,106,.14);
+    --on-danger:#1a0806;
+
+    --disabled-bg:var(--neutral-800);
+    --disabled-text:var(--neutral-600);
+
+    --inverse-surface:var(--neutral-100);
+    --inverse-text:var(--neutral-900);
+    --inverse-accent:var(--accent-700);
+
+    --scrim:rgba(0,0,0,.60);
+
+    --shadow-1:0 1px 2px rgba(0,0,0,.40);
+    --shadow-2:0 2px 6px rgba(0,0,0,.40),0 1px 2px rgba(0,0,0,.30);
+    --shadow-3:0 8px 20px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.30);
+    --shadow-4:0 20px 48px rgba(0,0,0,.55),0 4px 12px rgba(0,0,0,.35);
+  }
+}
+
+[data-theme="dark"]{
+  color-scheme:dark;
+
+  --bg:var(--neutral-950);
+  --surface:var(--neutral-900);
+  --surface-sunken:var(--neutral-1000);
+  --surface-hover:var(--neutral-800);
+  --surface-pressed:var(--neutral-700);
+
+  --text:var(--neutral-100);
+  --text-secondary:var(--neutral-300);
+  --text-tertiary:var(--neutral-400);
+  --on-accent:var(--neutral-1000);
+
+  --border:rgba(255,255,255,.10);
+  --border-strong:rgba(255,255,255,.22);
+  --grid-line:rgba(255,255,255,.035);
+
+  --accent:var(--accent-400);
+  --accent-hover:var(--accent-300);
+  --accent-pressed:var(--accent-200);
+  --accent-tint:rgba(63,182,187,.16);
+  --accent-tint-strong:rgba(63,182,187,.28);
+  --accent-text:var(--accent-300);
+  --focus-ring:var(--accent-300);
+
+  --success:var(--success-400);
+  --success-tint:rgba(95,207,138,.14);
+  --warning:var(--warning-400);
+  --warning-tint:rgba(232,172,84,.14);
+  --danger:var(--danger-400);
+  --danger-hover:var(--danger-300);
+  --danger-pressed:var(--danger-200);
+  --danger-tint:rgba(240,122,106,.14);
+  --on-danger:#1a0806;
+
+  --disabled-bg:var(--neutral-800);
+  --disabled-text:var(--neutral-600);
+
+  --inverse-surface:var(--neutral-100);
+  --inverse-text:var(--neutral-900);
+  --inverse-accent:var(--accent-700);
+
+  --scrim:rgba(0,0,0,.60);
+
+  --shadow-1:0 1px 2px rgba(0,0,0,.40);
+  --shadow-2:0 2px 6px rgba(0,0,0,.40),0 1px 2px rgba(0,0,0,.30);
+  --shadow-3:0 8px 20px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.30);
+  --shadow-4:0 20px 48px rgba(0,0,0,.55),0 4px 12px rgba(0,0,0,.35);
 }

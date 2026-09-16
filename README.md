@@ -1,68 +1,30 @@
 # Gani Design System
 
-The motion foundation for Gani products: a browsable reference of every named animation
-and easing curve in the system, plus the drop-in CSS that produces them.
+The visual reference for designing Gani products.
 
-## Run it
+## Open it
+
+Double-click `index.html`, or run a local preview:
 
 ```bash
 npm run dev
 ```
 
-Opens a static server on <http://localhost:4321>. There is no build step — the site is
-plain HTML, CSS and JavaScript, so you can also just open `index.html` in a browser.
+and visit <http://localhost:4321>.
 
 ## What's inside
 
-**Animations tab** — 42 named keyframe animations grouped by how they're used:
+**Foundations**
+- **Typography** — one typeface (IBM Plex Sans), ten styles, separate web and mobile sizes.
+- **Colors** — one accent (Gani Teal) with its full scale and every job it does, neutrals, status colours, light and dark modes, and contrast checks.
+- **Variables** — every colour, spacing, radius, sizing, border, elevation, opacity, duration, easing, type and breakpoint value, named as they appear in the design file.
 
-| Group | Count | Examples |
-| --- | --- | --- |
-| Entrances | 10 | `fadeInUp`, `zoomIn`, `bounceIn`, `flipInX` |
-| Exits | 8 | `fadeOutUp`, `zoomOut`, `rotateOut`, `lightSpeedOut` |
-| Attention Seekers | 10 | `pulse`, `shake`, `tada`, `heartBeat`, `rubberBand` |
-| Continuous | 8 | `spin`, `float`, `breathe`, `ping`, `morphBlob` |
-| Special | 6 | `typewriter`, `blink`, `shimmer`, `marquee`, `ripple` |
+**Components**
+- **Buttons** — six variants × seven states (default, hover, pressed, focused, selected, disabled, loading), three sizes, anatomy and layout patterns.
+- **Components** — text field, select, checkbox, radio, switch, tabs, segmented control, list, alert, toast, tooltip, progress, skeleton, badge, chip, avatar, card and dialog, each in its states.
 
-**Curves tab** — a draggable `cubic-bezier()` plotter, the 7 native CSS timing keywords,
-and the 30 named easing functions (Sine through Bounce, each as In / Out / InOut), every
-one plotted as a graph with a dot travelling on that exact timing.
+**Motion**
+- **Animations** — 124 named animations with duration and easing: UI transitions, loops and loaders, and the full standard set of attention seekers, entrances and exits.
+- **Curves** — a drag-to-edit curve editor with values ready for Figma's custom bezier, the system easings, standard curves and all 30 named easings.
 
-## Using the animation library elsewhere
-
-`css/animations.css` is standalone. Copy it into any project and apply the class:
-
-```html
-<link rel="stylesheet" href="css/animations.css">
-
-<div class="k-fadeInUp">Slides up as it fades in</div>
-<button class="k-pulse">Look at me</button>
-<span class="k-spin">◐</span>
-```
-
-Every animation name in the reference has a matching `.k-<name>` class. The only token it
-needs from `css/tokens.css` is `--accent-soft`, used by `k-glow`.
-
-## Structure
-
-```
-Gani Design System/
-├── index.html          reference page
-├── css/
-│   ├── tokens.css      colours, type, durations, light + dark themes
-│   ├── base.css        document shell and typography
-│   ├── components.css  top bar, specimen cards, curve plotter
-│   └── animations.css  the 42 keyframes + .k-* utility classes
-└── js/
-    ├── data.js         animation catalogue, easing formulas, CSS presets
-    └── app.js          rendering, plotter interaction, filtering
-```
-
-## Notes on the motion itself
-
-- Curve dots are driven by CSS `linear()` timing functions sampled from each formula, not
-  a JavaScript animation loop — browsers throttle `requestAnimationFrame` in background
-  tabs, and CSS keeps running.
-- The plotter's ball uses the live `cubic-bezier()` you drag, so what you see is the
-  browser's own interpolation, not an approximation.
-- Everything respects `prefers-reduced-motion: reduce`.
+Use **Appearance** in the sidebar to switch between light and dark.

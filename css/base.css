@@ -1,46 +1,29 @@
 /* ============================================================
    Gani Design System — Base
-   Document shell, typography defaults, page layout.
    ============================================================ */
 
-*{box-sizing:border-box;}
+*,*::before,*::after{box-sizing:border-box;}
 
-html,body{margin:0;}
+html{-webkit-text-size-adjust:100%;}
 
 body{
-  background:
-    linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0/100% 28px,
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0/28px 100%,
-    var(--bg);
-  color:var(--ink);
-  font-family:var(--font-body);
-  font-size:14px;
-  padding-inline:20px;
-  padding-block:0 32px;
+  margin:0;
+  font-family:var(--font);
+  font-size:var(--body-size);
+  line-height:var(--body-line);
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
 }
 
-h1,h2,h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;margin:0;}
-code,.mono{font-family:var(--font-mono);}
-button{font-family:inherit;}
+h1,h2,h3,h4,p{margin:0;}
+h1,h2,h3{text-wrap:balance;}
+button,input,select,textarea{font:inherit;color:inherit;}
 img{max-width:100%;}
 [hidden]{display:none !important;}
 
-main{max-width:1180px;margin:0 auto;padding-top:26px;}
+.tnum{font-variant-numeric:tabular-nums;}
 
-.panel{display:none;}
-.panel.active{display:block;}
-.panel-intro{
-  color:var(--ink-soft);font-size:14.5px;line-height:1.6;max-width:62ch;margin:0 0 26px;
-}
-.panel-intro strong{color:var(--ink);}
-
-h3.section-head{
-  font-size:14px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);
-  margin:30px 0 6px;
-}
-.fine-print{font-size:12.5px;color:var(--ink-faint);margin:0 0 16px;max-width:62ch;line-height:1.55;}
-
-footer{
-  max-width:1180px;margin:34px auto 0;padding-top:16px;border-top:1px solid var(--border);
-  color:var(--ink-faint);font-size:12px;
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{transition-duration:0ms !important;}
 }

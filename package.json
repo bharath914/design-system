@@ -1,8 +1,8 @@
 {
   "name": "gani-design-system",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "Motion foundation for Gani products: named CSS animations and easing curves, with a browsable reference.",
+  "description": "The Gani Design System reference: typography, colours, variables, buttons, components, animations and curves.",
   "scripts": {
     "dev": "npx --yes serve . -l 4321"
   },

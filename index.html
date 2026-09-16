@@ -3,70 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Gani Design System — Motion</title>
-  <meta name="description" content="Every named CSS animation and easing curve in the Gani Design System, shown moving.">
+  <title>Gani Design System</title>
+  <meta name="description" content="Typography, colours, variables, buttons, components, animations and curves of the Gani Design System.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script>
+    // Apply the saved appearance before first paint so the page never flashes the wrong mode.
+    try { var t = localStorage.getItem("ganiTheme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+  </script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand"><span class="brand-mark"></span>Gani Design System <span class="brand-sub">Motion</span></div>
-      <nav class="tabs" role="tablist">
-        <button class="tab active" data-tab="animations" role="tab" aria-selected="true">Animations</button>
-        <button class="tab" data-tab="curves" role="tab" aria-selected="false">Curves</button>
-      </nav>
-      <div class="search-wrap">
-        <input id="search" type="search" placeholder="Filter by name…" aria-label="Filter by name">
-      </div>
-      <div class="counter" id="counter">— SIGNALS</div>
-    </div>
-  </header>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#typography">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text"><span class="brand-name">Gani</span><span class="brand-sub">Design System</span></span>
+      </a>
 
-  <main>
-    <section id="panel-animations" class="panel active">
-      <p class="panel-intro">Every card plays a named CSS <code class="mono">animation</code> from <code class="mono">css/animations.css</code>, so you can match a motion to the class that produces it. Grouped as they're used in the wild: entrances, exits, attention‑seekers, ambient loops and a few UI specials. Click <b>↻</b> to replay any one on its own — the rest keep cycling every 3.4s.</p>
-      <div id="animGroups"></div>
-    </section>
+      <label class="search" for="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+        <input id="search" type="search" placeholder="Search this page" autocomplete="off">
+      </label>
 
-    <section id="panel-curves" class="panel">
-      <p class="panel-intro">A timing function is a curve plotting <b>output progress</b> (y) against <b>time elapsed</b> (x). Drag the two control points below to build any <code class="mono">cubic-bezier()</code> — the ball moves exactly as the curve dictates, driven by real CSS.</p>
+      <nav class="nav" id="nav" aria-label="Sections"></nav>
 
-      <div class="plotter">
-        <div class="plotter-graph">
-          <svg id="bezSvg" viewBox="-14 -34 148 172"></svg>
-        </div>
-        <div class="plotter-side">
-          <ul class="anatomy">
-            <li><b>P0</b> (0, 0) — start, fixed</li>
-            <li><b>P1</b> drag — steers the early motion</li>
-            <li><b>P2</b> drag — steers the late motion</li>
-            <li><b>P3</b> (1, 1) — end, fixed</li>
-            <li><b>x</b> = time 0→1 · <b>y</b> = progress (can overshoot below 0 or above 1)</li>
-          </ul>
-          <div class="readout-row">
-            <div class="track"><div class="dot" id="bezDot"></div></div>
-          </div>
-          <code id="bezCode" class="mono">cubic-bezier(0.25, 0.10, 0.25, 1.00)</code>
-          <div class="preset-row" id="bezPresets"></div>
+      <div class="sidebar-foot">
+        <span class="nav-label">Appearance</span>
+        <div class="btn-group" role="group" aria-label="Appearance">
+          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="system" aria-pressed="true">System</button>
+          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
         </div>
       </div>
+    </aside>
 
-      <h3 class="section-head">Native CSS keywords</h3>
-      <p class="fine-print">These resolve to exact <code class="mono">cubic-bezier()</code> (or <code class="mono">steps()</code>) values per the CSS spec — five of them are the preset buttons in the plotter above.</p>
-      <section class="group" data-cat="Keywords"><div class="grid" id="keywordGrid"></div></section>
-
-      <h3 class="section-head">Named easing functions</h3>
-      <p class="fine-print">The 30 reference curves popularized by easings.net. They're polynomial/trig/exponential formulas rather than CSS keywords, so each one is sampled into a native <code class="mono">linear()</code> timing function to drive its dot.</p>
-      <div id="curveGroups"></div>
-    </section>
-  </main>
-
-  <footer>Gani Design System — Motion: the named animations and timing‑function curves used across Gani products.</footer>
+    <main class="main" id="pages"></main>
+  </div>
 
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
