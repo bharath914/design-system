@@ -6,6 +6,9 @@
    ============================================================ */
 
 /* ================= UI TRANSITIONS ================= */
+#body-animations .anim-target{animation-play-state:paused;}
+.anim-card.is-animating .anim-target{animation-play-state:running;}
+
 @keyframes modalIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 .a-modalIn{animation:modalIn var(--duration-slow) var(--ease-enter) both;}
 @keyframes modalOut{from{opacity:1;transform:none}to{opacity:0;transform:scale(.96)}}

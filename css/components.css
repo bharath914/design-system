@@ -272,7 +272,7 @@
   height:108px;
   background:
     radial-gradient(circle at 78% 30%, var(--accent-300) 0 18%, transparent 19%),
-    linear-gradient(135deg, var(--accent-100), var(--accent-500));
+    linear-gradient(135deg, var(--neutral-100), var(--accent-500));
 }
 .ui-card-body{display:flex;flex-direction:column;gap:6px;padding:16px;}
 .ui-card-overline{font-size:var(--overline-size);line-height:var(--overline-line);font-weight:var(--weight-semibold);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);}

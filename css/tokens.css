@@ -6,48 +6,48 @@
    ============================================================ */
 
 :root{
-  /* ---------- palette: the one accent ---------- */
-  --accent-50:#eefafa;
-  --accent-100:#d3f2f2;
-  --accent-200:#a8e4e5;
-  --accent-300:#72cfd2;
-  --accent-400:#3fb6bb;
-  --accent-500:#1d9aa1;
-  --accent-600:#0e7c86;
-  --accent-700:#0f636c;
-  --accent-800:#124f56;
-  --accent-900:#123f45;
-  --accent-950:#07282d;
+  /* ---------- palette: monochrome action scale ---------- */
+  --accent-50:#f7f7f7;
+  --accent-100:#ededed;
+  --accent-200:#d8d8d8;
+  --accent-300:#b5b5b5;
+  --accent-400:#858585;
+  --accent-500:#5f5f5f;
+  --accent-600:#171717;
+  --accent-700:#0f0f0f;
+  --accent-800:#080808;
+  --accent-900:#050505;
+  --accent-950:#000000;
 
-  /* ---------- palette: neutrals (cool, biased toward the accent) ---------- */
+  /* ---------- palette: neutral grayscale ---------- */
   --neutral-0:#ffffff;
-  --neutral-50:#f6f7f8;
-  --neutral-100:#eef0f2;
-  --neutral-200:#e1e5e8;
-  --neutral-300:#c9cfd4;
-  --neutral-400:#9aa3ab;
-  --neutral-500:#6b747e;
-  --neutral-600:#545c65;
-  --neutral-700:#3b4249;
-  --neutral-800:#232a31;
-  --neutral-900:#161c23;
-  --neutral-950:#10141a;
-  --neutral-1000:#0b0e12;
+  --neutral-50:#fafafa;
+  --neutral-100:#f3f3f3;
+  --neutral-200:#e5e5e5;
+  --neutral-300:#d1d1d1;
+  --neutral-400:#a3a3a3;
+  --neutral-500:#737373;
+  --neutral-600:#525252;
+  --neutral-700:#404040;
+  --neutral-800:#262626;
+  --neutral-900:#171717;
+  --neutral-950:#0a0a0a;
+  --neutral-1000:#000000;
 
-  /* ---------- palette: status (never used as accent) ---------- */
-  --success-600:#2e7a4d;
-  --success-400:#5fcf8a;
-  --warning-600:#a8650f;
-  --warning-400:#e8ac54;
-  --danger-800:#82271d;
-  --danger-700:#9c2f23;
-  --danger-600:#b83a2c;
-  --danger-400:#f07a6a;
-  --danger-300:#f49a8d;
-  --danger-200:#f8b9b0;
+  /* ---------- status uses weight and labels, never hue ---------- */
+  --success-600:#171717;
+  --success-400:#525252;
+  --warning-600:#404040;
+  --warning-400:#737373;
+  --danger-800:#000000;
+  --danger-700:#0a0a0a;
+  --danger-600:#171717;
+  --danger-400:#525252;
+  --danger-300:#737373;
+  --danger-200:#a3a3a3;
 
   /* ---------- typeface ---------- */
-  --font:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
   --weight-regular:400;
   --weight-medium:500;
   --weight-semibold:600;
@@ -79,12 +79,13 @@
 
   /* ---------- radius ---------- */
   --radius-none:0;
-  --radius-xs:4px;
-  --radius-sm:6px;
-  --radius-md:8px;
-  --radius-lg:12px;
-  --radius-xl:16px;
-  --radius-2xl:24px;
+  /* A consistently soft, rounded language across controls and surfaces. */
+  --radius-xs:6px;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-xl:20px;
+  --radius-2xl:28px;
   --radius-full:999px;
 
   /* ---------- sizing ---------- */
@@ -144,52 +145,53 @@
 [data-theme="light"]{
   color-scheme:light;
 
-  --bg:var(--neutral-100);
+  --bg:#f8f8ff;
+  --sidebar-bg:#ffffff;
   --surface:var(--neutral-0);
-  --surface-sunken:var(--neutral-100);
-  --surface-hover:var(--neutral-200);
-  --surface-pressed:var(--neutral-300);
+  --surface-sunken:#f8f8ff;
+  --surface-hover:#f8f8ff;
+  --surface-pressed:#f8f8ff;
 
   --text:var(--neutral-900);
   --text-secondary:var(--neutral-600);
   --text-tertiary:var(--neutral-500);
   --on-accent:var(--neutral-0);
 
-  --border:rgba(22,28,35,.12);
-  --border-strong:rgba(22,28,35,.24);
-  --grid-line:rgba(22,28,35,.045);
+  --border:rgba(0,0,0,.12);
+  --border-strong:rgba(0,0,0,.24);
+  --grid-line:rgba(0,0,0,.045);
 
   --accent:var(--accent-600);
   --accent-hover:var(--accent-700);
   --accent-pressed:var(--accent-800);
-  --accent-tint:var(--accent-100);
-  --accent-tint-strong:var(--accent-200);
+  --accent-tint:#f8f8ff;
+  --accent-tint-strong:#f8f8ff;
   --accent-text:var(--accent-700);
   --focus-ring:var(--accent-500);
 
   --success:var(--success-600);
-  --success-tint:rgba(46,122,77,.12);
+  --success-tint:#f8f8ff;
   --warning:var(--warning-600);
-  --warning-tint:rgba(168,101,15,.12);
+  --warning-tint:#f8f8ff;
   --danger:var(--danger-600);
   --danger-hover:var(--danger-700);
   --danger-pressed:var(--danger-800);
-  --danger-tint:rgba(184,58,44,.10);
+  --danger-tint:#f8f8ff;
   --on-danger:var(--neutral-0);
 
-  --disabled-bg:var(--neutral-200);
+  --disabled-bg:#f8f8ff;
   --disabled-text:var(--neutral-400);
 
   --inverse-surface:var(--neutral-900);
   --inverse-text:var(--neutral-100);
   --inverse-accent:var(--accent-300);
 
-  --scrim:rgba(16,20,26,.48);
+  --scrim:rgba(0,0,0,.48);
 
-  --shadow-1:0 1px 2px rgba(16,20,26,.08);
-  --shadow-2:0 2px 6px rgba(16,20,26,.08),0 1px 2px rgba(16,20,26,.06);
-  --shadow-3:0 8px 20px rgba(16,20,26,.10),0 2px 6px rgba(16,20,26,.06);
-  --shadow-4:0 20px 48px rgba(16,20,26,.16),0 4px 12px rgba(16,20,26,.08);
+  --shadow-1:0 1px 2px rgba(0,0,0,.08);
+  --shadow-2:0 2px 6px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+  --shadow-3:0 8px 20px rgba(0,0,0,.10),0 2px 6px rgba(0,0,0,.06);
+  --shadow-4:0 20px 48px rgba(0,0,0,.16),0 4px 12px rgba(0,0,0,.08);
 }
 
 /* ============================================================
@@ -200,6 +202,7 @@
     color-scheme:dark;
 
     --bg:var(--neutral-950);
+    --sidebar-bg:var(--neutral-900);
     --surface:var(--neutral-900);
     --surface-sunken:var(--neutral-1000);
     --surface-hover:var(--neutral-800);
@@ -217,20 +220,20 @@
     --accent:var(--accent-400);
     --accent-hover:var(--accent-300);
     --accent-pressed:var(--accent-200);
-    --accent-tint:rgba(63,182,187,.16);
-    --accent-tint-strong:rgba(63,182,187,.28);
+    --accent-tint:rgba(255,255,255,.12);
+    --accent-tint-strong:rgba(255,255,255,.22);
     --accent-text:var(--accent-300);
     --focus-ring:var(--accent-300);
 
     --success:var(--success-400);
-    --success-tint:rgba(95,207,138,.14);
+    --success-tint:rgba(255,255,255,.10);
     --warning:var(--warning-400);
-    --warning-tint:rgba(232,172,84,.14);
+    --warning-tint:rgba(255,255,255,.12);
     --danger:var(--danger-400);
     --danger-hover:var(--danger-300);
     --danger-pressed:var(--danger-200);
-    --danger-tint:rgba(240,122,106,.14);
-    --on-danger:#1a0806;
+    --danger-tint:rgba(255,255,255,.14);
+    --on-danger:var(--neutral-1000);
 
     --disabled-bg:var(--neutral-800);
     --disabled-text:var(--neutral-600);
@@ -252,6 +255,7 @@
   color-scheme:dark;
 
   --bg:var(--neutral-950);
+  --sidebar-bg:var(--neutral-900);
   --surface:var(--neutral-900);
   --surface-sunken:var(--neutral-1000);
   --surface-hover:var(--neutral-800);
@@ -269,20 +273,20 @@
   --accent:var(--accent-400);
   --accent-hover:var(--accent-300);
   --accent-pressed:var(--accent-200);
-  --accent-tint:rgba(63,182,187,.16);
-  --accent-tint-strong:rgba(63,182,187,.28);
+  --accent-tint:rgba(255,255,255,.12);
+  --accent-tint-strong:rgba(255,255,255,.22);
   --accent-text:var(--accent-300);
   --focus-ring:var(--accent-300);
 
   --success:var(--success-400);
-  --success-tint:rgba(95,207,138,.14);
+  --success-tint:rgba(255,255,255,.10);
   --warning:var(--warning-400);
-  --warning-tint:rgba(232,172,84,.14);
+  --warning-tint:rgba(255,255,255,.12);
   --danger:var(--danger-400);
   --danger-hover:var(--danger-300);
   --danger-pressed:var(--danger-200);
-  --danger-tint:rgba(240,122,106,.14);
-  --on-danger:#1a0806;
+  --danger-tint:rgba(255,255,255,.14);
+  --on-danger:var(--neutral-1000);
 
   --disabled-bg:var(--neutral-800);
   --disabled-text:var(--neutral-600);

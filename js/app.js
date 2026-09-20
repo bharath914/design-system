@@ -17,6 +17,7 @@
   function group(title, meta, desc, content) {
     return '<section class="group">' +
       '<header class="group-header">' +
+        '<span class="section-label">Section · ' + title + '</span>' +
         '<div class="group-head"><h2 class="group-title">' + title + '</h2>' +
           (meta ? '<span class="group-meta">' + meta + '</span>' : '') + '</div>' +
         (desc ? '<p class="group-desc">' + desc + '</p>' : '') +
@@ -153,6 +154,7 @@
     if (location.hash !== "#" + id) { history.replaceState(null, "", "#" + id); }
     try { localStorage.setItem("ganiSection", id); } catch (err) {}
     applyFilter();
+    if (id === "animations") { requestAnimationFrame(playVisibleAnimations); }
   }
 
   function countItems() {
@@ -198,7 +200,7 @@
     var P = D.PLATFORMS[platform];
 
     var html = group("Typeface", "1 family", null,
-      '<article class="card typeface" data-name="typeface ibm plex sans font family weights characters">' +
+      '<article class="card typeface" data-name="typeface poppins font family weights characters">' +
         '<div class="typeface-specimen" aria-hidden="true">Aa</div>' +
         '<div class="typeface-info">' +
           '<p class="eyebrow">One family for everything</p>' +
@@ -213,22 +215,15 @@
         '</div>' +
       '</article>');
 
-    var rows = D.TYPE_STYLES.map(function (s) {
+    var cards = '<div class="type-grid">' + D.TYPE_STYLES.map(function (s) {
       return '<article class="card type-row' + (platform === "mobile" ? " type-row--mobile" : "") + '" data-name="' + key([s.name, s.use]) + '">' +
         '<div class="type-meta">' +
           '<span class="type-name">' + s.name + '</span>' +
           '<span class="type-spec">' + styleSpec(s, platform) + '</span>' +
-          '<span class="type-use">' + s.use + '</span>' +
         '</div>' +
         '<div class="type-sample" style="' + styleCss(s, platform) + '">' + s.sample + '</div>' +
       '</article>';
-    }).join("");
-
-    var frame = platform === "mobile"
-      ? '<div class="device"><div class="device-status"><span>' + P.frame + '</span><span class="device-notch"></span><span>100%</span></div>' +
-          '<div class="device-screen">' + rows + '</div></div>'
-      : '<div class="browser"><div class="browser-bar"><span class="browser-dots"><i></i><i></i><i></i></span>' +
-          '<span class="browser-url">' + P.frame + '</span></div><div class="browser-screen">' + rows + '</div></div>';
+    }).join("") + '</div>';
 
     var switcher = '<div class="platform-bar">' +
       '<div class="btn-group" role="group" aria-label="Platform">' +
@@ -237,10 +232,9 @@
             D.PLATFORMS[k].name + '</button>';
         }).join("") +
       '</div>' +
-      '<ul class="platform-notes">' + P.notes.map(function (n) { return '<li>' + n + '</li>'; }).join("") + '</ul>' +
     '</div>';
 
-    html += group("Type styles", D.TYPE_STYLES.length + " styles · " + P.name, "Size / line height in px, weight, letter spacing.", switcher + frame);
+    html += group("Type styles", D.TYPE_STYLES.length + " styles · " + P.name, "Size / line height in px, weight, letter spacing.", switcher + cards);
 
     html += group("Web vs mobile", "size / line height in px",
       "Headings shrink on mobile while body and labels grow — phones are held closer, but touch needs bigger labels and text fields need 16px.",
@@ -319,15 +313,15 @@
       '<article class="card accent-hero" data-name="accent teal brand gani">' +
         '<div class="accent-hero-swatch">' +
           '<span class="accent-hero-name">' + A.name + '</span>' +
-          '<span class="accent-hero-values">Light · Accent ' + A.light.step + ' · ' + A.light.hex + '<br>Dark · Accent ' + A.dark.step + ' · ' + A.dark.hex + '</span>' +
+          '<span class="accent-hero-values">Accent ' + A.light.step + ' · ' + A.light.hex + '</span>' +
         '</div>' +
         '<div class="accent-hero-text">' +
           '<p class="eyebrow">One accent</p>' +
-          '<h3 class="doc-title">Teal means “you can act on this”</h3>' +
-          '<p class="doc-text">It is the only accent in the system. Everything else is neutral, so wherever teal appears it points at an action, a selection or focus.</p>' +
+          '<h3 class="doc-title">Black means “you can act on this”</h3>' +
+          '<p class="doc-text">It is the only action colour in the system. Everything else is neutral, so black points at an action, a selection or focus.</p>' +
           '<ul class="rule-list">' +
             '<li class="yes">' + I.check + '<span>Buttons, links, checked controls, selected items, focus and progress.</span></li>' +
-            '<li class="yes">' + I.check + '<span>Accent 600 in light mode, Accent 400 in dark mode.</span></li>' +
+            '<li class="yes">' + I.check + '<span>Accent 600 is the default action colour.</span></li>' +
             '<li class="no">' + I.x + '<span>Decoration, illustrations, large backgrounds or body text.</span></li>' +
             '<li class="no">' + I.x + '<span>Standing in for success, warning or danger.</span></li>' +
           '</ul>' +
@@ -335,11 +329,11 @@
       '</article>');
 
     html += group("Accent scale", D.ACCENT_SCALE.length + " steps",
-      "Tagged steps are the accent in each mode. The ratio is the contrast of the label colour on that step.",
-      scaleStrip(D.ACCENT_SCALE, "accent", { 600: "Light", 400: "Dark" }));
+      "The default action colour is tagged. The ratio is the contrast of the label colour on that step.",
+      scaleStrip(D.ACCENT_SCALE, "accent", { 600: "Default" }));
 
     html += group("Accent in use", D.ACCENT_USES.length + " roles",
-      "The same teal doing different jobs. Each job is its own variable, so every mode can use the right step.",
+      "The same black doing different jobs. Each job is its own reusable variable.",
       '<div class="grid" style="--min:210px">' + D.ACCENT_USES.map(function (u) {
         return '<article class="card" data-name="' + key(["accent", u.name, u.variable, u.note]) + '">' +
           '<div class="use-demo">' + USE_DEMOS[u.demo] + '</div>' +
@@ -350,7 +344,7 @@
       }).join("") + '</div>');
 
     html += group("Neutrals", D.NEUTRAL_SCALE.length + " steps",
-      "Every surface, text colour and border comes from here. A slight cool tint keeps them in the same family as the accent.",
+      "Every surface, text colour and border comes from this grayscale scale.",
       scaleStrip(D.NEUTRAL_SCALE, "neutral"));
 
     html += group("Status", D.STATUS.length + " colours",
@@ -358,8 +352,7 @@
       '<div class="grid grid--3">' + D.STATUS.map(function (s) {
         return '<article class="card" data-name="' + key(["status", s.name, s.use]) + '">' +
           '<div class="status-swatches">' +
-            '<div class="status-swatch" style="background:' + s.light + ';color:' + textOn(s.light).color + '"><strong>Light</strong>' + s.light + '</div>' +
-            '<div class="status-swatch" style="background:' + s.dark + ';color:' + textOn(s.dark).color + '"><strong>Dark</strong>' + s.dark + '</div>' +
+            '<div class="status-swatch" style="background:' + s.light + ';color:' + textOn(s.light).color + '"><strong>Default</strong>' + s.light + '</div>' +
           '</div>' +
           '<div class="doc-body">' +
             '<div class="row" style="justify-content:space-between"><h3 class="doc-title">' + s.name + '</h3>' +
@@ -369,22 +362,16 @@
         '</article>';
       }).join("") + '</div>');
 
-    html += group("Light & dark", "2 modes",
-      "Every colour variable has both modes. Switch Appearance in the sidebar to see the whole system change.",
-      '<div class="grid grid--2">' + modeCard("light") + modeCard("dark") + '</div>');
-
     html += group("Contrast", "WCAG 2.1",
       "AA needs 4.5:1 for normal text and 3:1 for large text (18px and up, or 14px bold).",
       '<article class="card card--pad"><div class="table-scroll"><table class="table">' +
-        '<thead><tr><th>Where</th><th>Pair</th><th>Light</th><th>Dark</th></tr></thead><tbody>' +
+        '<thead><tr><th>Where</th><th>Pair</th><th>Contrast</th></tr></thead><tbody>' +
         D.CONTRAST_PAIRS.map(function (p) {
           var light = contrast(resolve(p.fg, "light"), resolve(p.bg, "light", p.over));
-          var dark = contrast(resolve(p.fg, "dark"), resolve(p.bg, "dark", p.over));
           return '<tr data-name="' + key([p.use, p.fg, p.bg, "contrast"]) + '">' +
             '<td class="strong">' + p.use + '</td>' +
             '<td>' + p.fg + ' on ' + p.bg + '</td>' +
             '<td>' + grade(light) + '</td>' +
-            '<td>' + grade(dark) + '</td>' +
           '</tr>';
         }).join("") +
       '</tbody></table></div></article>');
@@ -433,16 +420,15 @@
   }
 
   function renderVariables() {
-    var html = group("Color", D.COLOR_VARIABLES.length + " variables · Light & Dark",
-      "Use these in designs — never a raw hex. Each one switches automatically with the mode.",
+    var html = group("Color", D.COLOR_VARIABLES.length + " variables",
+      "Use these in designs — never a raw hex. Each is a reusable light-theme role.",
       '<article class="card var-table var-table--color">' +
-        '<div class="var-head"><span></span><span>Name</span><span>Light</span><span>Dark</span><span>Used for</span></div>' +
+        '<div class="var-head"><span></span><span>Name</span><span>Value</span><span>Used for</span></div>' +
         D.COLOR_VARIABLES.map(function (v) {
-          return '<div class="var-row" data-name="' + key([v.name, v.light[0], v.dark[0], v.light[1], v.dark[1], v.use]) + '">' +
-            '<div class="var-preview"><span class="var-pair"><i style="background:' + v.light[1] + '"></i><i style="background:' + v.dark[1] + '"></i></span></div>' +
+          return '<div class="var-row" data-name="' + key([v.name, v.light[0], v.light[1], v.use]) + '">' +
+            '<div class="var-preview"><span class="role-dot" style="background:' + v.light[1] + '"></span></div>' +
             '<div class="var-name">' + v.name + '</div>' +
             '<div class="var-mode var-mode--light"><span class="role-dot" style="background:' + v.light[1] + '"></span><span>' + modeValue(v.light) + '</span></div>' +
-            '<div class="var-mode var-mode--dark"><span class="role-dot" style="background:' + v.dark[1] + '"></span><span>' + modeValue(v.dark) + '</span></div>' +
             '<div class="var-use">' + v.use + '</div>' +
           '</div>';
         }).join("") +
@@ -660,10 +646,10 @@
       doc({ name: "Switch", demoCls: "doc-demo--start", keys: "toggle on off",
         text: "Settings that take effect immediately, with no save button.",
         demo: '<div class="state-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">' +
-          cell("Off", toggleSwitch("sw-1", "Dark mode", {})) +
-          cell("On", toggleSwitch("sw-2", "Dark mode", { checked: true })) +
-          cell("Disabled", toggleSwitch("sw-3", "Dark mode", { disabled: true })) +
-          cell("Disabled on", toggleSwitch("sw-4", "Dark mode", { checked: true, disabled: true })) +
+          cell("Off", toggleSwitch("sw-1", "Notifications", {})) +
+          cell("On", toggleSwitch("sw-2", "Notifications", { checked: true })) +
+          cell("Disabled", toggleSwitch("sw-3", "Notifications", { disabled: true })) +
+          cell("Disabled on", toggleSwitch("sw-4", "Notifications", { checked: true, disabled: true })) +
         '</div>',
         specs: [["Track", "36 × 20"], ["Knob", 16], ["Travel", "150ms · Standard"]] })
     ];
@@ -831,15 +817,14 @@
       }).join("") + '</div>');
 
     D.ANIM_GROUPS.forEach(function (g) {
-      html += '<div class="anim-group"' + (g.once ? " data-once" : "") + '>' + group(g.name, g.items.length + (g.once ? " · plays once" : " · loops"), g.desc || null,
+      html += '<div class="anim-group"' + (g.once ? " data-once" : "") + '>' + group(g.name, g.items.length + (g.once ? " · plays automatically in view" : " · loops automatically in view"), g.desc || null,
         '<div class="grid" style="--min:190px">' + g.items.map(function (item) {
           var id = typeof item === "string" ? item : item[0];
           var label = typeof item === "string" ? item : item[1];
-          return '<article class="card" data-name="' + key([label, id, g.name]) + '">' +
+          return '<article class="card anim-card" data-name="' + key([label, id, g.name]) + '">' +
             '<div class="stage">' + (ANIM_MARKUP[id] || '<div class="shape anim-target a-' + id + '"></div>') + '</div>' +
             '<div class="card-foot">' +
               '<div class="card-text"><span class="card-name">' + label + '</span><span class="card-spec" data-spec></span></div>' +
-              '<button class="btn btn--ghost btn--sm btn--icon replay" type="button" aria-label="Replay ' + label + '">' + I.replay + '</button>' +
             '</div>' +
           '</article>';
         }).join("") + '</div>') + '</div>';
@@ -859,14 +844,34 @@
     return total;
   }
 
-  setInterval(function () {
-    if (current !== "animations" || document.hidden) return;
-    document.querySelectorAll(".anim-group[data-once]").forEach(function (g) {
-      g.querySelectorAll(".card:not([hidden]) .anim-target").forEach(function (el, i) {
-        setTimeout(function () { restart(el); }, i * 25);
-      });
+  function playAnimationCard(card) {
+    if (card.hidden || document.hidden || card.closest(".page").hidden) return;
+    card.classList.add("is-animating");
+    card.querySelectorAll(".anim-target").forEach(restart);
+  }
+
+  function playVisibleAnimations() {
+    document.querySelectorAll("#body-animations .anim-card:not([hidden])").forEach(function (card) {
+      var bounds = card.getBoundingClientRect();
+      if (bounds.bottom > 0 && bounds.top < window.innerHeight) { playAnimationCard(card); }
     });
-  }, 3400);
+  }
+
+  function setupAnimationPlayback() {
+    var cards = document.querySelectorAll("#body-animations .anim-card");
+    if (!window.IntersectionObserver) {
+      cards.forEach(playAnimationCard);
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var card = entry.target;
+        if (entry.isIntersecting) { playAnimationCard(card); }
+        else { card.classList.remove("is-animating"); }
+      });
+    }, { threshold: 0.35 });
+    cards.forEach(function (card) { observer.observe(card); });
+  }
 
   /* ================= CURVES ================= */
   var P1 = [0.2, 0], P2 = [0, 1];
@@ -1039,13 +1044,9 @@
   }
 
   /* ================= APPEARANCE ================= */
-  function applyTheme(choice) {
-    if (choice === "light" || choice === "dark") { document.documentElement.setAttribute("data-theme", choice); }
-    else { document.documentElement.removeAttribute("data-theme"); choice = "system"; }
-    document.querySelectorAll("[data-theme-choice]").forEach(function (b) {
-      b.setAttribute("aria-pressed", b.getAttribute("data-theme-choice") === choice ? "true" : "false");
-    });
-    try { localStorage.setItem("ganiTheme", choice); } catch (err) {}
+  function applyTheme() {
+    document.documentElement.setAttribute("data-theme", "light");
+    try { localStorage.removeItem("ganiTheme"); } catch (err) {}
   }
 
   /* ================= EVENTS ================= */
@@ -1054,9 +1055,6 @@
 
     var navLink = t.closest(".nav-link");
     if (navLink) { show(navLink.getAttribute("data-section")); window.scrollTo(0, 0); return; }
-
-    var themeBtn = t.closest("[data-theme-choice]");
-    if (themeBtn) { applyTheme(themeBtn.getAttribute("data-theme-choice")); return; }
 
     var platformBtn = t.closest("[data-platform]");
     if (platformBtn) {
@@ -1150,7 +1148,6 @@
   var saved = {};
   try {
     saved.section = localStorage.getItem("ganiSection");
-    saved.theme = localStorage.getItem("ganiTheme");
     saved.platform = localStorage.getItem("ganiPlatform");
   } catch (err) {}
   if (saved.platform === "mobile") { platform = "mobile"; }
@@ -1163,8 +1160,9 @@
   renderButtons();
   renderComponents();
   renderAnimations();
+  setupAnimationPlayback();
   renderCurves();
   countItems();
-  applyTheme(saved.theme);
+  applyTheme();
   show(location.hash.slice(1) || saved.section || "typography");
 })();

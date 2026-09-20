@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -7,17 +7,13 @@
   <meta name="description" content="Typography, colours, variables, buttons, components, animations and curves of the Gani Design System.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/site.css">
-  <script>
-    // Apply the saved appearance before first paint so the page never flashes the wrong mode.
-    try { var t = localStorage.getItem("ganiTheme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
-  </script>
 </head>
 <body>
   <div class="shell">
@@ -34,14 +30,6 @@
 
       <nav class="nav" id="nav" aria-label="Sections"></nav>
 
-      <div class="sidebar-foot">
-        <span class="nav-label">Appearance</span>
-        <div class="btn-group" role="group" aria-label="Appearance">
-          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="system" aria-pressed="true">System</button>
-          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="light" aria-pressed="false">Light</button>
-          <button class="btn btn--secondary btn--sm" type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        </div>
-      </div>
     </aside>
 
     <main class="main" id="pages"></main>

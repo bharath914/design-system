@@ -34,24 +34,24 @@
   /* ================= SECTIONS ================= */
   var SECTIONS = [
     { id: "typography", group: "Foundations", name: "Typography",
-      intro: "One typeface, ten styles, two platforms. Hierarchy comes from size and weight — never from a second font." },
+      intro: "Type scale, weights and responsive sizes." },
     { id: "colors", group: "Foundations", name: "Colors",
-      intro: "One accent for everything you can act on, a neutral scale for everything else, and status colours kept strictly for status." },
+      intro: "Monochrome colours, roles and contrast." },
     { id: "variables", group: "Foundations", name: "Variables",
-      intro: "Every value the system is built from, named the way it appears in the design file. Colour variables have a Light and a Dark mode." },
+      intro: "Reusable tokens for the light theme." },
     { id: "buttons", group: "Components", name: "Buttons",
-      intro: "Six variants, seven states, three sizes. Every button on this page is real — hover it, press it, tab to it." },
+      intro: "Variants, states and sizes." },
     { id: "components", group: "Components", name: "Components",
-      intro: "The core interface kit, each shown in the states you'll need to design for, with the measurements to match." },
+      intro: "Core UI components and states." },
     { id: "animations", group: "Motion", name: "Animations",
-      intro: "Every named animation, playing. Each card shows its duration and easing. Press replay to watch one again." },
+      intro: "Motion presets, durations and easing." },
     { id: "curves", group: "Motion", name: "Curves",
-      intro: "An easing curve plots how far an animation has travelled against how much time has passed. Drag the handles to shape your own." }
+      intro: "Easing curves and custom controls." }
   ];
 
   /* ================= TYPOGRAPHY ================= */
   var TYPEFACE = {
-    name: "IBM Plex Sans",
+    name: "Poppins",
     weights: [
       { value: 400, name: "Regular" },
       { value: 500, name: "Medium" },
@@ -108,24 +108,24 @@
 
   /* ================= COLOURS ================= */
   var ACCENT = {
-    name: "Gani Teal",
-    light: { step: 600, hex: "#0E7C86" },
-    dark: { step: 400, hex: "#3FB6BB" }
+    name: "Gani Black",
+    light: { step: 600, hex: "#171717" },
+    dark: { step: 400, hex: "#858585" }
   };
 
   var ACCENT_SCALE = [
-    { step: 50, hex: "#EEFAFA" }, { step: 100, hex: "#D3F2F2" }, { step: 200, hex: "#A8E4E5" },
-    { step: 300, hex: "#72CFD2" }, { step: 400, hex: "#3FB6BB" }, { step: 500, hex: "#1D9AA1" },
-    { step: 600, hex: "#0E7C86" }, { step: 700, hex: "#0F636C" }, { step: 800, hex: "#124F56" },
-    { step: 900, hex: "#123F45" }, { step: 950, hex: "#07282D" }
+    { step: 50, hex: "#F7F7F7" }, { step: 100, hex: "#EDEDED" }, { step: 200, hex: "#D8D8D8" },
+    { step: 300, hex: "#B5B5B5" }, { step: 400, hex: "#858585" }, { step: 500, hex: "#5F5F5F" },
+    { step: 600, hex: "#171717" }, { step: 700, hex: "#0F0F0F" }, { step: 800, hex: "#080808" },
+    { step: 900, hex: "#050505" }, { step: 950, hex: "#000000" }
   ];
 
   var NEUTRAL_SCALE = [
-    { step: 0, hex: "#FFFFFF" }, { step: 50, hex: "#F6F7F8" }, { step: 100, hex: "#EEF0F2" },
-    { step: 200, hex: "#E1E5E8" }, { step: 300, hex: "#C9CFD4" }, { step: 400, hex: "#9AA3AB" },
-    { step: 500, hex: "#6B747E" }, { step: 600, hex: "#545C65" }, { step: 700, hex: "#3B4249" },
-    { step: 800, hex: "#232A31" }, { step: 900, hex: "#161C23" }, { step: 950, hex: "#10141A" },
-    { step: 1000, hex: "#0B0E12" }
+    { step: 0, hex: "#FFFFFF" }, { step: 50, hex: "#FAFAFA" }, { step: 100, hex: "#F3F3F3" },
+    { step: 200, hex: "#E5E5E5" }, { step: 300, hex: "#D1D1D1" }, { step: 400, hex: "#A3A3A3" },
+    { step: 500, hex: "#737373" }, { step: 600, hex: "#525252" }, { step: 700, hex: "#404040" },
+    { step: 800, hex: "#262626" }, { step: 900, hex: "#171717" }, { step: 950, hex: "#0A0A0A" },
+    { step: 1000, hex: "#000000" }
   ];
 
   var ACCENT_USES = [
@@ -139,38 +139,38 @@
   ];
 
   var STATUS = [
-    { name: "Success", light: "#2E7A4D", dark: "#5FCF8A", badge: "success", icon: "checkCircle",
+    { name: "Success", light: "#171717", dark: "#525252", badge: "success", icon: "checkCircle",
       use: "Completed actions, valid input, positive change." },
-    { name: "Warning", light: "#A8650F", dark: "#E8AC54", badge: "warning", icon: "alertTriangle",
+    { name: "Warning", light: "#404040", dark: "#737373", badge: "warning", icon: "alertTriangle",
       use: "Needs attention soon. Nothing is broken yet." },
-    { name: "Danger", light: "#B83A2C", dark: "#F07A6A", badge: "danger", icon: "alertCircle",
+    { name: "Danger", light: "#171717", dark: "#525252", badge: "danger", icon: "alertCircle",
       use: "Errors, failed states and destructive actions." }
   ];
 
   // [label, css colour] per mode
   var COLOR_VARIABLES = [
-    { name: "bg/page", light: ["Neutral 100", "#EEF0F2"], dark: ["Neutral 950", "#10141A"], use: "Page background" },
-    { name: "bg/surface", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 900", "#161C23"], use: "Cards, inputs, menus" },
-    { name: "bg/sunken", light: ["Neutral 100", "#EEF0F2"], dark: ["Neutral 1000", "#0B0E12"], use: "Wells and tracks inside a surface" },
-    { name: "bg/hover", light: ["Neutral 200", "#E1E5E8"], dark: ["Neutral 800", "#232A31"], use: "Hover fill on neutral controls" },
-    { name: "bg/pressed", light: ["Neutral 300", "#C9CFD4"], dark: ["Neutral 700", "#3B4249"], use: "Pressed fill on neutral controls" },
-    { name: "text/primary", light: ["Neutral 900", "#161C23"], dark: ["Neutral 100", "#EEF0F2"], use: "Headings and body" },
-    { name: "text/secondary", light: ["Neutral 600", "#545C65"], dark: ["Neutral 300", "#C9CFD4"], use: "Supporting text" },
-    { name: "text/tertiary", light: ["Neutral 500", "#6B747E"], dark: ["Neutral 400", "#9AA3AB"], use: "Captions and placeholders" },
-    { name: "text/on-accent", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 1000", "#0B0E12"], use: "Text on accent fills" },
+    { name: "bg/page", light: ["Neutral 100", "#F3F3F3"], dark: ["Neutral 950", "#0A0A0A"], use: "Page background" },
+    { name: "bg/surface", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 900", "#171717"], use: "Cards, inputs, menus" },
+    { name: "bg/sunken", light: ["Neutral 100", "#F3F3F3"], dark: ["Neutral 1000", "#000000"], use: "Wells and tracks inside a surface" },
+    { name: "bg/hover", light: ["Neutral 200", "#E5E5E5"], dark: ["Neutral 800", "#262626"], use: "Hover fill on neutral controls" },
+    { name: "bg/pressed", light: ["Neutral 300", "#D1D1D1"], dark: ["Neutral 700", "#404040"], use: "Pressed fill on neutral controls" },
+    { name: "text/primary", light: ["Neutral 900", "#171717"], dark: ["Neutral 100", "#F3F3F3"], use: "Headings and body" },
+    { name: "text/secondary", light: ["Neutral 600", "#525252"], dark: ["Neutral 300", "#D1D1D1"], use: "Supporting text" },
+    { name: "text/tertiary", light: ["Neutral 500", "#737373"], dark: ["Neutral 400", "#A3A3A3"], use: "Captions and placeholders" },
+    { name: "text/on-accent", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 1000", "#000000"], use: "Text on accent fills" },
     { name: "border/default", light: ["Neutral 900 · 12%", "rgba(22,28,35,.12)"], dark: ["White · 10%", "rgba(255,255,255,.10)"], use: "Card edges and dividers" },
     { name: "border/strong", light: ["Neutral 900 · 24%", "rgba(22,28,35,.24)"], dark: ["White · 22%", "rgba(255,255,255,.22)"], use: "Input and button outlines" },
-    { name: "accent/default", light: ["Accent 600", "#0E7C86"], dark: ["Accent 400", "#3FB6BB"], use: "The one accent" },
-    { name: "accent/hover", light: ["Accent 700", "#0F636C"], dark: ["Accent 300", "#72CFD2"], use: "Accent while hovered" },
-    { name: "accent/pressed", light: ["Accent 800", "#124F56"], dark: ["Accent 200", "#A8E4E5"], use: "Accent while pressed" },
-    { name: "accent/tint", light: ["Accent 100", "#D3F2F2"], dark: ["Accent 400 · 16%", "rgba(63,182,187,.16)"], use: "Selected backgrounds" },
-    { name: "accent/tint-strong", light: ["Accent 200", "#A8E4E5"], dark: ["Accent 400 · 28%", "rgba(63,182,187,.28)"], use: "Pressed selected backgrounds" },
-    { name: "accent/text", light: ["Accent 700", "#0F636C"], dark: ["Accent 300", "#72CFD2"], use: "Links and accent labels" },
-    { name: "focus/ring", light: ["Accent 500", "#1D9AA1"], dark: ["Accent 300", "#72CFD2"], use: "Keyboard focus outline" },
-    { name: "status/success", light: ["Success 600", "#2E7A4D"], dark: ["Success 400", "#5FCF8A"], use: "Success text, icons and fills" },
-    { name: "status/warning", light: ["Warning 600", "#A8650F"], dark: ["Warning 400", "#E8AC54"], use: "Warning text, icons and fills" },
-    { name: "status/danger", light: ["Danger 600", "#B83A2C"], dark: ["Danger 400", "#F07A6A"], use: "Error text, icons and danger buttons" },
-    { name: "status/danger-hover", light: ["Danger 700", "#9C2F23"], dark: ["Danger 300", "#F49A8D"], use: "Danger button while hovered" },
+    { name: "accent/default", light: ["Black 600", "#171717"], dark: ["Gray 400", "#858585"], use: "The primary action" },
+    { name: "accent/hover", light: ["Black 700", "#0F0F0F"], dark: ["Gray 300", "#B5B5B5"], use: "Action while hovered" },
+    { name: "accent/pressed", light: ["Black 800", "#080808"], dark: ["Gray 200", "#D8D8D8"], use: "Action while pressed" },
+    { name: "accent/tint", light: ["Gray 100", "#EDEDED"], dark: ["White · 12%", "rgba(255,255,255,.12)"], use: "Selected backgrounds" },
+    { name: "accent/tint-strong", light: ["Gray 200", "#D8D8D8"], dark: ["White · 22%", "rgba(255,255,255,.22)"], use: "Pressed selected backgrounds" },
+    { name: "accent/text", light: ["Black 700", "#0F0F0F"], dark: ["Gray 300", "#B5B5B5"], use: "Links and action labels" },
+    { name: "focus/ring", light: ["Gray 500", "#5F5F5F"], dark: ["Gray 300", "#B5B5B5"], use: "Keyboard focus outline" },
+    { name: "status/success", light: ["Black 600", "#171717"], dark: ["Gray 600", "#525252"], use: "Success text, icons and fills" },
+    { name: "status/warning", light: ["Gray 700", "#404040"], dark: ["Gray 500", "#737373"], use: "Warning text, icons and fills" },
+    { name: "status/danger", light: ["Black 600", "#171717"], dark: ["Gray 600", "#525252"], use: "Error text, icons and danger buttons" },
+    { name: "status/danger-hover", light: ["Black 700", "#0A0A0A"], dark: ["Gray 500", "#737373"], use: "Danger button while hovered" },
     { name: "state/disabled-bg", light: ["Neutral 200", "#E1E5E8"], dark: ["Neutral 800", "#232A31"], use: "Disabled fills" },
     { name: "state/disabled-text", light: ["Neutral 400", "#9AA3AB"], dark: ["Neutral 600", "#545C65"], use: "Disabled text and icons" },
     { name: "inverse/surface", light: ["Neutral 900", "#161C23"], dark: ["Neutral 100", "#EEF0F2"], use: "Toasts and tooltips" },
@@ -229,7 +229,7 @@
       ["border/width-strong", 2, "Focus rings and the selected-tab indicator"],
       ["border/focus-offset", 2, "Gap between an element and its focus ring"]
     ] },
-    { id: "elevation", name: "Elevation", desc: "Shadows get larger and softer as a surface rises. Dark mode uses deeper shadows.", rows: [
+    { id: "elevation", name: "Elevation", desc: "Shadows get larger and softer as a surface rises.", rows: [
       ["elevation/0", "None", "Flat — part of the page", 0],
       ["elevation/1", "Y 1 · Blur 2 · 8%", "Cards at rest", 1],
       ["elevation/2", "Y 2 · Blur 6 · 8%", "Raised cards and sticky headers", 2],
@@ -257,7 +257,7 @@
       ["easing/linear", [0, 0, 1, 1], "Spinners, progress bars and loops only"]
     ] },
     { id: "type", name: "Typography", desc: "Styles live on the Typography page; these are the values they are built from.", rows: [
-      ["font/family", "IBM Plex Sans", "Every style on every platform", 400],
+      ["font/family", "Poppins", "Every style on every platform", 400],
       ["font/weight/regular", "400", "Body Large, Body", 400],
       ["font/weight/medium", "500", "Caption", 500],
       ["font/weight/semibold", "600", "Heading 2, Heading 3, Title, Label, Overline", 600],
