@@ -28,7 +28,12 @@
     alertCircle: icon('<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>'),
     replay: icon('<path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v4h4"/>'),
     bell: icon('<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'),
-    copy: icon('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>')
+    copy: icon('<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/>'),
+    sun: icon('<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'),
+    moon: icon('<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'),
+    monitor: icon('<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'),
+    layers: icon('<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5M3 8l9 5 9-5"/>'),
+    grid: icon('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>')
   };
 
   /* ================= SECTIONS ================= */
@@ -40,13 +45,13 @@
     { id: "buttons", group: "Sections", name: "Buttons",
       intro: "Variants, states and sizes." },
     { id: "colors", group: "Sections", name: "Colors",
-      intro: "Monochrome colours, roles and contrast." },
+      intro: "One green accent, a neutral scale, status colours and contrast." },
     { id: "typography", group: "Sections", name: "Typography",
       intro: "Type scale, weights and responsive sizes." },
     { id: "variables", group: "Sections", name: "Variables",
-      intro: "Reusable tokens for the light theme." },
+      intro: "Reusable tokens for light and dark, including motion." },
     { id: "principles", group: "Sections", name: "Principles",
-      intro: "UX, UI and product principles." }
+      intro: "UX, UI and design principles." }
   ];
 
   /* ================= TYPOGRAPHY ================= */
@@ -139,11 +144,11 @@
   ];
 
   var STATUS = [
-    { name: "Success", light: "#171717", dark: "#525252", badge: "success", icon: "checkCircle",
-      use: "Completed actions, valid input, positive change." },
-    { name: "Warning", light: "#404040", dark: "#737373", badge: "warning", icon: "alertTriangle",
+    { name: "Success", light: "#047857", dark: "#34D399", badge: "success", icon: "checkCircle",
+      use: "Completed actions, valid input, positive change. A different green from the accent so “done” never reads as “act on this”." },
+    { name: "Warning", light: "#B45309", dark: "#FBBF24", badge: "warning", icon: "alertTriangle",
       use: "Needs attention soon. Nothing is broken yet." },
-    { name: "Danger", light: "#171717", dark: "#525252", badge: "danger", icon: "alertCircle",
+    { name: "Danger", light: "#B91C1C", dark: "#F87171", badge: "danger", icon: "alertCircle",
       use: "Errors, failed states and destructive actions." }
   ];
 
@@ -158,24 +163,24 @@
     { name: "text/secondary", light: ["Dark gray", "#525252"], dark: ["Soft gray", "#D1D1D1"], use: "Supporting text" },
     { name: "text/tertiary", light: ["Gray", "#737373"], dark: ["Mid gray", "#A3A3A3"], use: "Captions and placeholders" },
     { name: "text/on-accent", light: ["White", "#FFFFFF"], dark: ["Black", "#000000"], use: "Text on accent fills" },
-    { name: "border/default", light: ["Ink · 12% opacity", "rgba(22,28,35,.12)"], dark: ["White · 10% opacity", "rgba(255,255,255,.10)"], use: "Card edges and dividers" },
-    { name: "border/strong", light: ["Ink · 24% opacity", "rgba(22,28,35,.24)"], dark: ["White · 22% opacity", "rgba(255,255,255,.22)"], use: "Input and button outlines" },
-    { name: "accent/default", light: ["Ink", "#171717"], dark: ["Mid gray", "#858585"], use: "The primary action" },
-    { name: "accent/hover", light: ["Near black", "#0F0F0F"], dark: ["Soft gray", "#B5B5B5"], use: "Action while hovered" },
-    { name: "accent/pressed", light: ["Rich black", "#080808"], dark: ["Light gray", "#D8D8D8"], use: "Action while pressed" },
-    { name: "accent/tint", light: ["Pale gray", "#EDEDED"], dark: ["White · 12% opacity", "rgba(255,255,255,.12)"], use: "Selected backgrounds" },
-    { name: "accent/tint-strong", light: ["Light gray", "#D8D8D8"], dark: ["White · 22% opacity", "rgba(255,255,255,.22)"], use: "Pressed selected backgrounds" },
-    { name: "accent/text", light: ["Near black", "#0F0F0F"], dark: ["Soft gray", "#B5B5B5"], use: "Links and action labels" },
-    { name: "focus/ring", light: ["Dark gray", "#5F5F5F"], dark: ["Soft gray", "#B5B5B5"], use: "Keyboard focus outline" },
-    { name: "status/success", light: ["Ink", "#171717"], dark: ["Dark gray", "#525252"], use: "Success text, icons and fills" },
-    { name: "status/warning", light: ["Charcoal", "#404040"], dark: ["Gray", "#737373"], use: "Warning text, icons and fills" },
-    { name: "status/danger", light: ["Ink", "#171717"], dark: ["Dark gray", "#525252"], use: "Error text, icons and danger buttons" },
-    { name: "status/danger-hover", light: ["Near black", "#0A0A0A"], dark: ["Gray", "#737373"], use: "Danger button while hovered" },
-    { name: "state/disabled-bg", light: ["Light gray", "#E1E5E8"], dark: ["Deep charcoal", "#232A31"], use: "Disabled fills" },
-    { name: "state/disabled-text", light: ["Mid gray", "#9AA3AB"], dark: ["Dark gray", "#545C65"], use: "Disabled text and icons" },
-    { name: "inverse/surface", light: ["Ink", "#161C23"], dark: ["Pale gray", "#EEF0F2"], use: "Toasts and tooltips" },
-    { name: "inverse/text", light: ["Pale gray", "#EEF0F2"], dark: ["Ink", "#161C23"], use: "Text on inverse surfaces" },
-    { name: "overlay/scrim", light: ["Near black · 48% opacity", "rgba(16,20,26,.48)"], dark: ["Black · 60% opacity", "rgba(0,0,0,.60)"], use: "Behind dialogs and sheets" }
+    { name: "border/default", light: ["Black · 12% opacity", "rgba(0,0,0,.12)"], dark: ["White · 10% opacity", "rgba(255,255,255,.10)"], use: "Card edges and dividers" },
+    { name: "border/strong", light: ["Black · 24% opacity", "rgba(0,0,0,.24)"], dark: ["White · 22% opacity", "rgba(255,255,255,.22)"], use: "Input and button outlines" },
+    { name: "accent/default", light: ["Green 700", "#15803D"], dark: ["Green 400", "#4ADE80"], use: "The primary action" },
+    { name: "accent/hover", light: ["Green 800", "#166534"], dark: ["Green 300", "#86EFAC"], use: "Action while hovered" },
+    { name: "accent/pressed", light: ["Green 900", "#14532D"], dark: ["Green 200", "#BBF7D0"], use: "Action while pressed" },
+    { name: "accent/tint", light: ["Green 100", "#DCFCE7"], dark: ["Green 400 · 16% opacity", "rgba(74,222,128,.16)"], use: "Selected backgrounds" },
+    { name: "accent/tint-strong", light: ["Green 200", "#BBF7D0"], dark: ["Green 400 · 28% opacity", "rgba(74,222,128,.28)"], use: "Pressed selected backgrounds" },
+    { name: "accent/text", light: ["Green 800", "#166534"], dark: ["Green 300", "#86EFAC"], use: "Links and action labels" },
+    { name: "focus/ring", light: ["Green 600", "#16A34A"], dark: ["Green 300", "#86EFAC"], use: "Keyboard focus outline" },
+    { name: "status/success", light: ["Emerald", "#047857"], dark: ["Emerald light", "#34D399"], use: "Success text, icons and fills — kept apart from accent/default" },
+    { name: "status/warning", light: ["Amber", "#B45309"], dark: ["Amber light", "#FBBF24"], use: "Warning text, icons and fills" },
+    { name: "status/danger", light: ["Red", "#B91C1C"], dark: ["Red light", "#F87171"], use: "Error text, icons and danger buttons" },
+    { name: "status/danger-hover", light: ["Red dark", "#991B1B"], dark: ["Red pale", "#FCA5A5"], use: "Danger button while hovered" },
+    { name: "state/disabled-bg", light: ["Light gray", "#E5E5E5"], dark: ["Deep charcoal", "#262626"], use: "Disabled fills" },
+    { name: "state/disabled-text", light: ["Mid gray", "#A3A3A3"], dark: ["Dark gray", "#525252"], use: "Disabled text and icons" },
+    { name: "inverse/surface", light: ["Ink", "#171717"], dark: ["Pale gray", "#F3F3F3"], use: "Toasts and tooltips" },
+    { name: "inverse/text", light: ["Pale gray", "#F3F3F3"], dark: ["Ink", "#171717"], use: "Text on inverse surfaces" },
+    { name: "overlay/scrim", light: ["Black · 48% opacity", "rgba(0,0,0,.48)"], dark: ["Black · 60% opacity", "rgba(0,0,0,.60)"], use: "Behind dialogs and sheets" }
   ];
 
   // Checked against the surface they actually sit on.
@@ -241,6 +246,20 @@
       ["opacity/pressed", 12, "Dark overlay while pressed"],
       ["opacity/disabled", 40, "Icons and images inside disabled controls"],
       ["opacity/scrim", 48, "Backdrop behind dialogs in light mode"]
+    ] },
+    { id: "duration", name: "Duration", unit: "ms", desc: "Smaller things move faster. Nothing in the interface takes longer than 600ms.", rows: [
+      ["duration/instant", 100, "Colour and opacity changes on hover"],
+      ["duration/fast", 150, "Tooltips, checkboxes, switches"],
+      ["duration/base", 250, "Menus, tabs, cards — most transitions"],
+      ["duration/slow", 400, "Dialogs, drawers and sheets"],
+      ["duration/slower", 600, "Full-screen and page transitions"]
+    ] },
+    { id: "easing", name: "Easing", desc: "Five curves cover every transition. Values paste straight into a custom bezier field.", easing: true, rows: [
+      ["easing/standard", [0.2, 0, 0, 1], "Elements moving within the screen"],
+      ["easing/enter", [0.05, 0.7, 0.1, 1], "Elements arriving — decelerate into place"],
+      ["easing/exit", [0.3, 0, 0.8, 0.15], "Elements leaving — accelerate away"],
+      ["easing/spring", [0.34, 1.56, 0.64, 1], "Playful confirmations; overshoots then settles"],
+      ["easing/linear", [0, 0, 1, 1], "Spinners, progress bars and loops only"]
     ] },
     { id: "type", name: "Typography", desc: "Styles live on the Typography page; these are the values they are built from.", rows: [
       ["font/family", "Poppins", "Every style on every platform", 400],

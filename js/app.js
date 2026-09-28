@@ -22,10 +22,7 @@
   function group(title, meta, desc, content) {
     return '<section class="group">' +
       '<header class="group-header">' +
-        '<span class="section-label">Section · ' + title + '</span>' +
-        '<div class="group-head"><h2 class="group-title">' + title + '</h2>' +
-          (meta ? '<span class="group-meta">' + meta + '</span>' : '') + '</div>' +
-        (desc ? '<p class="group-desc">' + desc + '</p>' : '') +
+        '<div class="group-head"><h2 class="group-title">' + title + '</h2></div>' +
       '</header>' + content + '</section>';
   }
 
@@ -129,7 +126,7 @@
       return '<div class="nav-group"><span class="nav-label">' + g.name + '</span>' +
         g.items.map(function (s) {
           return '<button class="nav-link" type="button" data-section="' + s.id + '">' +
-            '<span>' + s.name + '</span><span class="nav-count" data-count-for="' + s.id + '"></span></button>';
+            '<span>' + s.name + '</span></button>';
         }).join("") + '</div>';
     }).join("");
   }
@@ -138,10 +135,7 @@
     $("pages").innerHTML = D.SECTIONS.map(function (s) {
       return '<section class="page" id="page-' + s.id + '" hidden>' +
         '<header class="page-head">' +
-          '<p class="eyebrow">' + s.group + '</p>' +
           '<h1 class="page-title">' + s.name + '</h1>' +
-          '<p class="page-intro">' + s.intro + '</p>' +
-          '<p class="page-count" data-page-count></p>' +
         '</header>' +
         '<div id="body-' + s.id + '"></div>' +
         '<p class="empty" hidden>Nothing on this page matches your search.</p>' +
@@ -165,7 +159,6 @@
       });
       g.hidden = !any;
     });
-    page.querySelector("[data-page-count]").textContent = q ? shown + " of " + total + " items" : total + " items";
     page.querySelector(".empty").hidden = shown !== 0;
   }
 
@@ -180,13 +173,6 @@
     if (location.hash !== "#" + id) { history.replaceState(null, "", "#" + id); }
     try { localStorage.setItem("designSystemSection", id); } catch (err) {}
     applyFilter();
-  }
-
-  function countItems() {
-    D.SECTIONS.forEach(function (s) {
-      var n = $("page-" + s.id).querySelectorAll("[data-name]").length;
-      document.querySelector('[data-count-for="' + s.id + '"]').textContent = n;
-    });
   }
 
   /* ================= TYPOGRAPHY ================= */
@@ -373,20 +359,20 @@
       '</div>');
 
     var accent = group("Accent", "1 colour", null,
-      '<article class="card accent-hero" data-name="accent ink brand">' +
+      '<article class="card accent-hero" data-name="accent green brand">' +
         '<div class="accent-hero-swatch">' +
           '<span class="accent-hero-name">' + A.name + '</span>' +
           '<span class="accent-hero-values">' + A.light.name + ' · ' + A.light.hex + '</span>' +
         '</div>' +
         '<div class="accent-hero-text">' +
           '<p class="eyebrow">One accent</p>' +
-          '<h3 class="doc-title">Black means “you can act on this”</h3>' +
-          '<p class="doc-text">It is the only action colour in the system. Everything else is neutral, so black points at an action, a selection or focus.</p>' +
+          '<h3 class="doc-title">Green means “you can act on this”</h3>' +
+          '<p class="doc-text">It is the only action colour in the system. Everything else is neutral, so green points at an action, a selection or focus.</p>' +
           '<ul class="rule-list">' +
             '<li class="yes">' + I.check + '<span>Buttons, links, checked controls, selected items, focus and progress.</span></li>' +
-            '<li class="yes">' + I.check + '<span>Ink is the default action colour.</span></li>' +
+            '<li class="yes">' + I.check + '<span>Green 700 is the default action colour; Green 400 in dark mode.</span></li>' +
             '<li class="no">' + I.x + '<span>Decoration, illustrations, large backgrounds or body text.</span></li>' +
-            '<li class="no">' + I.x + '<span>Standing in for success, warning or danger.</span></li>' +
+            '<li class="no">' + I.x + '<span>Standing in for success, warning or danger — those are their own colours.</span></li>' +
           '</ul>' +
         '</div>' +
       '</article>');
@@ -565,6 +551,9 @@
         return row[0].indexOf("offset") !== -1 ? '<span class="var-focus"></span>' : '<span class="var-line" style="height:' + v + 'px"></span>';
       case "elevation": return '<span class="var-elev" style="box-shadow:' + (row[3] ? "var(--shadow-" + row[3] + ")" : "none") + '"></span>';
       case "opacity": return '<span class="var-opacity"><i style="opacity:' + v / 100 + '"></i></span>';
+      case "duration": return '<span class="var-track"><i style="--dur:' + v + 'ms"></i></span>';
+      case "easing": return '<svg class="var-curve" viewBox="-8 -24 116 148" aria-hidden="true"><path class="grid-path" d="M0,100 L100,100 M0,0 L0,100"/>' +
+        '<path class="curve-path" d="M0,100 C' + v[0] * 100 + ',' + (100 - v[1] * 100) + ' ' + v[2] * 100 + ',' + (100 - v[3] * 100) + ' 100,0"/></svg>';
       case "type": return '<span class="var-weight" style="font-weight:' + row[3] + '">Aa</span>';
       case "breakpoints": return '<span class="var-grid">' + new Array(row[3] + 1).join("<i></i>") + '</span>';
     }
@@ -573,6 +562,7 @@
 
   function varValue(c, row) {
     if (row[0] === "radius/full") return "Full";
+    if (c.easing) return row[1].map(num).join(", ");
     if (c.unit) return row[1] + c.unit;
     if (c.grid) return row[1] + " px";
     return row[1];
@@ -1040,17 +1030,11 @@
         return '<button type="button" data-component-filter="' + family.id + '" aria-pressed="false">' + family.name + '</button>';
       }).join("") + '</nav>' + families.map(function (family) {
         return '<section class="group component-family" id="components-' + family.id + '" aria-labelledby="heading-' + family.id + '">' +
-          '<header class="group-head"><h2 class="group-title" id="heading-' + family.id + '" tabindex="-1">' + family.name + '</h2><span class="group-meta">' + family.items.length + '</span></header>' +
+          '<header class="group-head"><h2 class="group-title" id="heading-' + family.id + '" tabindex="-1">' + family.name + '</h2></header>' +
           '<div class="component-grid">' + family.items.join("") + '</div></section>';
       }).join("");
 
     document.querySelectorAll("[data-indeterminate]").forEach(function (el) { el.indeterminate = true; });
-  }
-
-  /* ================= APPEARANCE ================= */
-  function applyTheme() {
-    document.documentElement.setAttribute("data-theme", "light");
-    try { localStorage.removeItem("designSystemTheme"); } catch (err) {}
   }
 
   /* ================= EVENTS ================= */
@@ -1190,7 +1174,5 @@
   renderVariables();
   renderButtons();
   renderComponents();
-  countItems();
-  applyTheme();
   show(location.hash.slice(1) || saved.section || "typography");
 })();

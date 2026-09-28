@@ -10,7 +10,7 @@ body{background:var(--bg);}
 
 .topbar{
   position:sticky;top:24px;z-index:30;
-  display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand nav search";align-items:center;gap:20px;
+  display:flex;align-items:center;gap:20px;
   max-width:1120px;margin:0 auto;
   padding:14px 18px;
   border:var(--border-width) solid var(--border);border-radius:var(--radius-xl);
@@ -26,12 +26,15 @@ body{background:var(--bg);}
 .brand-name{font-size:16px;font-weight:var(--weight-bold);letter-spacing:-.01em;}
 .brand-sub{font-size:12px;font-weight:var(--weight-medium);color:var(--text-tertiary);}
 
-.search{grid-area:search;position:relative;z-index:2;justify-self:end;width:36px;height:36px;}
+.topbar-actions{position:relative;z-index:2;margin-left:auto;}
+.search{position:relative;width:36px;height:36px;}
 .search-trigger{
-  position:absolute;top:0;right:0;z-index:1;display:grid;place-items:center;width:36px;height:36px;padding:0;
+  display:grid;place-items:center;width:36px;height:36px;padding:0;flex:none;
   border:var(--border-width) solid var(--border-strong);border-radius:var(--radius-md);background:var(--surface);color:var(--text-tertiary);cursor:pointer;
 }
+.search-trigger{position:absolute;top:0;right:0;z-index:1;animation:search-idle 8s var(--ease-standard) 2s infinite;}
 .search-trigger:hover,.search-trigger:focus-visible{color:var(--text);border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-tint);}
+.search-trigger:hover,.search-trigger:focus-visible,.search.is-open .search-trigger{animation:none;}
 .search-trigger svg{width:var(--icon-sm);height:var(--icon-sm);}
 .search.is-open .search-trigger{border-color:transparent;background:transparent;box-shadow:none;}
 .search input{
@@ -45,7 +48,7 @@ body{background:var(--bg);}
 .search:not(.is-open) input::placeholder{color:transparent;}
 .search input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint);}
 
-.nav{grid-area:nav;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;}
+.nav{grid-area:nav;display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;position:absolute;left:50%;transform:translateX(-50%);}
 .nav-group{display:contents;}
 .nav-label{
   display:none;
@@ -60,15 +63,25 @@ body{background:var(--bg);}
 .nav-link:hover{background:var(--surface-hover);color:var(--text);}
 .nav-link[aria-current="page"]{background:var(--accent-tint);color:var(--accent-text);font-weight:var(--weight-semibold);}
 .nav-link:focus-visible{outline:var(--border-width-strong) solid var(--focus-ring);outline-offset:-2px;}
-.nav-count{display:none;}
 
 .main{min-width:0;padding:48px 0;}
 
 @media (max-width:960px){
-  .topbar{grid-template-columns:1fr auto;grid-template-areas:"brand search" "nav nav";gap:12px 20px;}
-  .nav{justify-content:flex-start;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
+  .topbar{display:grid;grid-template-columns:1fr auto;grid-template-areas:"brand search" "nav nav";gap:12px 20px;}
+  .topbar-actions{grid-area:search;margin-left:0;justify-self:end;}
+  .nav{position:static;transform:none;justify-content:flex-start;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;}
   .nav::-webkit-scrollbar{display:none;}
   .nav-link{white-space:nowrap;}
+}
+
+@keyframes search-idle{
+  0%,82%,100%{transform:translateY(0);}
+  90%{transform:translateY(-2px);}
+  95%{transform:translateY(0);}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .search-trigger{animation:none;}
 }
 
 @media (max-width:600px){
@@ -351,6 +364,15 @@ body{background:var(--bg);}
 .var-weight{font-size:26px;line-height:1;}
 .var-grid{display:flex;gap:2px;width:64px;height:30px;padding:3px;border-radius:var(--radius-xs);background:var(--surface-sunken);border:var(--border-width) solid var(--border);}
 .var-grid i{flex:1;background:var(--accent-tint-strong);border-radius:1px;}
+.var-track{position:relative;display:block;width:64px;height:8px;border-radius:var(--radius-full);background:var(--surface-pressed);}
+.var-track i{
+  position:absolute;top:50%;left:0;width:8px;height:8px;margin-top:-4px;border-radius:50%;background:var(--accent);
+  animation:var-track-sweep var(--dur,250ms) ease-in-out infinite alternate;
+}
+@keyframes var-track-sweep{from{left:0}to{left:calc(100% - 8px)}}
+.var-curve{width:40px;height:40px;}
+.var-curve .curve-path{fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;vector-effect:non-scaling-stroke;}
+.var-curve .grid-path{fill:none;stroke:var(--border);stroke-width:2;vector-effect:non-scaling-stroke;}
 
 @media (max-width:760px){
   .var-head{display:none;}
