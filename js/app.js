@@ -12,6 +12,7 @@
 
   var current = "typography";
   var platform = "web";
+  var searchInput = null;
 
   /* ================= HELPERS ================= */
   function group(title, meta, desc, content) {
@@ -28,17 +29,38 @@
 
   function num(n) { return String(Math.round(n * 100) / 100); }
 
+  function closeSearch() {
+    if (!searchInput) return;
+    searchInput.closest(".search").classList.remove("is-open");
+    $("search-trigger").setAttribute("aria-expanded", "false");
+  }
+
+  function loadSearchInput() {
+    if (searchInput) return searchInput;
+    var panel = document.querySelector(".search");
+    panel.insertAdjacentHTML("beforeend", '<input id="search" type="search" aria-label="Search this page" placeholder="Search this page" autocomplete="off">');
+    searchInput = $("search");
+    $("search-trigger").setAttribute("aria-controls", "search");
+
+    searchInput.addEventListener("input", applyFilter);
+    searchInput.addEventListener("blur", function () {
+      var input = this;
+      setTimeout(function () { if (!input.value) closeSearch(); }, 0);
+    });
+    searchInput.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      this.value = "";
+      applyFilter();
+      closeSearch();
+      $("search-trigger").focus();
+    });
+    return searchInput;
+  }
+
   function specChips(list) {
     return '<ul class="spec-chips">' + list.map(function (s) {
       return '<li><span>' + s[0] + '</span>' + s[1] + '</li>';
     }).join("") + '</ul>';
-  }
-
-  // Replaying a CSS animation means removing it, forcing layout, then restoring it.
-  function restart(el) {
-    el.style.animation = "none";
-    void el.getBoundingClientRect();
-    el.style.animation = "";
   }
 
   /* ---------- colour maths ---------- */
@@ -125,7 +147,7 @@
 
   function applyFilter() {
     var page = $("page-" + current);
-    var q = $("search").value.trim().toLowerCase();
+    var q = searchInput ? searchInput.value.trim().toLowerCase() : "";
     var total = 0, shown = 0;
     page.querySelectorAll(".group").forEach(function (g) {
       var items = g.querySelectorAll("[data-name]");
@@ -154,7 +176,6 @@
     if (location.hash !== "#" + id) { history.replaceState(null, "", "#" + id); }
     try { localStorage.setItem("ganiSection", id); } catch (err) {}
     applyFilter();
-    if (id === "animations") { requestAnimationFrame(playVisibleAnimations); }
   }
 
   function countItems() {
@@ -187,9 +208,9 @@
     var S = {};
     D.TYPE_STYLES.forEach(function (s) { S[s.name] = s; });
     return '<div class="in-use' + (p === "mobile" ? " in-use--mobile" : "") + '">' +
-      '<span style="' + styleCss(S.Overline, p) + 'color:var(--accent-text)">Motion guide</span>' +
-      '<span style="' + styleCss(S["Heading 2"], p) + '">Every curve has a name</span>' +
-      '<span style="' + styleCss(S.Body, p) + 'color:var(--text-secondary)">Easing decides whether an interface feels quick, calm or playful. Pick the curve before you pick the duration.</span>' +
+      '<span style="' + styleCss(S.Overline, p) + 'color:var(--accent-text)">Component guide</span>' +
+      '<span style="' + styleCss(S["Heading 2"], p) + '">Every component has a role</span>' +
+      '<span style="' + styleCss(S.Body, p) + 'color:var(--text-secondary)">Named styles, clear hierarchy and reusable variants make every screen feel consistent.</span>' +
       '<span style="' + styleCss(S.Caption, p) + 'color:var(--text-tertiary)">4 min read · Updated today</span>' +
       '<button class="btn btn--primary" type="button" style="--btn-font:' + S.Label[p][0] + 'px">Read the guide</button>' +
     '</div>';
@@ -268,8 +289,8 @@
       var t = textOn(it.hex);
       var tag = marks && marks[it.step]
         ? '<span class="scale-tag" style="background:' + t.color + ';color:' + it.hex + '">' + marks[it.step] + '</span>' : "";
-      return '<div class="scale-chip" style="background:' + it.hex + ';color:' + t.color + '" data-name="' + key([family, it.step, it.hex]) + '">' +
-        '<div class="stack" style="gap:2px"><span class="scale-step">' + it.step + '</span><span class="scale-hex">' + it.hex + '</span></div>' +
+      return '<div class="scale-chip" style="background:' + it.hex + ';color:' + t.color + '" data-name="' + key([family, it.name, it.step, it.hex]) + '">' +
+        '<div class="stack" style="gap:2px"><span class="scale-step">' + it.name + '</span><span class="scale-hex">' + it.hex + '</span></div>' +
         '<div class="stack" style="gap:6px">' + tag + '<span class="scale-ratio">Aa ' + t.ratio.toFixed(1) + ':1</span></div>' +
       '</div>';
     }).join("") + '</div>';
@@ -309,11 +330,23 @@
   function renderColors() {
     var A = D.ACCENT;
 
-    var html = group("Accent", "1 colour", null,
+    var html = group("Colour language", "2 ideas", null,
+      '<div class="color-language">' +
+        '<article class="card color-language-card" data-name="solid shade tone color light dark">' +
+          '<div class="color-language-swatch color-language-swatch--solid"><strong>Ink</strong><span>#171717</span></div>' +
+          '<div><h3 class="doc-title">Shade means light or dark</h3><p class="color-language-copy">A shade is a solid colour. Names such as Pale gray and Ink tell you how light or dark it is — they are not opacity.</p></div>' +
+        '</article>' +
+        '<article class="card color-language-card" data-name="opacity transparent 100 10 percent full color">' +
+          '<div class="color-language-opacity"><span>100%</span><span>10%</span></div>' +
+          '<div><h3 class="doc-title">Opacity means transparency</h3><p class="color-language-copy">100% shows the full colour. 10% lets the background show through, which is useful for soft borders and overlays.</p></div>' +
+        '</article>' +
+      '</div>');
+
+    html += group("Accent", "1 colour", null,
       '<article class="card accent-hero" data-name="accent teal brand gani">' +
         '<div class="accent-hero-swatch">' +
           '<span class="accent-hero-name">' + A.name + '</span>' +
-          '<span class="accent-hero-values">Accent ' + A.light.step + ' · ' + A.light.hex + '</span>' +
+          '<span class="accent-hero-values">' + A.light.name + ' · ' + A.light.hex + '</span>' +
         '</div>' +
         '<div class="accent-hero-text">' +
           '<p class="eyebrow">One accent</p>' +
@@ -321,15 +354,15 @@
           '<p class="doc-text">It is the only action colour in the system. Everything else is neutral, so black points at an action, a selection or focus.</p>' +
           '<ul class="rule-list">' +
             '<li class="yes">' + I.check + '<span>Buttons, links, checked controls, selected items, focus and progress.</span></li>' +
-            '<li class="yes">' + I.check + '<span>Accent 600 is the default action colour.</span></li>' +
+            '<li class="yes">' + I.check + '<span>Ink is the default action colour.</span></li>' +
             '<li class="no">' + I.x + '<span>Decoration, illustrations, large backgrounds or body text.</span></li>' +
             '<li class="no">' + I.x + '<span>Standing in for success, warning or danger.</span></li>' +
           '</ul>' +
         '</div>' +
       '</article>');
 
-    html += group("Accent scale", D.ACCENT_SCALE.length + " steps",
-      "The default action colour is tagged. The ratio is the contrast of the label colour on that step.",
+    html += group("Accent tones", D.ACCENT_SCALE.length + " solid colours",
+      "The default action colour is tagged. The ratio is the contrast of the label colour on that solid colour.",
       scaleStrip(D.ACCENT_SCALE, "accent", { 600: "Default" }));
 
     html += group("Accent in use", D.ACCENT_USES.length + " roles",
@@ -343,8 +376,8 @@
         '</article>';
       }).join("") + '</div>');
 
-    html += group("Neutrals", D.NEUTRAL_SCALE.length + " steps",
-      "Every surface, text colour and border comes from this grayscale scale.",
+    html += group("Neutral tones", D.NEUTRAL_SCALE.length + " solid colours",
+      "Every surface, text colour and border comes from this grayscale family.",
       scaleStrip(D.NEUTRAL_SCALE, "neutral"));
 
     html += group("Status", D.STATUS.length + " colours",
@@ -380,10 +413,6 @@
   }
 
   /* ================= VARIABLES ================= */
-  function bezierPath(p) {
-    return "M0,100 C" + p[0] * 100 + "," + (100 - p[1] * 100) + " " + p[2] * 100 + "," + (100 - p[3] * 100) + " 100,0";
-  }
-
   function modeValue(v) {
     return v[0] + (v[1].charAt(0) === "#" ? ' · <span class="tnum">' + v[1] + '</span>' : "");
   }
@@ -401,10 +430,6 @@
         return row[0].indexOf("offset") !== -1 ? '<span class="var-focus"></span>' : '<span class="var-line" style="height:' + v + 'px"></span>';
       case "elevation": return '<span class="var-elev" style="box-shadow:' + (row[3] ? "var(--shadow-" + row[3] + ")" : "none") + '"></span>';
       case "opacity": return '<span class="var-opacity"><i style="opacity:' + v / 100 + '"></i></span>';
-      case "duration": return '<span class="var-bar" style="width:' + v / 10 + 'px"></span>';
-      case "easing":
-        return '<svg class="var-curve" viewBox="-8 -24 116 148" aria-hidden="true"><path class="grid-path" d="M0,100 L100,100 M0,0 L0,100"/>' +
-          '<path class="curve-path" d="' + bezierPath(v) + '"/></svg>';
       case "type": return '<span class="var-weight" style="font-weight:' + row[3] + '">Aa</span>';
       case "breakpoints": return '<span class="var-grid">' + new Array(row[3] + 1).join("<i></i>") + '</span>';
     }
@@ -412,7 +437,6 @@
   }
 
   function varValue(c, row) {
-    if (c.easing) return row[1].map(num).join(", ");
     if (row[0] === "radius/full") return "Full";
     if (c.unit) return row[1] + c.unit;
     if (c.grid) return row[1] + " px";
@@ -422,31 +446,29 @@
   function renderVariables() {
     var html = group("Color", D.COLOR_VARIABLES.length + " variables",
       "Use these in designs — never a raw hex. Each is a reusable light-theme role.",
-      '<article class="card var-table var-table--color">' +
-        '<div class="var-head"><span></span><span>Name</span><span>Value</span><span>Used for</span></div>' +
+      '<div class="variable-grid variable-grid--color">' +
         D.COLOR_VARIABLES.map(function (v) {
-          return '<div class="var-row" data-name="' + key([v.name, v.light[0], v.light[1], v.use]) + '">' +
+          return '<article class="card variable-card variable-card--color" data-name="' + key([v.name, v.light[0], v.light[1], v.use]) + '">' +
             '<div class="var-preview"><span class="role-dot" style="background:' + v.light[1] + '"></span></div>' +
             '<div class="var-name">' + v.name + '</div>' +
             '<div class="var-mode var-mode--light"><span class="role-dot" style="background:' + v.light[1] + '"></span><span>' + modeValue(v.light) + '</span></div>' +
             '<div class="var-use">' + v.use + '</div>' +
-          '</div>';
+          '</article>';
         }).join("") +
-      '</article>');
+      '</div>');
 
     D.VARIABLE_COLLECTIONS.forEach(function (c) {
       html += group(c.name, c.rows.length + " variables", c.desc,
-        '<article class="card var-table">' +
-          '<div class="var-head"><span></span><span>Name</span><span>Value</span><span>Used for</span></div>' +
+        '<div class="variable-grid">' +
           c.rows.map(function (row) {
-            return '<div class="var-row" data-name="' + key([c.name, row[0], row[2]]) + '">' +
+            return '<article class="card variable-card" data-name="' + key([c.name, row[0], row[2]]) + '">' +
               '<div class="var-preview">' + varPreview(c, row) + '</div>' +
               '<div class="var-name">' + row[0] + '</div>' +
               '<div class="var-value">' + varValue(c, row) + '</div>' +
               '<div class="var-use">' + row[2] + '</div>' +
-            '</div>';
+            '</article>';
           }).join("") +
-        '</article>');
+        '</div>');
     });
 
     $("body-variables").innerHTML = html;
@@ -544,8 +566,8 @@
       { name: "Toggle", text: "Stays selected after a click, like Save or Bold. Click to try it.",
         demo: '<button class="btn btn--secondary" type="button" aria-pressed="false" data-toggle>' + I.heart + 'Save</button>' +
           '<button class="btn btn--ghost" type="button" aria-pressed="true" data-toggle>' + I.heart + 'Saved</button>' },
-      { name: "Loading", text: "Click it. The spinner takes the label's place and the width holds still.",
-        demo: '<button class="btn btn--primary" type="button" data-demo="load">' + I.download + 'Export</button>' }
+      { name: "Loading", text: "A static loading variant holds its width while a progress indicator replaces the label.",
+        demo: '<button class="btn btn--primary is-loading" type="button" aria-busy="true" disabled>' + I.download + 'Export</button>' }
     ];
 
     html += group("Icons & layout", patterns.length + " patterns", null,
@@ -561,19 +583,23 @@
 
   /* ================= COMPONENTS ================= */
   function doc(o) {
-    return '<article class="card' + (o.wide ? " card--wide" : "") + '" data-name="' + key([o.name, o.keys || "", o.text]) + '">' +
+    var specs = (o.specs || []).filter(function (spec) {
+      return /^(Height|Width|Max width|Size|Sizes|Radius|Padding|Box|Circle|Track|Thickness|Gap|Item|Line|Menu radius)$/.test(spec[0]);
+    }).slice(0, 3);
+    var meta = specs.length ? specChips(specs) : "";
+    return '<article class="card component-card' + (o.wide ? " card--wide" : "") + (o.span ? " component-card--span" : "") + ((o.name === "Buttons" || o.name === "Button sizes" || o.name === "Button states") ? " component-card--button-variants" : "") + '" data-name="' + key([o.name, o.keys || ""]) + '">' +
+      '<div class="component-card-head"><h3 class="doc-title">' + o.name + '</h3>' + meta + '</div>' +
       '<div class="doc-demo' + (o.demoCls ? " " + o.demoCls : "") + '">' + o.demo + '</div>' +
-      '<div class="doc-body"><h3 class="doc-title">' + o.name + '</h3><p class="doc-text">' + o.text + '</p>' + specChips(o.specs) + '</div>' +
-    '</article>';
+      '</article>';
   }
 
   function cell(state, inner) {
-    return '<div class="state-cell">' + inner + '<span class="state-name">' + state + '</span></div>';
+    return '<div class="state-cell">' + inner + (state ? '<span class="state-name">' + state + '</span>' : '') + '</div>';
   }
 
   function textField(id, o) {
     return '<div class="field' + (o.error ? " is-error" : "") + (o.disabled ? " is-disabled" : "") + '">' +
-      '<label class="field-label" for="' + id + '">Email</label>' +
+      '<div class="field-label-row"><label class="field-label" for="' + id + '">Email</label>' + (o.state ? '<span class="field-state">' + o.state + '</span>' : '') + '</div>' +
       '<input class="input' + (o.cls ? " " + o.cls : "") + '" id="' + id + '" type="email" placeholder="name@company.com"' +
         (o.value ? ' value="' + o.value + '"' : "") + (o.disabled ? " disabled" : "") + '>' +
       '<span class="field-help">' + (o.error ? I.alertCircle + "Enter a full email address." : "We only use it to sign you in.") + '</span>' +
@@ -608,25 +634,22 @@
   function renderComponents() {
     var inputs = [
       doc({ name: "Text field", wide: true, demoCls: "doc-demo--start", keys: "input form email",
-        text: "For short, single-line answers. Always show a label; put the rules in the helper text, not the placeholder.",
         demo: '<div class="state-grid">' +
-          cell("Default", textField("tf-default", {})) +
-          cell("Hover", textField("tf-hover", { cls: "is-hover" })) +
-          cell("Focused", textField("tf-focus", { cls: "is-focus", value: "alex@gani" })) +
-          cell("Filled", textField("tf-filled", { value: "alex@gani.design" })) +
-          cell("Error", textField("tf-error", { error: true, value: "alex@" })) +
-          cell("Disabled", textField("tf-disabled", { disabled: true })) +
+          cell("", textField("tf-default", { state: "Default" })) +
+          cell("", textField("tf-hover", { cls: "is-hover", state: "Hover" })) +
+          cell("", textField("tf-focus", { cls: "is-focus", value: "alex@gani", state: "Focused" })) +
+          cell("", textField("tf-filled", { value: "alex@gani.design", state: "Filled" })) +
+          cell("", textField("tf-error", { error: true, value: "alex@", state: "Error" })) +
+          cell("", textField("tf-disabled", { disabled: true, state: "Disabled" })) +
         '</div>',
         specs: [["Height", 40], ["Radius", 8], ["Padding", 12], ["Label", "Label"], ["Value", "Body"], ["Helper", "Caption"], ["Focus halo", "3px accent/tint"]] }),
       doc({ name: "Select", demoCls: "doc-demo--start", keys: "dropdown menu listbox",
-        text: "Pick one option from a list of five or more. For fewer, use radios or a segmented control.",
         demo: '<div class="state-grid">' +
           cell("Closed", '<button class="select" type="button" aria-haspopup="listbox"><span>Last 30 days</span>' + I.chevronDown + '</button>') +
           cell("Open", '<div style="width:100%"><button class="select is-open" type="button" aria-haspopup="listbox" aria-expanded="true"><span>Last 30 days</span>' + I.chevronDown + '</button>' + menu() + '</div>') +
         '</div>',
-        specs: [["Height", 40], ["Item", 36], ["Menu radius", 8], ["Menu padding", 4], ["Elevation", 3], ["Opens", "Menu open · 250ms"]] }),
+        specs: [["Height", 40], ["Item", 36], ["Menu radius", 8], ["Menu padding", 4], ["Elevation", 3], ["State", "Menu open"]] }),
       doc({ name: "Checkbox", demoCls: "doc-demo--start", keys: "check tick",
-        text: "Turn independent options on or off. Changes apply when the form is saved.",
         demo: '<div class="state-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">' +
           cell("Unchecked", checkbox("cb-1", "Email updates", {})) +
           cell("Checked", checkbox("cb-2", "Email updates", { checked: true })) +
@@ -636,7 +659,6 @@
         '</div>',
         specs: [["Box", 18], ["Radius", 5], ["Gap", 8], ["Mobile tap area", 44]] }),
       doc({ name: "Radio", demoCls: "doc-demo--start", keys: "option choice",
-        text: "Choose exactly one from two to five options, all visible at once.",
         demo: '<div class="state-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">' +
           cell("Unselected", radio("rd-1", "plan", "Monthly", {})) +
           cell("Selected", radio("rd-2", "plan", "Yearly", { checked: true })) +
@@ -644,33 +666,44 @@
         '</div>',
         specs: [["Circle", 18], ["Dot", 8], ["Gap", 8], ["Mobile tap area", 44]] }),
       doc({ name: "Switch", demoCls: "doc-demo--start", keys: "toggle on off",
-        text: "Settings that take effect immediately, with no save button.",
         demo: '<div class="state-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">' +
           cell("Off", toggleSwitch("sw-1", "Notifications", {})) +
           cell("On", toggleSwitch("sw-2", "Notifications", { checked: true })) +
           cell("Disabled", toggleSwitch("sw-3", "Notifications", { disabled: true })) +
           cell("Disabled on", toggleSwitch("sw-4", "Notifications", { checked: true, disabled: true })) +
         '</div>',
-        specs: [["Track", "36 × 20"], ["Knob", 16], ["Travel", "150ms · Standard"]] })
+        specs: [["Track", "36 × 20"], ["Knob", 16], ["States", "On · Off"]] })
+    ];
+
+    var pickers = [
+      doc({ name: "Search", keys: "find query filter command",
+        demo: '<div class="basic-search" role="search">' + I.search + '<span>Search projects</span><kbd>⌘ K</kbd></div>',
+        specs: [["Height", 40], ["Leading icon", 16], ["Shortcut", "Optional"], ["Radius", 8]] }),
+      doc({ name: "Slider", keys: "range value adjust",
+        demo: '<div class="basic-slider"><span>Zoom</span><div class="basic-slider-track"><i style="width:65%"></i><b style="left:65%"></b></div><strong>65%</strong></div>',
+        specs: [["Track", 4], ["Thumb", 16], ["Range", "0–100%"], ["Focus", "focus/ring"]] }),
+      doc({ name: "Date picker", keys: "calendar date schedule",
+        demo: '<div class="field"><label class="field-label" for="basic-date">Start date</label><input class="input" id="basic-date" type="date" value="2026-09-16"></div>',
+        specs: [["Field", 40], ["Format", "Day · month · year"], ["State", "Selected"], ["Radius", 8]] }),
+      doc({ name: "Time picker", keys: "clock time schedule reminder",
+        demo: '<div class="field"><label class="field-label" for="basic-time">Reminder time</label><input class="input" id="basic-time" type="time" value="09:30"></div>',
+        specs: [["Field", 40], ["Format", "Local time"], ["State", "Selected"], ["Radius", 8]] })
     ];
 
     var navigation = [
       doc({ name: "Tabs", keys: "tab bar navigation",
-        text: "Switch between views of the same thing. Click to try.",
         demo: '<div class="tabs" role="tablist" aria-label="Project" style="max-width:360px">' +
           '<button class="tab" type="button" role="tab" aria-selected="true">Overview</button>' +
           '<button class="tab" type="button" role="tab" aria-selected="false">Activity</button>' +
           '<button class="tab" type="button" role="tab" aria-selected="false">Settings</button></div>',
         specs: [["Height", 40], ["Indicator", "2px accent"], ["Label", "Label"], ["Padding", 12]] }),
       doc({ name: "Segmented control", keys: "segment toggle group",
-        text: "A compact choice between two to four options that changes the view in place.",
         demo: '<div class="segmented" role="group" aria-label="View">' +
           '<button class="segment" type="button" aria-pressed="false">Day</button>' +
           '<button class="segment" type="button" aria-pressed="true">Week</button>' +
           '<button class="segment" type="button" aria-pressed="false">Month</button></div>',
         specs: [["Height", 32], ["Padding", 3], ["Radius", 8], ["Selected", "Surface · Elevation 1"]] }),
       doc({ name: "List", keys: "rows items people",
-        text: "Rows of related items. The current row takes accent/tint. Click a row to select it.",
         demo: '<div class="list">' +
           '<button class="list-row" type="button"><span class="avatar" style="--size:32px">AK</span><span class="list-text"><span class="list-title">Ava Kim</span><span class="list-meta">Product design</span></span>' + I.chevronRight + '</button>' +
           '<button class="list-row" type="button" aria-current="true"><span class="avatar" style="--size:32px">LP</span><span class="list-text"><span class="list-title">Leo Park</span><span class="list-meta">Engineering</span></span>' + I.chevronRight + '</button>' +
@@ -679,9 +712,47 @@
         specs: [["Row", 56], ["Avatar", 32], ["Padding", 16], ["Divider", "border/default"]] })
     ];
 
+    var navigationSurfaces = [
+      doc({ name: "Top app bar", keys: "header toolbar page actions",
+        demo: '<div class="basic-appbar"><strong>Project library</strong><div><button class="btn btn--secondary btn--icon" type="button" aria-label="Search">' + I.search + '</button><button class="btn btn--secondary btn--icon" type="button" aria-label="Notifications">' + I.bell + '</button></div></div>',
+        specs: [["Height", 56], ["Title", "Title"], ["Actions", "1–3"], ["Surface", "bg/surface"]] }),
+      doc({ name: "Bottom app bar", keys: "mobile bottom toolbar actions",
+        demo: '<div class="basic-bottom-bar"><span>Library</span><span>Share</span><button type="button" aria-label="Create">' + I.plus + '</button><span>Save</span><span>More</span></div>',
+        specs: [["Height", 64], ["Actions", "3–5"], ["Primary", "Raised"], ["Placement", "Mobile"]] }),
+      doc({ name: "Navigation bar", keys: "mobile nav destinations tabs bottom",
+        demo: '<div class="basic-nav-bar"><span class="is-active">Home</span><span>Explore</span><span>Saved</span><span>Profile</span></div>',
+        specs: [["Height", 64], ["Destinations", "3–5"], ["Active", "Tint + label"], ["Placement", "Mobile"]] }),
+      doc({ name: "Navigation rail", keys: "desktop tablet vertical nav destinations",
+        demo: '<div class="basic-rail"><span class="is-active">Home</span><span>Work</span><span>Saved</span></div>',
+        specs: [["Width", 80], ["Destinations", "3–7"], ["Active", "Tint"], ["Placement", "Medium"]] }),
+      doc({ name: "Navigation drawer", keys: "side navigation menu destinations",
+        demo: '<div class="basic-drawer"><strong>Gani</strong><span class="is-active">Overview</span><span>Libraries</span><span>Settings</span></div>',
+        specs: [["Width", 220], ["Padding", 12], ["Active", "accent/tint"], ["Placement", "Expanded"]] })
+    ];
+
+    var actions = [
+      doc({ name: "Icon button", keys: "icon action compact",
+        demo: '<div class="row"><button class="btn btn--secondary btn--icon" type="button" aria-label="Search">' + I.search + '</button><button class="btn btn--secondary btn--icon" type="button" aria-label="Download">' + I.download + '</button><button class="btn btn--secondary btn--icon" type="button" aria-label="Favorite">' + I.heart + '</button></div>',
+        specs: [["Size", 40], ["Icon", 20], ["Label", "aria-label"], ["Tooltip", "When needed"]] }),
+      doc({ name: "Floating action button", keys: "fab create primary action",
+        demo: '<button class="basic-fab" type="button">' + I.plus + '<span>New project</span></button>',
+        specs: [["Height", 48], ["Icon", 20], ["Label", "Optional"], ["Placement", "Floating"]] }),
+      doc({ name: "Button group", keys: "buttons grouped related actions",
+        demo: '<div class="basic-button-group"><button type="button">List</button><button class="is-active" type="button">Board</button><button type="button">Timeline</button></div>',
+        specs: [["Gap", 1], ["Radius", 8], ["Selected", "Surface"], ["Use", "Related views"]] }),
+      doc({ name: "Split button", keys: "button menu secondary action",
+        demo: '<div class="basic-split-button"><button type="button">Share</button><button type="button" aria-label="More share options">' + I.chevronDown + '</button></div>',
+        specs: [["Height", 40], ["Main action", "Verb"], ["Menu", "Related options"], ["Radius", 8]] }),
+      doc({ name: "Toolbar", keys: "tool bar editing selected actions",
+        demo: '<div class="basic-toolbar"><strong>2 selected</strong><button class="btn btn--secondary btn--icon" type="button" aria-label="Download">' + I.download + '</button><button class="btn btn--secondary btn--icon" type="button" aria-label="Copy">' + I.copy + '</button><button class="btn btn--secondary btn--icon" type="button" aria-label="Delete">' + I.trash + '</button></div>',
+        specs: [["Height", 48], ["Actions", "2–5"], ["Context", "Selection"], ["Surface", "bg/surface"]] }),
+      doc({ name: "Divider", keys: "separator rule grouping",
+        demo: '<div class="basic-divider"><span>Project settings</span><i></i><span>Notifications</span></div>',
+        specs: [["Thickness", 1], ["Colour", "border/default"], ["Inset", "Optional"], ["Use", "Grouping"]] })
+    ];
+
     var feedback = [
       doc({ name: "Alert", wide: true, demoCls: "doc-demo--column", keys: "banner message notice info success warning danger error",
-        text: "Inline messages about the page or a task. Accent for information, status colours for everything else.",
         demo: '<div class="grid grid--2" style="width:100%">' +
           '<div class="alert" role="status">' + I.info + '<span class="alert-title">New components available</span><span class="alert-text">Refresh the library to get the latest buttons.</span></div>' +
           '<div class="alert alert--success" role="status">' + I.checkCircle + '<span class="alert-title">Changes saved</span><span class="alert-text">Everyone on the team can see them now.</span></div>' +
@@ -690,30 +761,25 @@
         '</div>',
         specs: [["Padding", "12 / 14"], ["Radius", 8], ["Icon", 20], ["Title", "Label"], ["Text", "Body"]] }),
       doc({ name: "Toast", keys: "snackbar notification",
-        text: "A short confirmation that disappears on its own after 5 seconds. One action at most.",
         demo: '<div class="toast" role="status">' + I.checkCircle + '<span class="toast-text">Project archived</span>' +
           '<button class="toast-action" type="button">Undo</button></div>',
-        specs: [["Radius", 8], ["Elevation", 3], ["Surface", "inverse/surface"], ["Enters", "Toast in · 400ms"]] }),
+        specs: [["Radius", 8], ["Elevation", 3], ["Surface", "inverse/surface"], ["State", "Visible"]] }),
       doc({ name: "Tooltip", keys: "hint label hover",
-        text: "Names an icon-only control. Appears after a 500ms hover; never holds anything you can click.",
         demo: '<div class="tooltip-anchor"><span class="tooltip" role="tooltip">Copy link</span>' +
           '<button class="btn btn--secondary btn--icon" type="button" aria-label="Copy link">' + I.copy + '</button></div>',
-        specs: [["Padding", "6 / 8"], ["Radius", 6], ["Text", "Caption"], ["Delay", "500ms"], ["Enters", "Tooltip in · 150ms"]] }),
+        specs: [["Padding", "6 / 8"], ["Radius", 6], ["Text", "Caption"], ["State", "Visible"]] }),
       doc({ name: "Progress", demoCls: "doc-demo--column", keys: "loader spinner bar loading",
-        text: "Show how far along a task is. Use a bar when you know the amount, a spinner when you don't.",
         demo: '<div class="progress-row"><div class="progress-label"><span>Uploading</span><span>64%</span></div>' +
             '<div class="progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span class="progress-bar" style="width:64%"></span></div></div>' +
           '<div class="progress-row"><div class="progress-label"><span>Preparing export</span></div>' +
             '<div class="progress progress--indeterminate" role="progressbar" aria-label="Preparing export"><span class="progress-bar"></span></div></div>' +
           '<div class="row"><span class="spinner" style="--size:16px"></span><span class="spinner"></span><span class="spinner" style="--size:32px"></span></div>',
-        specs: [["Track", 6], ["Radius", "full"], ["Spinner", "16 · 24 · 32"], ["Easing", "Linear"]] }),
-      doc({ name: "Skeleton", keys: "placeholder loading shimmer",
-        text: "Holds the shape of content while it loads, so the layout doesn't jump when it arrives.",
+        specs: [["Track", 6], ["Radius", "full"], ["Spinner", "16 · 24 · 32"], ["State", "Pending"]] }),
+      doc({ name: "Skeleton", keys: "placeholder loading",
         demo: '<div class="skeleton-card" aria-hidden="true"><span class="skeleton skeleton--circle"></span>' +
           '<div class="skeleton-lines"><span class="skeleton" style="width:60%"></span><span class="skeleton"></span><span class="skeleton" style="width:80%"></span></div></div>',
-        specs: [["Line", 10], ["Radius", 6], ["Shimmer", "1.4s · Linear"]] }),
+        specs: [["Line", 10], ["Radius", 6], ["State", "Placeholder"]] }),
       doc({ name: "Badge", keys: "tag status label count",
-        text: "A short status or count. Keep it to one or two words.",
         demo: '<span class="badge">Draft</span><span class="badge badge--accent">New</span><span class="badge badge--solid">Beta</span>' +
           '<span class="badge badge--success"><span class="badge-dot"></span>Live</span><span class="badge badge--warning">Pending</span>' +
           '<span class="badge badge--danger">Failed</span>' +
@@ -723,324 +789,104 @@
 
     var content = [
       doc({ name: "Chip", keys: "filter tag pill",
-        text: "Filters and multi-select choices. Click a chip to select it.",
         demo: '<button class="chip" type="button" aria-pressed="false" data-chip>Design</button>' +
           '<button class="chip is-hover" type="button" aria-pressed="false" data-chip>Research</button>' +
-          '<button class="chip" type="button" aria-pressed="true" data-chip>' + I.check + 'Motion</button>' +
+          '<button class="chip" type="button" aria-pressed="true" data-chip>' + I.check + 'Prototype</button>' +
           '<span class="chip">Figma<span class="chip-remove" role="button" tabindex="0" aria-label="Remove Figma">' + I.x + '</span></span>' +
           '<button class="chip" type="button" disabled>Archived</button>',
         specs: [["Height", 32], ["Padding", 12], ["Radius", "full"], ["Label", "Label · Medium"], ["Icon", 14]] }),
       doc({ name: "Avatar", keys: "profile user initials people",
-        text: "A person or team. Initials when there's no photo; a status dot for presence.",
         demo: '<span class="avatar" style="--size:24px">AK</span><span class="avatar" style="--size:32px">AK</span>' +
           '<span class="avatar">AK</span><span class="avatar" style="--size:56px">AK<span class="avatar-status"></span></span>' +
           '<span class="avatar-group"><span class="avatar" style="--size:32px">LP</span><span class="avatar" style="--size:32px">MC</span>' +
           '<span class="avatar" style="--size:32px">JS</span><span class="avatar avatar--neutral" style="--size:32px">+3</span></span>',
         specs: [["Sizes", "24 · 32 · 40 · 56"], ["Radius", "full"], ["Initials", "38% of size"], ["Status", "28% of size"]] }),
       doc({ name: "Card", keys: "container tile media",
-        text: "Groups one piece of content with its actions. Elevation 1 at rest.",
         demo: '<div class="ui-card"><div class="ui-card-media"></div><div class="ui-card-body">' +
-          '<span class="ui-card-overline">Guide</span><span class="ui-card-title">Designing with motion</span>' +
-          '<span class="ui-card-text">How to choose durations and curves that feel right.</span></div>' +
+          '<span class="ui-card-overline">Guide</span><span class="ui-card-title">Building with components</span>' +
+          '<span class="ui-card-text">How to use variants and named styles consistently.</span></div>' +
           '<div class="ui-card-actions"><button class="btn btn--ghost btn--sm" type="button">Save</button>' +
           '<button class="btn btn--primary btn--sm" type="button">Read</button></div></div>',
         specs: [["Radius", 12], ["Padding", 16], ["Elevation", 1], ["Title", "Title"]] }),
-      doc({ name: "Dialog", wide: true, keys: "modal popup confirm",
-        text: "Interrupts to confirm something important. The destructive action names exactly what will happen.",
+      doc({ name: "Dialog", span: true, keys: "modal popup confirm",
         demo: '<div class="dialog-stage"><div class="dialog" role="dialog" aria-label="Delete project">' +
           '<span class="dialog-title">Delete project?</span>' +
           '<span class="dialog-text">“Aurora redesign” and its 24 files will be deleted for everyone. This can’t be undone.</span>' +
           '<div class="dialog-actions"><button class="btn btn--secondary" type="button">Cancel</button>' +
           '<button class="btn btn--danger" type="button">Delete project</button></div></div></div>',
-        specs: [["Max width", 400], ["Radius", 16], ["Padding", 24], ["Elevation", 4], ["Backdrop", "overlay/scrim"], ["Enters", "Dialog in · 400ms"]] })
+        specs: [["Max width", 400], ["Radius", 16], ["Padding", 24], ["Elevation", 4], ["Backdrop", "overlay/scrim"], ["State", "Open"]] })
     ];
 
+    var overlays = [
+      doc({ name: "Menu", keys: "overflow context options",
+        demo: '<div class="menu" role="menu" aria-label="Project options"><button class="menu-item" type="button" role="menuitem">Rename</button><button class="menu-item" type="button" role="menuitem">Duplicate</button><div class="menu-divider"></div><button class="menu-item" type="button" role="menuitem">Archive</button></div>',
+        specs: [["Item", 36], ["Padding", 4], ["Radius", 8], ["Elevation", 3]] }),
+      doc({ name: "Bottom sheet", keys: "mobile sheet panel actions",
+        demo: '<div class="basic-sheet basic-sheet--bottom"><i></i><strong>Project actions</strong><span>Duplicate, share or archive this project.</span><button class="btn btn--secondary btn--sm" type="button">View actions</button></div>',
+        specs: [["Radius", "16 top"], ["Padding", 20], ["Handle", "Visible"], ["Placement", "Mobile"]] }),
+      doc({ name: "Side sheet", keys: "side panel supporting details",
+        demo: '<div class="basic-sheet basic-sheet--side"><strong>Details</strong><span>Owner: Ava Kim</span><span>Updated today</span><button class="btn btn--secondary btn--sm" type="button">Close</button></div>',
+        specs: [["Width", 260], ["Padding", 20], ["Elevation", 3], ["Placement", "Desktop"]] }),
+      doc({ name: "Carousel", keys: "gallery collection cards browse",
+        demo: '<div class="basic-carousel"><article class="is-current"><span>01</span><strong>Foundations</strong></article><article><span>02</span><strong>Components</strong></article><article><span>03</span><strong>Patterns</strong></article></div>',
+        specs: [["Visible item", "1 + preview"], ["Gap", 12], ["Radius", 12], ["Use", "Collections"]] })
+    ];
+
+    var basics = [
+      doc({ name: "Buttons", span: true, keys: "primary secondary outline ghost danger link variants",
+        demo: D.BUTTON_VARIANTS.map(function (v) {
+          return cell(v.name, '<button class="btn btn--' + v.id + '" type="button">Button</button>');
+        }).join("") }),
+      doc({ name: "Button sizes", keys: "small medium large height",
+        demo: D.BUTTON_SIZES.map(function (size) {
+          return cell(size.name + ' · ' + size.height, '<button class="btn btn--primary ' + size.cls + '" type="button">Button</button>');
+        }).join("") }),
+      doc({ name: "Button states", wide: true, keys: "default hover pressed focused selected disabled loading",
+        demo: D.BUTTON_STATES.map(function (state) {
+          return cell(state.name, '<button class="btn btn--primary ' + (state.cls || '') + '" type="button"' +
+            (state.disabled ? ' disabled' : '') + (state.id === "loading" ? ' aria-busy="true"' : '') + '>Button</button>');
+        }).join("") })
+    ];
+
+    inputs.push(doc({ name: "Text area", keys: "textarea multiline form input",
+      demo: '<div class="field"><label class="field-label" for="basic-description">Description</label><textarea class="input basic-textarea" id="basic-description" rows="3" placeholder="Add a description"></textarea></div>',
+      specs: [["Radius", 8], ["Padding", 12]] }));
+    inputs.push(doc({ name: "File upload", keys: "attachment dropzone file input",
+      demo: '<label class="basic-upload">' + I.plus + '<span>Choose a file</span><input type="file" aria-label="Choose a file"></label>' }));
+    navigation.push(doc({ name: "Breadcrumbs", keys: "breadcrumb path hierarchy",
+      demo: '<nav class="basic-breadcrumb" aria-label="Breadcrumb example"><span>Home</span>' + I.chevronRight + '<span>Projects</span>' + I.chevronRight + '<strong aria-current="page">Aurora</strong></nav>' }));
+    navigation.push(doc({ name: "Pagination", keys: "pages next previous",
+      demo: '<nav class="basic-pagination" aria-label="Pagination example"><button class="btn btn--ghost btn--sm" type="button" aria-label="Previous page" disabled>‹</button><button class="btn btn--secondary btn--sm" type="button" aria-current="page">1</button><button class="btn btn--ghost btn--sm" type="button">2</button><button class="btn btn--ghost btn--sm" type="button">3</button><button class="btn btn--ghost btn--sm" type="button" aria-label="Next page">›</button></nav>' }));
+    feedback.push(doc({ name: "Empty state", keys: "empty no results placeholder",
+      demo: '<div class="basic-empty">' + I.search + '<strong>No projects yet</strong><button class="btn btn--primary btn--sm" type="button">' + I.plus + 'New project</button></div>' }));
+    // Keep each specimen with its visual family.
+    overlays.unshift(content.pop());
+    content.push(overlays.pop());
+    content.push(doc({ name: "Accordion", keys: "accordion disclosure expand collapse details",
+      demo: '<div class="basic-accordion"><details open><summary>Project details</summary><p>Owner: Ava Kim</p></details><details><summary>Notifications</summary><p>Email updates enabled</p></details></div>' }));
+    content.push(doc({ name: "Table", keys: "table data rows columns status",
+      demo: '<div class="table-scroll basic-table"><table class="table"><thead><tr><th>Name</th><th>Status</th></tr></thead><tbody><tr><td class="strong">Aurora</td><td><span class="badge badge--success">Active</span></td></tr><tr><td class="strong">Orbit</td><td><span class="badge">Draft</span></td></tr></tbody></table></div>' }));
+
+    var families = [
+      { id: "actions", name: "Actions", items: basics.concat(actions) },
+      { id: "inputs", name: "Inputs & selection", items: inputs.concat(pickers) },
+      { id: "navigation", name: "Navigation", items: navigation.concat(navigationSurfaces) },
+      { id: "feedback", name: "Feedback", items: feedback },
+      { id: "content", name: "Content", items: content },
+      { id: "overlays", name: "Surfaces & overlays", items: overlays }
+    ];
     $("body-components").innerHTML =
-      group("Inputs", inputs.length + " components", null, '<div class="grid" style="--min:300px">' + inputs.join("") + '</div>') +
-      group("Navigation", navigation.length + " components", null, '<div class="grid" style="--min:300px">' + navigation.join("") + '</div>') +
-      group("Feedback", feedback.length + " components", null, '<div class="grid" style="--min:300px">' + feedback.join("") + '</div>') +
-      group("Content", content.length + " components", null, '<div class="grid" style="--min:300px">' + content.join("") + '</div>');
+      '<nav class="component-jumps" aria-label="Component filters">' +
+      '<button type="button" data-component-filter="all" aria-pressed="true">All</button>' +
+      families.map(function (family) {
+        return '<button type="button" data-component-filter="' + family.id + '" aria-pressed="false">' + family.name + '</button>';
+      }).join("") + '</nav>' + families.map(function (family) {
+        return '<section class="group component-family" id="components-' + family.id + '" aria-labelledby="heading-' + family.id + '">' +
+          '<header class="group-head"><h2 class="group-title" id="heading-' + family.id + '" tabindex="-1">' + family.name + '</h2><span class="group-meta">' + family.items.length + '</span></header>' +
+          '<div class="component-grid">' + family.items.join("") + '</div></section>';
+      }).join("");
 
     document.querySelectorAll("[data-indeterminate]").forEach(function (el) { el.indeterminate = true; });
-  }
-
-  /* ================= ANIMATIONS ================= */
-  var ANIM_MARKUP = {
-    modalIn: '<div class="mini-modal anim-target a-modalIn"><i></i><i></i><b></b></div>',
-    modalOut: '<div class="mini-modal anim-target a-modalOut"><i></i><i></i><b></b></div>',
-    dropdownIn: '<div class="mini-menu anim-target a-dropdownIn"><i></i><i class="on"></i><i></i></div>',
-    toastIn: '<div class="mini-toast anim-target a-toastIn"><i></i><b></b></div>',
-    drawerIn: '<div class="mini-drawer-wrap"><div class="mini-drawer anim-target a-drawerIn"><i></i><i></i><i></i></div></div>',
-    tooltipIn: '<span class="mini-tip anim-target a-tooltipIn">Tooltip</span>',
-    popIn: '<span class="mini-heart anim-target a-popIn">' + I.heartFilled + '</span>',
-    press: '<span class="mini-btn anim-target a-press">Button</span>',
-    errorShake: '<span class="mini-input anim-target a-errorShake"></span>',
-    expandIn: '<div class="mini-accordion anim-target a-expandIn"><i></i><i></i><i></i></div>',
-    checkDraw: '<svg class="mini-check" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path class="anim-target a-checkDraw" d="M14 25l7 7 13-15"/></svg>',
-    ping: '<span class="ping-wrap"><span class="ping-ring anim-target a-ping"></span><span class="ping-core"></span></span>',
-    ripple: '<span class="ping-wrap"><span class="ping-ring ping-ring--outline anim-target a-ripple"></span><span class="ping-core"></span></span>',
-    glow: '<span class="shape anim-target a-glow" style="width:36px;height:36px;border-radius:50%"></span>',
-    shimmer: '<div class="mini-skeleton"><i class="anim-target a-shimmer"></i><i class="anim-target a-shimmer"></i><i class="anim-target a-shimmer"></i></div>',
-    typingDots: '<div class="typing"><i class="anim-target a-typingDots"></i><i class="anim-target a-typingDots"></i><i class="anim-target a-typingDots"></i></div>',
-    blink: '<span class="cursor-demo anim-target a-blink">|</span>',
-    typewriter: '<span class="type-demo anim-target a-typewriter">Hello, designer</span>',
-    marquee: '<div class="marquee-wrap"><span class="marquee-text anim-target a-marquee">Design · Motion · Colour · Type · Design · Motion · Colour · Type · </span></div>',
-    progressIndeterminate: '<div class="mini-progress"><i class="anim-target a-progressIndeterminate"></i></div>'
-  };
-
-  var EASE_NAMES = {
-    "linear": "Linear", "ease": "Ease", "ease-in": "Ease in", "ease-out": "Ease out", "ease-in-out": "Ease in-out",
-    "cubic-bezier(0.2,0,0,1)": "Standard", "cubic-bezier(0.05,0.7,0.1,1)": "Enter",
-    "cubic-bezier(0.3,0,0.8,0.15)": "Exit", "cubic-bezier(0.34,1.56,0.64,1)": "Spring"
-  };
-
-  function easeName(tf) {
-    var k = tf.replace(/\s/g, "");
-    if (EASE_NAMES[k]) return EASE_NAMES[k];
-    return k.indexOf("steps") === 0 ? "Stepped" : "Custom curve";
-  }
-
-  function msLabel(d) {
-    var v = parseFloat(d);
-    return Math.round(d.indexOf("ms") !== -1 ? v : v * 1000) + "ms";
-  }
-
-  function renderAnimations() {
-    var total = D.ANIM_GROUPS.reduce(function (n, g) { return n + g.items.length; }, 0);
-
-    var html = group("Choosing motion", null, null,
-      '<div class="principles">' + D.MOTION_PRINCIPLES.map(function (p) {
-        return '<article class="card principle" data-name="' + key(["principle", p.name, p.text]) + '">' +
-          '<div class="principle-head"><h3 class="doc-title">' + p.name + '</h3></div>' +
-          '<span class="principle-spec">' + p.spec + '</span>' +
-          '<p class="doc-text">' + p.text + '</p></article>';
-      }).join("") + '</div>');
-
-    D.ANIM_GROUPS.forEach(function (g) {
-      html += '<div class="anim-group"' + (g.once ? " data-once" : "") + '>' + group(g.name, g.items.length + (g.once ? " · plays automatically in view" : " · loops automatically in view"), g.desc || null,
-        '<div class="grid" style="--min:190px">' + g.items.map(function (item) {
-          var id = typeof item === "string" ? item : item[0];
-          var label = typeof item === "string" ? item : item[1];
-          return '<article class="card anim-card" data-name="' + key([label, id, g.name]) + '">' +
-            '<div class="stage">' + (ANIM_MARKUP[id] || '<div class="shape anim-target a-' + id + '"></div>') + '</div>' +
-            '<div class="card-foot">' +
-              '<div class="card-text"><span class="card-name">' + label + '</span><span class="card-spec" data-spec></span></div>' +
-            '</div>' +
-          '</article>';
-        }).join("") + '</div>') + '</div>';
-    });
-
-    $("body-animations").innerHTML = html;
-
-    $("body-animations").querySelectorAll(".card").forEach(function (card) {
-      var target = card.querySelector(".anim-target");
-      var slot = card.querySelector("[data-spec]");
-      if (!target || !slot) return;
-      var cs = getComputedStyle(target);
-      var loops = cs.animationIterationCount === "infinite";
-      slot.textContent = msLabel(cs.animationDuration) + " · " + easeName(cs.animationTimingFunction) + (loops ? " · Loop" : "");
-    });
-
-    return total;
-  }
-
-  function playAnimationCard(card) {
-    if (card.hidden || document.hidden || card.closest(".page").hidden) return;
-    card.classList.add("is-animating");
-    card.querySelectorAll(".anim-target").forEach(restart);
-  }
-
-  function playVisibleAnimations() {
-    document.querySelectorAll("#body-animations .anim-card:not([hidden])").forEach(function (card) {
-      var bounds = card.getBoundingClientRect();
-      if (bounds.bottom > 0 && bounds.top < window.innerHeight) { playAnimationCard(card); }
-    });
-  }
-
-  function setupAnimationPlayback() {
-    var cards = document.querySelectorAll("#body-animations .anim-card");
-    if (!window.IntersectionObserver) {
-      cards.forEach(playAnimationCard);
-      return;
-    }
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var card = entry.target;
-        if (entry.isIntersecting) { playAnimationCard(card); }
-        else { card.classList.remove("is-animating"); }
-      });
-    }, { threshold: 0.35 });
-    cards.forEach(function (card) { observer.observe(card); });
-  }
-
-  /* ================= CURVES ================= */
-  var P1 = [0.2, 0], P2 = [0, 1];
-  var dragging = null;
-
-  function linearEasing(fn) {
-    var parts = [];
-    for (var i = 0; i <= 40; i++) { parts.push(fn(i / 40).toFixed(4)); }
-    return "linear(" + parts.join(",") + ")";
-  }
-
-  function formulaPath(fn) {
-    var d = "";
-    for (var i = 0; i <= 60; i++) {
-      var t = i / 60;
-      d += (i ? " L" : "M") + (t * 100).toFixed(1) + "," + (100 - fn(t) * 100).toFixed(1);
-    }
-    return d;
-  }
-
-  function curveCard(o) {
-    return '<article class="card curve-card" data-name="' + key([o.name, o.keys || ""]) + '">' +
-      '<div class="curve-stage">' +
-        '<svg class="curve-svg" viewBox="-6 -24 112 148" preserveAspectRatio="none" aria-hidden="true">' +
-          '<path class="diag-path" vector-effect="non-scaling-stroke" d="M0,100 L100,0"/>' +
-          '<path class="curve-path" vector-effect="non-scaling-stroke" d="' + o.path + '"/>' +
-        '</svg>' +
-        '<div class="mini-track"><span class="mini-dot" style="--tf:' + o.tf + '"></span></div>' +
-      '</div>' +
-      '<div class="card-foot">' +
-        '<div class="card-text"><span class="card-name">' + o.name + '</span><span class="curve-values">' + o.values + '</span></div>' +
-        (o.bezier ? '<button class="btn btn--ghost btn--sm" type="button" data-bezier="' + o.bezier.join(",") + '">Edit</button>' : "") +
-      '</div>' +
-      (o.use ? '<p class="doc-text">' + o.use + '</p>' : "") +
-    '</article>';
-  }
-
-  function bezierCard(name, p, use, keys) {
-    return curveCard({
-      name: name, keys: keys, use: use, bezier: p,
-      path: bezierPath(p),
-      tf: "cubic-bezier(" + p.join(",") + ")",
-      values: p.map(num).join(", ")
-    });
-  }
-
-  function renderCurves() {
-    var html = group("Curve editor", null, null,
-      '<article class="card plotter">' +
-        '<div class="plotter-graph"><svg id="bezSvg" viewBox="-16 -44 136 190" role="img" aria-label="Curve editor — drag the two handles"></svg></div>' +
-        '<div class="plotter-side">' +
-          '<div class="bezier-values"><span class="state-name">Bezier values</span><div class="bezier-numbers" id="bezNumbers"></div>' +
-            '<p class="hint">In Figma: Prototype › Animation › Custom bezier. Drag the round handles to reshape the curve.</p></div>' +
-          '<div class="track" aria-hidden="true"><span class="track-dot" id="bezDot"></span></div>' +
-          '<div class="row"><button class="btn btn--secondary btn--sm" type="button" id="copyBez">' + I.copy + 'Copy values</button>' +
-            '<span class="hint" id="copyState" aria-live="polite"></span></div>' +
-          '<div class="stack" style="gap:8px"><span class="state-name">Start from</span><div class="preset-row" id="bezPresets"></div></div>' +
-          '<ul class="rule-list">' +
-            '<li class="yes">' + I.info + '<span>Horizontal is time, vertical is progress. Steep means fast, flat means slow.</span></li>' +
-            '<li class="yes">' + I.info + '<span>Handles may go above or below the box — that is how a curve overshoots.</span></li>' +
-          '</ul>' +
-        '</div>' +
-      '</article>');
-
-    html += group("Gani easings", D.SYSTEM_EASINGS.length + " curves", "The curves behind the easing variables.",
-      '<div class="grid grid--3">' + D.SYSTEM_EASINGS.map(function (e) {
-        return bezierCard(e.name, e.p, e.use, "gani system variable");
-      }).join("") + '</div>');
-
-    html += group("Standard curves", D.STANDARD_CURVES.length + " curves", "Built into browsers and every prototyping tool.",
-      '<div class="grid grid--3">' + D.STANDARD_CURVES.map(function (c) {
-        if (c.steps) {
-          return curveCard({
-            name: c.name, keys: "standard steps",
-            path: c.steps === "start" ? "M0,100 L0,0 L100,0" : "M0,100 L100,100 L100,0",
-            tf: c.steps === "start" ? "step-start" : "step-end",
-            values: c.steps === "start" ? "Jumps to the end immediately" : "Waits, then jumps at the end"
-          });
-        }
-        return bezierCard(c.name, c.p, null, "standard");
-      }).join("") + '</div>');
-
-    html += group("Named easings", "30 curves",
-      "The classic set, each as In, Out and In-out. The values are the closest bezier; Elastic and Bounce can't be drawn with one, so use a spring or keyframes.", "");
-
-    D.EASING_FAMILIES.forEach(function (f) {
-      html += group(f.family, "In · Out · In-out", null,
-        '<div class="grid grid--3">' + ["In", "Out", "InOut"].map(function (dir) {
-          var c = f.curves[dir];
-          return curveCard({
-            name: "ease" + dir + f.family, keys: f.family + " named",
-            path: formulaPath(c.fn),
-            tf: linearEasing(c.fn),
-            bezier: c.bezier,
-            values: c.bezier ? "≈ " + c.bezier.map(num).join(", ") : "<em>No bezier — use a spring</em>"
-          });
-        }).join("") + '</div>');
-    });
-
-    $("body-curves").innerHTML = html;
-    renderPresets();
-    drawBezier();
-    bindPlotter();
-  }
-
-  var PRESETS = D.STANDARD_CURVES.filter(function (c) { return c.p; })
-    .concat(D.SYSTEM_EASINGS.filter(function (e) { return e.name !== "Linear"; }));
-
-  function renderPresets() {
-    $("bezPresets").innerHTML = PRESETS.map(function (p) {
-      return '<button class="btn btn--secondary btn--sm" type="button" data-bezier="' + p.p.join(",") + '" data-preset>' + p.name + '</button>';
-    }).join("");
-  }
-
-  function drawBezier() {
-    var svg = $("bezSvg");
-    var a = [0, 100], b = [P1[0] * 100, 100 - P1[1] * 100], c = [P2[0] * 100, 100 - P2[1] * 100], d = [100, 0];
-    svg.innerHTML =
-      '<path class="grid-path" d="M0,100 L100,100 M0,0 L0,100 M0,0 L100,0 M100,0 L100,100"/>' +
-      '<path class="diag-path" d="M0,100 L100,0"/>' +
-      '<line class="handle-line" x1="' + a[0] + '" y1="' + a[1] + '" x2="' + b[0] + '" y2="' + b[1] + '"/>' +
-      '<line class="handle-line" x1="' + d[0] + '" y1="' + d[1] + '" x2="' + c[0] + '" y2="' + c[1] + '"/>' +
-      '<path class="curve-path" d="M0,100 C' + b[0] + ',' + b[1] + ' ' + c[0] + ',' + c[1] + ' 100,0"/>' +
-      '<circle class="anchor" cx="0" cy="100" r="3"/><circle class="anchor" cx="100" cy="0" r="3"/>' +
-      '<text class="axis-label" x="0" y="113">Start</text>' +
-      '<text class="axis-label" x="100" y="113" text-anchor="end">Time →</text>' +
-      '<text class="axis-label" x="-4" y="3" text-anchor="end">End</text>' +
-      '<circle class="handle" data-handle="1" cx="' + b[0] + '" cy="' + b[1] + '" r="6"/>' +
-      '<circle class="handle" data-handle="2" cx="' + c[0] + '" cy="' + c[1] + '" r="6"/>';
-
-    var values = [P1[0], P1[1], P2[0], P2[1]];
-    $("bezNumbers").innerHTML = ["X1", "Y1", "X2", "Y2"].map(function (l, i) {
-      return '<span class="bezier-number"><span>' + l + '</span><strong>' + num(values[i]) + '</strong></span>';
-    }).join("");
-
-    var dot = $("bezDot");
-    dot.style.setProperty("--tf", "cubic-bezier(" + values.join(",") + ")");
-    restart(dot);
-
-    var joined = values.map(num).join(",");
-    document.querySelectorAll("[data-preset]").forEach(function (btn) {
-      var p = btn.getAttribute("data-bezier").split(",").map(Number).map(num).join(",");
-      btn.setAttribute("aria-pressed", p === joined ? "true" : "false");
-    });
-  }
-
-  function bindPlotter() {
-    var svg = $("bezSvg");
-    svg.addEventListener("pointerdown", function (e) {
-      var h = e.target.closest(".handle");
-      if (!h) return;
-      dragging = h.getAttribute("data-handle");
-      svg.setPointerCapture(e.pointerId);
-    });
-    svg.addEventListener("pointermove", function (e) {
-      if (!dragging) return;
-      var rect = svg.getBoundingClientRect();
-      var vb = svg.viewBox.baseVal;
-      var x = ((e.clientX - rect.left) / rect.width) * vb.width + vb.x;
-      var y = ((e.clientY - rect.top) / rect.height) * vb.height + vb.y;
-      // Time can't run backwards, so x stays inside 0–1; progress may overshoot.
-      var pt = [Math.min(1, Math.max(0, x / 100)), Math.min(1.6, Math.max(-0.6, (100 - y) / 100))];
-      pt = [Math.round(pt[0] * 100) / 100, Math.round(pt[1] * 100) / 100];
-      if (dragging === "1") { P1 = pt; } else { P2 = pt; }
-      drawBezier();
-    });
-    ["pointerup", "pointercancel"].forEach(function (ev) {
-      svg.addEventListener(ev, function () { dragging = null; });
-    });
   }
 
   /* ================= APPEARANCE ================= */
@@ -1053,8 +899,32 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
 
+    var searchTrigger = t.closest(".search-trigger");
+    if (searchTrigger) {
+      var input = loadSearchInput();
+      var searchPanel = input.closest(".search");
+      searchPanel.classList.add("is-open");
+      searchTrigger.setAttribute("aria-expanded", "true");
+      requestAnimationFrame(function () { input.focus(); });
+      return;
+    }
+
     var navLink = t.closest(".nav-link");
     if (navLink) { show(navLink.getAttribute("data-section")); window.scrollTo(0, 0); return; }
+
+    var componentFilter = t.closest("[data-component-filter]");
+    if (componentFilter) {
+      var filter = componentFilter.getAttribute("data-component-filter");
+      document.querySelectorAll("[data-component-filter]").forEach(function (button) {
+        button.setAttribute("aria-pressed", button === componentFilter ? "true" : "false");
+      });
+      document.querySelectorAll(".component-family").forEach(function (family) {
+        family.hidden = filter !== "all" && family.id !== "components-" + filter;
+      });
+      if (searchInput) { searchInput.value = ""; applyFilter(); }
+      window.scrollTo({ top: document.querySelector(".component-jumps").getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+      return;
+    }
 
     var platformBtn = t.closest("[data-platform]");
     if (platformBtn) {
@@ -1069,28 +939,6 @@
       return;
     }
 
-    var replay = t.closest(".replay");
-    if (replay) { replay.closest(".card").querySelectorAll(".anim-target").forEach(restart); return; }
-
-    var bez = t.closest("[data-bezier]");
-    if (bez) {
-      var p = bez.getAttribute("data-bezier").split(",").map(Number);
-      P1 = [p[0], p[1]];
-      P2 = [p[2], p[3]];
-      drawBezier();
-      if (!bez.hasAttribute("data-preset")) { $("bezSvg").closest(".card").scrollIntoView({ behavior: "smooth", block: "start" }); }
-      return;
-    }
-
-    if (t.closest("#copyBez")) {
-      var text = [P1[0], P1[1], P2[0], P2[1]].map(num).join(", ");
-      var state = $("copyState");
-      var done = function (msg) { state.textContent = msg; setTimeout(function () { state.textContent = ""; }, 1600); };
-      if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function () { done("Copied " + text); }, function () { done("Select and copy the values above"); }); }
-      else { done("Select and copy the values above"); }
-      return;
-    }
-
     var groupBtn = t.closest(".btn-group > .btn");
     if (groupBtn) {
       groupBtn.parentNode.querySelectorAll(".btn").forEach(function (b) {
@@ -1101,14 +949,6 @@
 
     var toggle = t.closest("[data-toggle]");
     if (toggle) { toggle.setAttribute("aria-pressed", toggle.getAttribute("aria-pressed") === "true" ? "false" : "true"); return; }
-
-    var load = t.closest('[data-demo="load"]');
-    if (load && !load.classList.contains("is-loading")) {
-      load.classList.add("is-loading");
-      load.setAttribute("aria-busy", "true");
-      setTimeout(function () { load.classList.remove("is-loading"); load.removeAttribute("aria-busy"); }, 1600);
-      return;
-    }
 
     var tab = t.closest('.tabs [role="tab"]');
     if (tab) {
@@ -1141,7 +981,6 @@
     }
   });
 
-  $("search").addEventListener("input", applyFilter);
   window.addEventListener("hashchange", function () { show(location.hash.slice(1)); });
 
   /* ================= INIT ================= */
@@ -1159,9 +998,6 @@
   renderVariables();
   renderButtons();
   renderComponents();
-  renderAnimations();
-  setupAnimationPlayback();
-  renderCurves();
   countItems();
   applyTheme();
   show(location.hash.slice(1) || saved.section || "typography");

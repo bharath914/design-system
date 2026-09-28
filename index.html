@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Gani Design System</title>
-  <meta name="description" content="Typography, colours, variables, buttons, components, animations and curves of the Gani Design System.">
+  <meta name="description" content="Typography, colours, variables, buttons and components of the Gani Design System.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
@@ -12,25 +12,25 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
   <div class="shell">
-    <aside class="sidebar">
+    <header class="topbar">
       <a class="brand" href="#typography">
         <span class="brand-mark" aria-hidden="true"></span>
         <span class="brand-text"><span class="brand-name">Gani</span><span class="brand-sub">Design System</span></span>
       </a>
 
-      <label class="search" for="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
-        <input id="search" type="search" placeholder="Search this page" autocomplete="off">
-      </label>
+      <div class="search">
+        <button class="search-trigger" id="search-trigger" type="button" aria-label="Search this page" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg>
+        </button>
+      </div>
 
       <nav class="nav" id="nav" aria-label="Sections"></nav>
 
-    </aside>
+    </header>
 
     <main class="main" id="pages"></main>
   </div>

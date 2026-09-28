@@ -42,11 +42,7 @@
     { id: "buttons", group: "Components", name: "Buttons",
       intro: "Variants, states and sizes." },
     { id: "components", group: "Components", name: "Components",
-      intro: "Core UI components and states." },
-    { id: "animations", group: "Motion", name: "Animations",
-      intro: "Motion presets, durations and easing." },
-    { id: "curves", group: "Motion", name: "Curves",
-      intro: "Easing curves and custom controls." }
+      intro: "Basic styles and states. All in one place." }
   ];
 
   /* ================= TYPOGRAPHY ================= */
@@ -65,17 +61,17 @@
     { name: "Display", weight: 700, tracking: -1, web: [48, 56], mobile: [34, 40],
       use: "Hero and marketing headlines. One per screen.", sample: "Design that moves" },
     { name: "Heading 1", weight: 700, tracking: -0.5, web: [36, 44], mobile: [28, 34],
-      use: "Page titles.", sample: "Motion with intent" },
+      use: "Page titles.", sample: "Design with clarity" },
     { name: "Heading 2", weight: 600, tracking: -0.5, web: [28, 36], mobile: [24, 30],
-      use: "Section titles.", sample: "Every curve has a name" },
+      use: "Section titles.", sample: "Every component has a role" },
     { name: "Heading 3", weight: 600, tracking: 0, web: [22, 30], mobile: [20, 26],
-      use: "Card and dialog titles.", sample: "Timing functions" },
+      use: "Card and dialog titles.", sample: "Component variants" },
     { name: "Title", weight: 600, tracking: 0, web: [18, 26], mobile: [17, 24],
       use: "List headers, nav bar titles, emphasised lines.", sample: "Project settings" },
     { name: "Body Large", weight: 400, tracking: 0, web: [16, 26], mobile: [17, 26],
-      use: "Intro paragraphs and long reading.", sample: "A curve describes how progress changes over time." },
+      use: "Intro paragraphs and long reading.", sample: "A clear system helps every screen feel connected." },
     { name: "Body", weight: 400, tracking: 0, web: [14, 22], mobile: [16, 24],
-      use: "Default interface text and input values.", sample: "Drag the two handles to shape the curve you need." },
+      use: "Default interface text and input values.", sample: "Use named styles and component variants consistently." },
     { name: "Label", weight: 600, tracking: 0, web: [13, 18], mobile: [15, 20],
       use: "Buttons, tabs, form labels, menu items.", sample: "Save changes" },
     { name: "Caption", weight: 500, tracking: 0, web: [12, 16], mobile: [13, 18],
@@ -109,23 +105,23 @@
   /* ================= COLOURS ================= */
   var ACCENT = {
     name: "Gani Black",
-    light: { step: 600, hex: "#171717" },
-    dark: { step: 400, hex: "#858585" }
+    light: { step: 600, name: "Ink", hex: "#171717" },
+    dark: { step: 400, name: "Mid gray", hex: "#858585" }
   };
 
   var ACCENT_SCALE = [
-    { step: 50, hex: "#F7F7F7" }, { step: 100, hex: "#EDEDED" }, { step: 200, hex: "#D8D8D8" },
-    { step: 300, hex: "#B5B5B5" }, { step: 400, hex: "#858585" }, { step: 500, hex: "#5F5F5F" },
-    { step: 600, hex: "#171717" }, { step: 700, hex: "#0F0F0F" }, { step: 800, hex: "#080808" },
-    { step: 900, hex: "#050505" }, { step: 950, hex: "#000000" }
+    { step: 50, name: "Cloud", hex: "#F7F7F7" }, { step: 100, name: "Pale gray", hex: "#EDEDED" }, { step: 200, name: "Light gray", hex: "#D8D8D8" },
+    { step: 300, name: "Soft gray", hex: "#B5B5B5" }, { step: 400, name: "Mid gray", hex: "#858585" }, { step: 500, name: "Dark gray", hex: "#5F5F5F" },
+    { step: 600, name: "Ink", hex: "#171717" }, { step: 700, name: "Near black", hex: "#0F0F0F" }, { step: 800, name: "Rich black", hex: "#080808" },
+    { step: 900, name: "Deep black", hex: "#050505" }, { step: 950, name: "Black", hex: "#000000" }
   ];
 
   var NEUTRAL_SCALE = [
-    { step: 0, hex: "#FFFFFF" }, { step: 50, hex: "#FAFAFA" }, { step: 100, hex: "#F3F3F3" },
-    { step: 200, hex: "#E5E5E5" }, { step: 300, hex: "#D1D1D1" }, { step: 400, hex: "#A3A3A3" },
-    { step: 500, hex: "#737373" }, { step: 600, hex: "#525252" }, { step: 700, hex: "#404040" },
-    { step: 800, hex: "#262626" }, { step: 900, hex: "#171717" }, { step: 950, hex: "#0A0A0A" },
-    { step: 1000, hex: "#000000" }
+    { step: 0, name: "White", hex: "#FFFFFF" }, { step: 50, name: "Cloud", hex: "#FAFAFA" }, { step: 100, name: "Pale gray", hex: "#F3F3F3" },
+    { step: 200, name: "Light gray", hex: "#E5E5E5" }, { step: 300, name: "Soft gray", hex: "#D1D1D1" }, { step: 400, name: "Mid gray", hex: "#A3A3A3" },
+    { step: 500, name: "Gray", hex: "#737373" }, { step: 600, name: "Dark gray", hex: "#525252" }, { step: 700, name: "Charcoal", hex: "#404040" },
+    { step: 800, name: "Deep charcoal", hex: "#262626" }, { step: 900, name: "Ink", hex: "#171717" }, { step: 950, name: "Near black", hex: "#0A0A0A" },
+    { step: 1000, name: "Black", hex: "#000000" }
   ];
 
   var ACCENT_USES = [
@@ -149,33 +145,33 @@
 
   // [label, css colour] per mode
   var COLOR_VARIABLES = [
-    { name: "bg/page", light: ["Neutral 100", "#F3F3F3"], dark: ["Neutral 950", "#0A0A0A"], use: "Page background" },
-    { name: "bg/surface", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 900", "#171717"], use: "Cards, inputs, menus" },
-    { name: "bg/sunken", light: ["Neutral 100", "#F3F3F3"], dark: ["Neutral 1000", "#000000"], use: "Wells and tracks inside a surface" },
-    { name: "bg/hover", light: ["Neutral 200", "#E5E5E5"], dark: ["Neutral 800", "#262626"], use: "Hover fill on neutral controls" },
-    { name: "bg/pressed", light: ["Neutral 300", "#D1D1D1"], dark: ["Neutral 700", "#404040"], use: "Pressed fill on neutral controls" },
-    { name: "text/primary", light: ["Neutral 900", "#171717"], dark: ["Neutral 100", "#F3F3F3"], use: "Headings and body" },
-    { name: "text/secondary", light: ["Neutral 600", "#525252"], dark: ["Neutral 300", "#D1D1D1"], use: "Supporting text" },
-    { name: "text/tertiary", light: ["Neutral 500", "#737373"], dark: ["Neutral 400", "#A3A3A3"], use: "Captions and placeholders" },
-    { name: "text/on-accent", light: ["Neutral 0", "#FFFFFF"], dark: ["Neutral 1000", "#000000"], use: "Text on accent fills" },
-    { name: "border/default", light: ["Neutral 900 · 12%", "rgba(22,28,35,.12)"], dark: ["White · 10%", "rgba(255,255,255,.10)"], use: "Card edges and dividers" },
-    { name: "border/strong", light: ["Neutral 900 · 24%", "rgba(22,28,35,.24)"], dark: ["White · 22%", "rgba(255,255,255,.22)"], use: "Input and button outlines" },
-    { name: "accent/default", light: ["Black 600", "#171717"], dark: ["Gray 400", "#858585"], use: "The primary action" },
-    { name: "accent/hover", light: ["Black 700", "#0F0F0F"], dark: ["Gray 300", "#B5B5B5"], use: "Action while hovered" },
-    { name: "accent/pressed", light: ["Black 800", "#080808"], dark: ["Gray 200", "#D8D8D8"], use: "Action while pressed" },
-    { name: "accent/tint", light: ["Gray 100", "#EDEDED"], dark: ["White · 12%", "rgba(255,255,255,.12)"], use: "Selected backgrounds" },
-    { name: "accent/tint-strong", light: ["Gray 200", "#D8D8D8"], dark: ["White · 22%", "rgba(255,255,255,.22)"], use: "Pressed selected backgrounds" },
-    { name: "accent/text", light: ["Black 700", "#0F0F0F"], dark: ["Gray 300", "#B5B5B5"], use: "Links and action labels" },
-    { name: "focus/ring", light: ["Gray 500", "#5F5F5F"], dark: ["Gray 300", "#B5B5B5"], use: "Keyboard focus outline" },
-    { name: "status/success", light: ["Black 600", "#171717"], dark: ["Gray 600", "#525252"], use: "Success text, icons and fills" },
-    { name: "status/warning", light: ["Gray 700", "#404040"], dark: ["Gray 500", "#737373"], use: "Warning text, icons and fills" },
-    { name: "status/danger", light: ["Black 600", "#171717"], dark: ["Gray 600", "#525252"], use: "Error text, icons and danger buttons" },
-    { name: "status/danger-hover", light: ["Black 700", "#0A0A0A"], dark: ["Gray 500", "#737373"], use: "Danger button while hovered" },
-    { name: "state/disabled-bg", light: ["Neutral 200", "#E1E5E8"], dark: ["Neutral 800", "#232A31"], use: "Disabled fills" },
-    { name: "state/disabled-text", light: ["Neutral 400", "#9AA3AB"], dark: ["Neutral 600", "#545C65"], use: "Disabled text and icons" },
-    { name: "inverse/surface", light: ["Neutral 900", "#161C23"], dark: ["Neutral 100", "#EEF0F2"], use: "Toasts and tooltips" },
-    { name: "inverse/text", light: ["Neutral 100", "#EEF0F2"], dark: ["Neutral 900", "#161C23"], use: "Text on inverse surfaces" },
-    { name: "overlay/scrim", light: ["Neutral 950 · 48%", "rgba(16,20,26,.48)"], dark: ["Black · 60%", "rgba(0,0,0,.60)"], use: "Behind dialogs and sheets" }
+    { name: "bg/page", light: ["Pale gray", "#F3F3F3"], dark: ["Near black", "#0A0A0A"], use: "Page background" },
+    { name: "bg/surface", light: ["White", "#FFFFFF"], dark: ["Ink", "#171717"], use: "Cards, inputs, menus" },
+    { name: "bg/sunken", light: ["Pale gray", "#F3F3F3"], dark: ["Black", "#000000"], use: "Wells and tracks inside a surface" },
+    { name: "bg/hover", light: ["Light gray", "#E5E5E5"], dark: ["Deep charcoal", "#262626"], use: "Hover fill on neutral controls" },
+    { name: "bg/pressed", light: ["Soft gray", "#D1D1D1"], dark: ["Charcoal", "#404040"], use: "Pressed fill on neutral controls" },
+    { name: "text/primary", light: ["Ink", "#171717"], dark: ["Pale gray", "#F3F3F3"], use: "Headings and body" },
+    { name: "text/secondary", light: ["Dark gray", "#525252"], dark: ["Soft gray", "#D1D1D1"], use: "Supporting text" },
+    { name: "text/tertiary", light: ["Gray", "#737373"], dark: ["Mid gray", "#A3A3A3"], use: "Captions and placeholders" },
+    { name: "text/on-accent", light: ["White", "#FFFFFF"], dark: ["Black", "#000000"], use: "Text on accent fills" },
+    { name: "border/default", light: ["Ink · 12% opacity", "rgba(22,28,35,.12)"], dark: ["White · 10% opacity", "rgba(255,255,255,.10)"], use: "Card edges and dividers" },
+    { name: "border/strong", light: ["Ink · 24% opacity", "rgba(22,28,35,.24)"], dark: ["White · 22% opacity", "rgba(255,255,255,.22)"], use: "Input and button outlines" },
+    { name: "accent/default", light: ["Ink", "#171717"], dark: ["Mid gray", "#858585"], use: "The primary action" },
+    { name: "accent/hover", light: ["Near black", "#0F0F0F"], dark: ["Soft gray", "#B5B5B5"], use: "Action while hovered" },
+    { name: "accent/pressed", light: ["Rich black", "#080808"], dark: ["Light gray", "#D8D8D8"], use: "Action while pressed" },
+    { name: "accent/tint", light: ["Pale gray", "#EDEDED"], dark: ["White · 12% opacity", "rgba(255,255,255,.12)"], use: "Selected backgrounds" },
+    { name: "accent/tint-strong", light: ["Light gray", "#D8D8D8"], dark: ["White · 22% opacity", "rgba(255,255,255,.22)"], use: "Pressed selected backgrounds" },
+    { name: "accent/text", light: ["Near black", "#0F0F0F"], dark: ["Soft gray", "#B5B5B5"], use: "Links and action labels" },
+    { name: "focus/ring", light: ["Dark gray", "#5F5F5F"], dark: ["Soft gray", "#B5B5B5"], use: "Keyboard focus outline" },
+    { name: "status/success", light: ["Ink", "#171717"], dark: ["Dark gray", "#525252"], use: "Success text, icons and fills" },
+    { name: "status/warning", light: ["Charcoal", "#404040"], dark: ["Gray", "#737373"], use: "Warning text, icons and fills" },
+    { name: "status/danger", light: ["Ink", "#171717"], dark: ["Dark gray", "#525252"], use: "Error text, icons and danger buttons" },
+    { name: "status/danger-hover", light: ["Near black", "#0A0A0A"], dark: ["Gray", "#737373"], use: "Danger button while hovered" },
+    { name: "state/disabled-bg", light: ["Light gray", "#E1E5E8"], dark: ["Deep charcoal", "#232A31"], use: "Disabled fills" },
+    { name: "state/disabled-text", light: ["Mid gray", "#9AA3AB"], dark: ["Dark gray", "#545C65"], use: "Disabled text and icons" },
+    { name: "inverse/surface", light: ["Ink", "#161C23"], dark: ["Pale gray", "#EEF0F2"], use: "Toasts and tooltips" },
+    { name: "inverse/text", light: ["Pale gray", "#EEF0F2"], dark: ["Ink", "#161C23"], use: "Text on inverse surfaces" },
+    { name: "overlay/scrim", light: ["Near black · 48% opacity", "rgba(16,20,26,.48)"], dark: ["Black · 60% opacity", "rgba(0,0,0,.60)"], use: "Behind dialogs and sheets" }
   ];
 
   // Checked against the surface they actually sit on.
@@ -242,20 +238,6 @@
       ["opacity/disabled", 40, "Icons and images inside disabled controls"],
       ["opacity/scrim", 48, "Backdrop behind dialogs in light mode"]
     ] },
-    { id: "duration", name: "Duration", unit: "ms", desc: "Smaller things move faster. Nothing in the interface takes longer than 600ms.", rows: [
-      ["duration/instant", 100, "Colour and opacity changes on hover"],
-      ["duration/fast", 150, "Tooltips, checkboxes, switches"],
-      ["duration/base", 250, "Menus, tabs, cards — most transitions"],
-      ["duration/slow", 400, "Dialogs, drawers and sheets"],
-      ["duration/slower", 600, "Full-screen and page transitions"]
-    ] },
-    { id: "easing", name: "Easing", desc: "Five curves cover every transition. Values paste straight into a custom bezier.", easing: true, rows: [
-      ["easing/standard", [0.2, 0, 0, 1], "Elements moving within the screen"],
-      ["easing/enter", [0.05, 0.7, 0.1, 1], "Elements arriving — decelerate into place"],
-      ["easing/exit", [0.3, 0, 0.8, 0.15], "Elements leaving — accelerate away"],
-      ["easing/spring", [0.34, 1.56, 0.64, 1], "Playful confirmations; overshoots then settles"],
-      ["easing/linear", [0, 0, 1, 1], "Spinners, progress bars and loops only"]
-    ] },
     { id: "type", name: "Typography", desc: "Styles live on the Typography page; these are the values they are built from.", rows: [
       ["font/family", "Poppins", "Every style on every platform", 400],
       ["font/weight/regular", "400", "Body Large, Body", 400],
@@ -298,18 +280,18 @@
   ];
 
   var STATE_RULES = [
-    { name: "Hover", timing: "100ms · Standard",
+    { name: "Hover", timing: "Variant",
       rule: "Fill moves one step — accent/hover on accent buttons, bg/hover on neutral ones." },
-    { name: "Pressed", timing: "Instant",
+    { name: "Pressed", timing: "Variant",
       rule: "Fill moves two steps — accent/pressed or bg/pressed — and the button drops 1px while held." },
-    { name: "Focused", timing: "Instant",
+    { name: "Focused", timing: "Variant",
       rule: "A 2px focus/ring outline, 2px outside the button. Keyboard only, never on click." },
-    { name: "Selected", timing: "150ms · Standard",
+    { name: "Selected", timing: "Variant",
       rule: "For toggles and groups. Neutral buttons take accent/tint with an accent border and label; filled buttons stay pressed; outline fills in." },
-    { name: "Disabled", timing: "No motion",
+    { name: "Disabled", timing: "Static variant",
       rule: "state/disabled-bg fill and state/disabled-text label, no border, no hover. Say why nearby when you can." },
-    { name: "Loading", timing: "Spinner · 700ms · Linear",
-      rule: "A spinner replaces the label and icon. The button keeps its width and ignores taps." }
+    { name: "Loading", timing: "Static variant",
+      rule: "A progress indicator replaces the label and icon. The button keeps its width and ignores taps." }
   ];
 
   var BUTTON_SIZES = [
@@ -327,122 +309,6 @@
     { part: "Label", desc: "Label style, SemiBold. A verb, two words at most." },
     { part: "Trailing icon", desc: "Optional. An arrow for forward navigation or a chevron for menus." },
     { part: "Focus ring", desc: "2px, 2px away. Appears only for keyboard focus." }
-  ];
-
-  /* ================= ANIMATIONS ================= */
-  var MOTION_PRINCIPLES = [
-    { name: "Entering", spec: "Enter easing · 250–400ms", text: "Things arrive fast and settle gently. Decelerate into place." },
-    { name: "Leaving", spec: "Exit easing · 150–250ms", text: "Things leave faster than they came and accelerate away. Nobody waits for an exit." },
-    { name: "Drawing attention", spec: "Use once, never loop", text: "Shakes, pulses and bounces point at one thing. Two at once cancel each other out." }
-  ];
-
-  var ANIM_GROUPS = [
-    { name: "UI transitions", once: true, desc: "Product motion built on the duration and easing variables. Start here.", items: [
-      ["modalIn", "Dialog in"], ["modalOut", "Dialog out"], ["dropdownIn", "Menu open"], ["toastIn", "Toast in"],
-      ["drawerIn", "Drawer in"], ["tooltipIn", "Tooltip in"], ["popIn", "Like pop"], ["press", "Button press"],
-      ["errorShake", "Error shake"], ["expandIn", "Expand"], ["checkDraw", "Checkmark draw"]
-    ] },
-    { name: "Loops & loaders", once: false, desc: "Continuous motion for waiting and ambient states. Use Linear for anything that spins.", items: [
-      ["spin", "Spin"], ["spinReverse", "Spin reverse"], ["pulseSoft", "Breathe"], ["float", "Float"], ["bob", "Bob"],
-      ["ping", "Ping"], ["ripple", "Ripple"], ["glow", "Glow"], ["shimmer", "Skeleton shimmer"], ["typingDots", "Typing dots"],
-      ["blink", "Cursor blink"], ["typewriter", "Typewriter"], ["marquee", "Marquee"], ["progressIndeterminate", "Progress"],
-      ["morphBlob", "Morph"], ["wiggle", "Wiggle"]
-    ] },
-    { name: "Attention seekers", once: true, desc: "Point at something already on screen.", items: [
-      "bounce", "flash", "pulse", "rubberBand", "shakeX", "shakeY", "headShake", "swing", "tada", "wobble", "jello", "heartBeat"
-    ] },
-    { name: "Fading entrances", once: true, items: [
-      "fadeIn", "fadeInDown", "fadeInDownBig", "fadeInLeft", "fadeInLeftBig", "fadeInRight", "fadeInRightBig",
-      "fadeInUp", "fadeInUpBig", "fadeInTopLeft", "fadeInTopRight", "fadeInBottomLeft", "fadeInBottomRight"
-    ] },
-    { name: "Fading exits", once: true, items: [
-      "fadeOut", "fadeOutDown", "fadeOutDownBig", "fadeOutLeft", "fadeOutLeftBig", "fadeOutRight", "fadeOutRightBig",
-      "fadeOutUp", "fadeOutUpBig", "fadeOutTopLeft", "fadeOutTopRight", "fadeOutBottomLeft", "fadeOutBottomRight"
-    ] },
-    { name: "Sliding entrances", once: true, items: ["slideInDown", "slideInLeft", "slideInRight", "slideInUp"] },
-    { name: "Sliding exits", once: true, items: ["slideOutDown", "slideOutLeft", "slideOutRight", "slideOutUp"] },
-    { name: "Zooming entrances", once: true, items: ["zoomIn", "zoomInDown", "zoomInLeft", "zoomInRight", "zoomInUp"] },
-    { name: "Zooming exits", once: true, items: ["zoomOut", "zoomOutDown", "zoomOutLeft", "zoomOutRight", "zoomOutUp"] },
-    { name: "Bouncing entrances", once: true, items: ["bounceIn", "bounceInDown", "bounceInLeft", "bounceInRight", "bounceInUp"] },
-    { name: "Bouncing exits", once: true, items: ["bounceOut", "bounceOutDown", "bounceOutLeft", "bounceOutRight", "bounceOutUp"] },
-    { name: "Back entrances", once: true, items: ["backInDown", "backInLeft", "backInRight", "backInUp"] },
-    { name: "Back exits", once: true, items: ["backOutDown", "backOutLeft", "backOutRight", "backOutUp"] },
-    { name: "Rotating entrances", once: true, items: ["rotateIn", "rotateInDownLeft", "rotateInDownRight", "rotateInUpLeft", "rotateInUpRight"] },
-    { name: "Rotating exits", once: true, items: ["rotateOut", "rotateOutDownLeft", "rotateOutDownRight", "rotateOutUpLeft", "rotateOutUpRight"] },
-    { name: "Flippers", once: true, items: ["flip", "flipInX", "flipInY", "flipOutX", "flipOutY"] },
-    { name: "Lightspeed", once: true, items: ["lightSpeedInRight", "lightSpeedInLeft", "lightSpeedOutRight", "lightSpeedOutLeft"] },
-    { name: "Specials", once: true, items: ["hinge", "jackInTheBox", "rollIn", "rollOut"] }
-  ];
-
-  /* ================= CURVES ================= */
-  var SYSTEM_EASINGS = [
-    { name: "Standard", p: [0.2, 0, 0, 1], use: "Moving within the screen" },
-    { name: "Enter", p: [0.05, 0.7, 0.1, 1], use: "Arriving" },
-    { name: "Exit", p: [0.3, 0, 0.8, 0.15], use: "Leaving" },
-    { name: "Spring", p: [0.34, 1.56, 0.64, 1], use: "Playful overshoot" },
-    { name: "Linear", p: [0, 0, 1, 1], use: "Loops and progress" }
-  ];
-
-  var STANDARD_CURVES = [
-    { name: "Linear", p: [0, 0, 1, 1] },
-    { name: "Ease", p: [0.25, 0.1, 0.25, 1] },
-    { name: "Ease in", p: [0.42, 0, 1, 1] },
-    { name: "Ease out", p: [0, 0, 0.58, 1] },
-    { name: "Ease in-out", p: [0.42, 0, 0.58, 1] },
-    { name: "Step start", steps: "start" },
-    { name: "Step end", steps: "end" }
-  ];
-
-  function easeOutBounce(x) {
-    var n1 = 7.5625, d1 = 2.75;
-    if (x < 1 / d1) { return n1 * x * x; }
-    if (x < 2 / d1) { x -= 1.5 / d1; return n1 * x * x + 0.75; }
-    if (x < 2.5 / d1) { x -= 2.25 / d1; return n1 * x * x + 0.9375; }
-    x -= 2.625 / d1; return n1 * x * x + 0.984375;
-  }
-
-  // fn: exact formula. bezier: closest cubic bezier, or null when a bezier can't express it.
-  var EASING_FAMILIES = [
-    { family: "Sine", curves: {
-      In: { fn: function (x) { return 1 - Math.cos(x * Math.PI / 2); }, bezier: [0.12, 0, 0.39, 0] },
-      Out: { fn: function (x) { return Math.sin(x * Math.PI / 2); }, bezier: [0.61, 1, 0.88, 1] },
-      InOut: { fn: function (x) { return -(Math.cos(Math.PI * x) - 1) / 2; }, bezier: [0.37, 0, 0.63, 1] } } },
-    { family: "Quad", curves: {
-      In: { fn: function (x) { return x * x; }, bezier: [0.11, 0, 0.5, 0] },
-      Out: { fn: function (x) { return 1 - (1 - x) * (1 - x); }, bezier: [0.5, 1, 0.89, 1] },
-      InOut: { fn: function (x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }, bezier: [0.45, 0, 0.55, 1] } } },
-    { family: "Cubic", curves: {
-      In: { fn: function (x) { return x * x * x; }, bezier: [0.32, 0, 0.67, 0] },
-      Out: { fn: function (x) { return 1 - Math.pow(1 - x, 3); }, bezier: [0.33, 1, 0.68, 1] },
-      InOut: { fn: function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }, bezier: [0.65, 0, 0.35, 1] } } },
-    { family: "Quart", curves: {
-      In: { fn: function (x) { return Math.pow(x, 4); }, bezier: [0.5, 0, 0.75, 0] },
-      Out: { fn: function (x) { return 1 - Math.pow(1 - x, 4); }, bezier: [0.25, 1, 0.5, 1] },
-      InOut: { fn: function (x) { return x < 0.5 ? 8 * Math.pow(x, 4) : 1 - Math.pow(-2 * x + 2, 4) / 2; }, bezier: [0.76, 0, 0.24, 1] } } },
-    { family: "Quint", curves: {
-      In: { fn: function (x) { return Math.pow(x, 5); }, bezier: [0.64, 0, 0.78, 0] },
-      Out: { fn: function (x) { return 1 - Math.pow(1 - x, 5); }, bezier: [0.22, 1, 0.36, 1] },
-      InOut: { fn: function (x) { return x < 0.5 ? 16 * Math.pow(x, 5) : 1 - Math.pow(-2 * x + 2, 5) / 2; }, bezier: [0.83, 0, 0.17, 1] } } },
-    { family: "Expo", curves: {
-      In: { fn: function (x) { return x === 0 ? 0 : Math.pow(2, 10 * x - 10); }, bezier: [0.7, 0, 0.84, 0] },
-      Out: { fn: function (x) { return x === 1 ? 1 : 1 - Math.pow(2, -10 * x); }, bezier: [0.16, 1, 0.3, 1] },
-      InOut: { fn: function (x) { return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2; }, bezier: [0.87, 0, 0.13, 1] } } },
-    { family: "Circ", curves: {
-      In: { fn: function (x) { return 1 - Math.sqrt(1 - Math.pow(x, 2)); }, bezier: [0.55, 0, 1, 0.45] },
-      Out: { fn: function (x) { return Math.sqrt(1 - Math.pow(x - 1, 2)); }, bezier: [0, 0.55, 0.45, 1] },
-      InOut: { fn: function (x) { return x < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2; }, bezier: [0.85, 0, 0.15, 1] } } },
-    { family: "Back", curves: {
-      In: { fn: function (x) { var c1 = 1.70158, c3 = c1 + 1; return c3 * x * x * x - c1 * x * x; }, bezier: [0.36, 0, 0.66, -0.56] },
-      Out: { fn: function (x) { var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }, bezier: [0.34, 1.56, 0.64, 1] },
-      InOut: { fn: function (x) { var c1 = 1.70158, c2 = c1 * 1.525; return x < 0.5 ? (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2; }, bezier: [0.68, -0.6, 0.32, 1.6] } } },
-    { family: "Elastic", curves: {
-      In: { fn: function (x) { var c4 = (2 * Math.PI) / 3; return x === 0 ? 0 : x === 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4); }, bezier: null },
-      Out: { fn: function (x) { var c4 = (2 * Math.PI) / 3; return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1; }, bezier: null },
-      InOut: { fn: function (x) { var c5 = (2 * Math.PI) / 4.5; return x === 0 ? 0 : x === 1 ? 1 : x < 0.5 ? -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 : (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1; }, bezier: null } } },
-    { family: "Bounce", curves: {
-      In: { fn: function (x) { return 1 - easeOutBounce(1 - x); }, bezier: null },
-      Out: { fn: easeOutBounce, bezier: null },
-      InOut: { fn: function (x) { return x < 0.5 ? (1 - easeOutBounce(1 - 2 * x)) / 2 : (1 + easeOutBounce(2 * x - 1)) / 2; }, bezier: null } } }
   ];
 
   global.GANI = {
@@ -463,11 +329,6 @@
     BUTTON_STATES: BUTTON_STATES,
     STATE_RULES: STATE_RULES,
     BUTTON_SIZES: BUTTON_SIZES,
-    ANATOMY: ANATOMY,
-    MOTION_PRINCIPLES: MOTION_PRINCIPLES,
-    ANIM_GROUPS: ANIM_GROUPS,
-    SYSTEM_EASINGS: SYSTEM_EASINGS,
-    STANDARD_CURVES: STANDARD_CURVES,
-    EASING_FAMILIES: EASING_FAMILIES
+    ANATOMY: ANATOMY
   };
 })(window);

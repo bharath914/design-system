@@ -1,7 +1,7 @@
 /* ============================================================
    Gani Design System — Variables
    Palette primitives, then colour roles per mode, then type,
-   spacing, radius, sizing, elevation and motion.
+   spacing, radius, sizing, elevation and interaction states.
    A [data-theme] attribute on any element forces a mode inside it.
    ============================================================ */
 
@@ -103,7 +103,7 @@
   --border-width-strong:2px;
   --focus-offset:2px;
 
-  /* ---------- motion ---------- */
+  /* ---------- interaction timing ---------- */
   --duration-instant:100ms;
   --duration-fast:150ms;
   --duration-base:250ms;
@@ -146,7 +146,7 @@
   color-scheme:light;
 
   --bg:#f8f8ff;
-  --sidebar-bg:#ffffff;
+  --nav-bg:#ffffff;
   --surface:var(--neutral-0);
   --surface-sunken:#f8f8ff;
   --surface-hover:#f8f8ff;
@@ -202,7 +202,7 @@
     color-scheme:dark;
 
     --bg:var(--neutral-950);
-    --sidebar-bg:var(--neutral-900);
+    --nav-bg:var(--neutral-900);
     --surface:var(--neutral-900);
     --surface-sunken:var(--neutral-1000);
     --surface-hover:var(--neutral-800);
@@ -255,7 +255,7 @@
   color-scheme:dark;
 
   --bg:var(--neutral-950);
-  --sidebar-bg:var(--neutral-900);
+  --nav-bg:var(--neutral-900);
   --surface:var(--neutral-900);
   --surface-sunken:var(--neutral-1000);
   --surface-hover:var(--neutral-800);
