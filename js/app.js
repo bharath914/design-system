@@ -1041,6 +1041,14 @@
   document.addEventListener("click", function (e) {
     var t = e.target;
 
+    var brand = t.closest(".brand");
+    if (brand) {
+      e.preventDefault();
+      show("components");
+      window.scrollTo(0, 0);
+      return;
+    }
+
     var searchTrigger = t.closest(".search-trigger");
     if (searchTrigger) {
       var input = loadSearchInput();
