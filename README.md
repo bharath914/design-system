@@ -1,6 +1,6 @@
-# Gani Design System
+# Design System
 
-The Figma-ready reference for designing Gani products.
+The Figma-ready reference for product design.
 
 ## Open it
 

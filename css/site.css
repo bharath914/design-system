@@ -1,5 +1,5 @@
 /* ============================================================
-   Gani Design System — Documentation site
+   Design System — Documentation site
    Shell, page structure and the specimens that explain the system.
    ============================================================ */
 
@@ -302,6 +302,15 @@ body{background:var(--bg);}
 .variable-card{min-height:172px;padding:16px;gap:10px;}
 .variable-card .var-preview{min-height:48px;padding:8px;border-radius:var(--radius-md);background:var(--surface-sunken);}
 .variable-card .var-use{margin-top:auto;}
+.token-preview{display:flex;align-items:center;gap:12px;}
+.token-preview .var-preview{flex:1;min-width:0;}
+.token-preview .var-value{flex:0 1 52%;font-size:var(--label-size);font-weight:var(--weight-semibold);color:var(--text);text-align:right;overflow-wrap:anywhere;}
+.variable-card--token .var-name{margin-top:2px;}
+.color-mode-switch{margin-bottom:14px;}
+.variable-card--color{min-height:112px;}
+.var-color-line{display:flex;align-items:center;gap:12px;min-width:0;}
+.var-color-line .role-dot{width:42px;height:42px;border-radius:var(--radius-md);}
+.var-color-code{margin-top:2px;font-size:var(--caption-size);line-height:var(--caption-line);color:var(--text-secondary);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;}
 
 .var-table{padding:0;gap:0;overflow:hidden;}
 .var-row,.var-head{
@@ -361,6 +370,99 @@ body{background:var(--bg);}
 #page-components .page-head{margin-bottom:20px;}
 #page-components .page-intro,#page-components .page-count{display:none;}
 #page-components .page-head > .eyebrow{display:none;}
+#page-variables .page-head{margin-bottom:20px;}
+#page-variables .page-head > .eyebrow,#page-variables .page-intro,#page-variables .page-count,#page-variables .group-meta,#page-variables .section-label{display:none;}
+#page-colors .page-head,#page-typography .page-head{margin-bottom:20px;}
+#page-colors .page-head > .eyebrow,#page-colors .page-intro,#page-colors .page-count,#page-colors .group-meta,#page-colors .section-label,#page-typography .page-head > .eyebrow,#page-typography .page-intro,#page-typography .page-count,#page-typography .group-meta,#page-typography .section-label{display:none;}
+#page-animations .page-head{margin-bottom:20px;}
+#page-animations .page-head > .eyebrow,#page-animations .page-intro,#page-animations .page-count,#page-animations .section-label{display:none;}
+#page-principles .page-head{margin-bottom:20px;}
+#page-principles .page-head > .eyebrow,#page-principles .page-intro,#page-principles .page-count,#page-principles .section-label{display:none;}
+.principles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.principle-card{min-height:174px;padding:18px;gap:10px;}
+.principle-visual{display:grid;place-items:center;width:36px;height:36px;border-radius:var(--radius-md);background:var(--accent-tint);color:var(--accent-text);font-size:11px;font-weight:var(--weight-semibold);letter-spacing:.04em;}
+.principle-visual svg{width:20px;height:20px;}
+.principle-visual--law{position:relative;display:flex;align-items:center;width:100%;height:58px;padding:10px 42px 10px 12px;border-radius:var(--radius-md);}
+.law-number{position:absolute;top:10px;right:12px;font-size:10px;font-weight:var(--weight-semibold);letter-spacing:.06em;color:var(--text-tertiary);}
+.law-diagram{display:flex;align-items:center;gap:6px;width:100%;height:100%;}
+.law-diagram i{display:block;background:var(--accent);}
+.law-diagram--choices i{width:12px;height:12px;border-radius:50%;}
+.law-diagram--choices i:nth-child(2),.law-diagram--choices i:nth-child(4){background:var(--text-tertiary);border-radius:var(--radius-xs);}
+.law-diagram--target{gap:14px;}
+.law-diagram--target i:first-child{width:12px;height:12px;border:2px solid var(--text-tertiary);border-radius:50%;background:transparent;}
+.law-diagram--target i:last-child{width:28px;height:28px;border-radius:50%;}
+.law-diagram--patterns{gap:8px;}
+.law-diagram--patterns i{width:34px;height:20px;border-radius:var(--radius-xs);}
+.law-diagram--patterns i:last-child{background:var(--surface);border:2px solid var(--accent);}
+.law-diagram--chunks{gap:3px;max-width:76px;flex-wrap:wrap;}
+.law-diagram--chunks i{width:20px;height:11px;border-radius:2px;}
+.law-diagram--chunks i:nth-child(3){margin-left:12px;}
+.law-diagram--gaps{gap:4px;}
+.law-diagram--gaps i{width:16px;height:16px;border-radius:var(--radius-xs);}
+.law-diagram--gaps i:nth-child(3){margin-left:18px;background:var(--text-tertiary);}
+.law-diagram--complexity{align-items:flex-end;gap:5px;}
+.law-diagram--complexity i{width:18px;border-radius:2px;}
+.law-diagram--complexity i:nth-child(1){height:12px;background:var(--text-tertiary);}.law-diagram--complexity i:nth-child(2){height:22px;}.law-diagram--complexity i:nth-child(3){height:32px;background:var(--text-secondary);}
+.law-diagram--response{position:relative;max-width:120px;height:10px;border-radius:var(--radius-full);background:var(--surface-pressed);overflow:hidden;}
+.law-diagram--response i:first-child{width:78%;height:100%;border-radius:inherit;}.law-diagram--response i:last-child{position:absolute;right:6px;width:8px;height:8px;border-radius:50%;background:var(--surface);}
+.law-diagram--peak{align-items:flex-end;gap:5px;}
+.law-diagram--peak i{width:13px;border-radius:2px 2px 0 0;}.law-diagram--peak i:nth-child(1){height:11px;background:var(--text-tertiary);}.law-diagram--peak i:nth-child(2){height:26px;}.law-diagram--peak i:nth-child(3){height:16px;background:var(--text-secondary);}.law-diagram--peak i:nth-child(4){height:22px;}
+.principle-card p{margin:0;color:var(--text-secondary);font-size:var(--body-size);line-height:var(--body-line);}
+.motion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;}
+.motion-card{padding:16px;gap:12px;}
+.motion-stage{display:grid;place-items:center;min-height:128px;border-radius:var(--radius-md);background:var(--surface-sunken);overflow:hidden;}
+.motion-object{display:block;width:38px;height:38px;border-radius:var(--radius-md);background:var(--accent);}
+.motion-object--fade{animation:motion-fade 1.8s ease-in-out infinite alternate;}
+.motion-object--slide-up{animation:motion-slide-up 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--slide-down{animation:motion-slide-down 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--slide-left{animation:motion-slide-left 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--slide-right{animation:motion-slide-right 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--scale{animation:motion-scale 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--pop{animation:motion-pop 1.8s var(--ease-standard) infinite alternate;}
+.motion-object--bounce{animation:motion-bounce 1.4s ease-in-out infinite;}
+.motion-object--shake{animation:motion-shake 1.2s ease-in-out infinite;}
+.motion-object--rotate{animation:motion-rotate 2s linear infinite;}
+.motion-object--pulse{animation:motion-pulse 1.8s ease-in-out infinite;}
+.motion-object--ripple{border-radius:50%;animation:motion-ripple 1.8s ease-out infinite;}
+.motion-object--glow{animation:motion-glow 1.8s ease-out infinite;}
+.motion-object--float{animation:motion-float 2.2s ease-in-out infinite;}
+.motion-object--morph{animation:motion-morph 2.8s ease-in-out infinite;}
+.motion-object--blur{animation:motion-blur 1.8s ease-in-out infinite alternate;}
+.motion-object--loading{width:36px;height:36px;border:4px solid var(--border-strong);border-top-color:var(--accent);border-radius:50%;background:transparent;animation:motion-rotate 1s linear infinite;}
+.motion-object--shimmer{width:70%;height:14px;background:linear-gradient(90deg,var(--surface-pressed) 0%,var(--surface) 45%,var(--surface-pressed) 100%);background-size:200% 100%;animation:motion-shimmer 1.4s linear infinite;}
+@keyframes motion-fade{from{opacity:.2}to{opacity:1}}
+@keyframes motion-slide-up{from{transform:translateY(24px)}to{transform:translateY(-24px)}}
+@keyframes motion-slide-down{from{transform:translateY(-24px)}to{transform:translateY(24px)}}
+@keyframes motion-slide-left{from{transform:translateX(38px)}to{transform:translateX(-38px)}}
+@keyframes motion-slide-right{from{transform:translateX(-38px)}to{transform:translateX(38px)}}
+@keyframes motion-scale{from{transform:scale(.55)}to{transform:scale(1.2)}}
+@keyframes motion-pop{0%{transform:scale(.65)}65%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes motion-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-22px)}}
+@keyframes motion-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+@keyframes motion-rotate{to{transform:rotate(360deg)}}
+@keyframes motion-pulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.22);opacity:1}}
+@keyframes motion-ripple{0%{transform:scale(.5);opacity:1}100%{transform:scale(2.5);opacity:0}}
+@keyframes motion-glow{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 20px transparent}}
+@keyframes motion-float{0%,100%{transform:translateY(8px)}50%{transform:translateY(-16px)}}
+@keyframes motion-morph{0%,100%{border-radius:var(--radius-md);transform:rotate(0)}50%{border-radius:50% 30% 60% 40%;transform:rotate(90deg)}}
+@keyframes motion-blur{from{filter:blur(0);opacity:1}to{filter:blur(8px);opacity:.3}}
+@keyframes motion-shimmer{from{background-position:200% 0}to{background-position:-100% 0}}
+@media (prefers-reduced-motion:reduce){.motion-object{animation:none !important;}}
+.variable-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.variable-filters button{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:var(--caption-size);cursor:pointer;}
+.variable-filters button:hover{background:var(--accent-tint);color:var(--accent-text);border-color:var(--accent);}
+.variable-filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:var(--weight-semibold);}
+.variable-filters button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;}
+.color-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.color-filters button{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:var(--caption-size);cursor:pointer;}
+.color-filters button:hover{background:var(--accent-tint);color:var(--accent-text);border-color:var(--accent);}
+.color-filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:var(--weight-semibold);}
+.color-filters button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;}
+.typography-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
+.typography-filters button{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:var(--caption-size);cursor:pointer;}
+.typography-filters button:hover{background:var(--accent-tint);color:var(--accent-text);border-color:var(--accent);}
+.typography-filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:var(--weight-semibold);}
+.typography-filters button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;}
 .component-jumps{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
 .component-jumps button{padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-full);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:var(--caption-size);cursor:pointer;}
 .component-jumps button:hover{background:var(--accent-tint);color:var(--accent-text);border-color:var(--accent);}

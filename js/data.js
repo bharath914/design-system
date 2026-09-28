@@ -1,5 +1,5 @@
 /* ============================================================
-   Gani Design System — Content
+   Design System — Content
    Everything the documentation shows, in one place.
    ============================================================ */
 (function (global) {
@@ -33,16 +33,20 @@
 
   /* ================= SECTIONS ================= */
   var SECTIONS = [
-    { id: "typography", group: "Foundations", name: "Typography",
-      intro: "Type scale, weights and responsive sizes." },
-    { id: "colors", group: "Foundations", name: "Colors",
-      intro: "Monochrome colours, roles and contrast." },
-    { id: "variables", group: "Foundations", name: "Variables",
-      intro: "Reusable tokens for the light theme." },
-    { id: "buttons", group: "Components", name: "Buttons",
+    { id: "components", group: "Sections", name: "Components",
+      intro: "Basic styles and states. All in one place." },
+    { id: "animations", group: "Sections", name: "Animations",
+      intro: "Auto-playing UI motion patterns." },
+    { id: "buttons", group: "Sections", name: "Buttons",
       intro: "Variants, states and sizes." },
-    { id: "components", group: "Components", name: "Components",
-      intro: "Basic styles and states. All in one place." }
+    { id: "colors", group: "Sections", name: "Colors",
+      intro: "Monochrome colours, roles and contrast." },
+    { id: "typography", group: "Sections", name: "Typography",
+      intro: "Type scale, weights and responsive sizes." },
+    { id: "variables", group: "Sections", name: "Variables",
+      intro: "Reusable tokens for the light theme." },
+    { id: "principles", group: "Sections", name: "Principles",
+      intro: "UX, UI and product principles." }
   ];
 
   /* ================= TYPOGRAPHY ================= */
@@ -83,7 +87,7 @@
   var PLATFORMS = {
     web: {
       name: "Web",
-      frame: "gani.design",
+      frame: "design.system",
       notes: [
         "Body is 14px — dense, pointer-driven screens read at arm's length.",
         "Headlines run large (Display 48px) because wide screens have room for them.",
@@ -104,16 +108,16 @@
 
   /* ================= COLOURS ================= */
   var ACCENT = {
-    name: "Gani Black",
-    light: { step: 600, name: "Ink", hex: "#171717" },
-    dark: { step: 400, name: "Mid gray", hex: "#858585" }
+    name: "Green",
+    light: { step: 700, name: "Green 700", hex: "#15803D" },
+    dark: { step: 400, name: "Green 400", hex: "#4ADE80" }
   };
 
   var ACCENT_SCALE = [
-    { step: 50, name: "Cloud", hex: "#F7F7F7" }, { step: 100, name: "Pale gray", hex: "#EDEDED" }, { step: 200, name: "Light gray", hex: "#D8D8D8" },
-    { step: 300, name: "Soft gray", hex: "#B5B5B5" }, { step: 400, name: "Mid gray", hex: "#858585" }, { step: 500, name: "Dark gray", hex: "#5F5F5F" },
-    { step: 600, name: "Ink", hex: "#171717" }, { step: 700, name: "Near black", hex: "#0F0F0F" }, { step: 800, name: "Rich black", hex: "#080808" },
-    { step: 900, name: "Deep black", hex: "#050505" }, { step: 950, name: "Black", hex: "#000000" }
+    { step: 50, name: "Green 50", hex: "#F0FDF4" }, { step: 100, name: "Green 100", hex: "#DCFCE7" }, { step: 200, name: "Green 200", hex: "#BBF7D0" },
+    { step: 300, name: "Green 300", hex: "#86EFAC" }, { step: 400, name: "Green 400", hex: "#4ADE80" }, { step: 500, name: "Green 500", hex: "#22C55E" },
+    { step: 600, name: "Green 600", hex: "#16A34A" }, { step: 700, name: "Green 700", hex: "#15803D" }, { step: 800, name: "Green 800", hex: "#166534" },
+    { step: 900, name: "Green 900", hex: "#14532D" }, { step: 950, name: "Green 950", hex: "#052E16" }
   ];
 
   var NEUTRAL_SCALE = [
@@ -311,7 +315,7 @@
     { part: "Focus ring", desc: "2px, 2px away. Appears only for keyboard focus." }
   ];
 
-  global.GANI = {
+  global.DESIGN_SYSTEM = {
     ICONS: ICONS,
     SECTIONS: SECTIONS,
     TYPEFACE: TYPEFACE,

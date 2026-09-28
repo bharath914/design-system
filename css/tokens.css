@@ -1,23 +1,23 @@
 /* ============================================================
-   Gani Design System — Variables
+   Design System — Variables
    Palette primitives, then colour roles per mode, then type,
    spacing, radius, sizing, elevation and interaction states.
    A [data-theme] attribute on any element forces a mode inside it.
    ============================================================ */
 
 :root{
-  /* ---------- palette: monochrome action scale ---------- */
-  --accent-50:#f7f7f7;
-  --accent-100:#ededed;
-  --accent-200:#d8d8d8;
-  --accent-300:#b5b5b5;
-  --accent-400:#858585;
-  --accent-500:#5f5f5f;
-  --accent-600:#171717;
-  --accent-700:#0f0f0f;
-  --accent-800:#080808;
-  --accent-900:#050505;
-  --accent-950:#000000;
+  /* ---------- palette: green action scale ---------- */
+  --accent-50:#f0fdf4;
+  --accent-100:#dcfce7;
+  --accent-200:#bbf7d0;
+  --accent-300:#86efac;
+  --accent-400:#4ade80;
+  --accent-500:#22c55e;
+  --accent-600:#16a34a;
+  --accent-700:#15803d;
+  --accent-800:#166534;
+  --accent-900:#14532d;
+  --accent-950:#052e16;
 
   /* ---------- palette: neutral grayscale ---------- */
   --neutral-0:#ffffff;
@@ -34,17 +34,17 @@
   --neutral-950:#0a0a0a;
   --neutral-1000:#000000;
 
-  /* ---------- status uses weight and labels, never hue ---------- */
-  --success-600:#171717;
-  --success-400:#525252;
-  --warning-600:#404040;
-  --warning-400:#737373;
-  --danger-800:#000000;
-  --danger-700:#0a0a0a;
-  --danger-600:#171717;
-  --danger-400:#525252;
-  --danger-300:#737373;
-  --danger-200:#a3a3a3;
+  /* ---------- status: distinct hues, reserved for meaning ---------- */
+  --success-600:#047857;
+  --success-400:#34d399;
+  --warning-600:#b45309;
+  --warning-400:#fbbf24;
+  --danger-800:#7f1d1d;
+  --danger-700:#991b1b;
+  --danger-600:#b91c1c;
+  --danger-400:#f87171;
+  --danger-300:#fca5a5;
+  --danger-200:#fecaca;
 
   /* ---------- typeface ---------- */
   --font:'Poppins',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -145,12 +145,12 @@
 [data-theme="light"]{
   color-scheme:light;
 
-  --bg:#f8f8ff;
+  --bg:var(--neutral-100);
   --nav-bg:#ffffff;
   --surface:var(--neutral-0);
-  --surface-sunken:#f8f8ff;
-  --surface-hover:#f8f8ff;
-  --surface-pressed:#f8f8ff;
+  --surface-sunken:var(--neutral-100);
+  --surface-hover:var(--neutral-200);
+  --surface-pressed:var(--neutral-300);
 
   --text:var(--neutral-900);
   --text-secondary:var(--neutral-600);
@@ -161,25 +161,25 @@
   --border-strong:rgba(0,0,0,.24);
   --grid-line:rgba(0,0,0,.045);
 
-  --accent:var(--accent-600);
-  --accent-hover:var(--accent-700);
-  --accent-pressed:var(--accent-800);
-  --accent-tint:#f8f8ff;
-  --accent-tint-strong:#f8f8ff;
-  --accent-text:var(--accent-700);
-  --focus-ring:var(--accent-500);
+  --accent:var(--accent-700);
+  --accent-hover:var(--accent-800);
+  --accent-pressed:var(--accent-900);
+  --accent-tint:var(--accent-100);
+  --accent-tint-strong:var(--accent-200);
+  --accent-text:var(--accent-800);
+  --focus-ring:var(--accent-600);
 
   --success:var(--success-600);
-  --success-tint:#f8f8ff;
+  --success-tint:rgba(4,120,87,.12);
   --warning:var(--warning-600);
-  --warning-tint:#f8f8ff;
+  --warning-tint:rgba(180,83,9,.12);
   --danger:var(--danger-600);
   --danger-hover:var(--danger-700);
   --danger-pressed:var(--danger-800);
-  --danger-tint:#f8f8ff;
+  --danger-tint:rgba(185,28,28,.10);
   --on-danger:var(--neutral-0);
 
-  --disabled-bg:#f8f8ff;
+  --disabled-bg:var(--neutral-200);
   --disabled-text:var(--neutral-400);
 
   --inverse-surface:var(--neutral-900);
@@ -220,19 +220,19 @@
     --accent:var(--accent-400);
     --accent-hover:var(--accent-300);
     --accent-pressed:var(--accent-200);
-    --accent-tint:rgba(255,255,255,.12);
-    --accent-tint-strong:rgba(255,255,255,.22);
+    --accent-tint:rgba(74,222,128,.16);
+    --accent-tint-strong:rgba(74,222,128,.28);
     --accent-text:var(--accent-300);
     --focus-ring:var(--accent-300);
 
     --success:var(--success-400);
-    --success-tint:rgba(255,255,255,.10);
+    --success-tint:rgba(52,211,153,.14);
     --warning:var(--warning-400);
-    --warning-tint:rgba(255,255,255,.12);
+    --warning-tint:rgba(251,191,36,.16);
     --danger:var(--danger-400);
     --danger-hover:var(--danger-300);
     --danger-pressed:var(--danger-200);
-    --danger-tint:rgba(255,255,255,.14);
+    --danger-tint:rgba(248,113,113,.16);
     --on-danger:var(--neutral-1000);
 
     --disabled-bg:var(--neutral-800);
@@ -273,19 +273,19 @@
   --accent:var(--accent-400);
   --accent-hover:var(--accent-300);
   --accent-pressed:var(--accent-200);
-  --accent-tint:rgba(255,255,255,.12);
-  --accent-tint-strong:rgba(255,255,255,.22);
+  --accent-tint:rgba(74,222,128,.16);
+  --accent-tint-strong:rgba(74,222,128,.28);
   --accent-text:var(--accent-300);
   --focus-ring:var(--accent-300);
 
   --success:var(--success-400);
-  --success-tint:rgba(255,255,255,.10);
+  --success-tint:rgba(52,211,153,.14);
   --warning:var(--warning-400);
-  --warning-tint:rgba(255,255,255,.12);
+  --warning-tint:rgba(251,191,36,.16);
   --danger:var(--danger-400);
   --danger-hover:var(--danger-300);
   --danger-pressed:var(--danger-200);
-  --danger-tint:rgba(255,255,255,.14);
+  --danger-tint:rgba(248,113,113,.16);
   --on-danger:var(--neutral-1000);
 
   --disabled-bg:var(--neutral-800);

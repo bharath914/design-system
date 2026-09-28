@@ -1,8 +1,8 @@
 {
-  "name": "gani-design-system",
+  "name": "design-system",
   "version": "1.0.0",
   "private": true,
-  "description": "The Gani Design System reference: Figma-ready foundations, buttons and components.",
+  "description": "A Figma-ready design system reference for foundations, buttons and components.",
   "scripts": {
     "dev": "npx --yes serve . -l 4321"
   },

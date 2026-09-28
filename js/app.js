@@ -1,17 +1,21 @@
 /* ============================================================
-   Gani Design System — Documentation app
+   Design System — Documentation app
    Renders every page from js/data.js and handles navigation,
    appearance, search and the interactive demos.
    ============================================================ */
 (function () {
   "use strict";
 
-  var D = window.GANI;
+  var D = window.DESIGN_SYSTEM;
   var I = D.ICONS;
   var $ = function (id) { return document.getElementById(id); };
 
   var current = "typography";
   var platform = "web";
+  var colorVariableMode = "light";
+  var variableFilter = "all";
+  var colorFilter = "all";
+  var typographyFilter = "all";
   var searchInput = null;
 
   /* ================= HELPERS ================= */
@@ -174,7 +178,7 @@
       else { l.removeAttribute("aria-current"); }
     });
     if (location.hash !== "#" + id) { history.replaceState(null, "", "#" + id); }
-    try { localStorage.setItem("ganiSection", id); } catch (err) {}
+    try { localStorage.setItem("designSystemSection", id); } catch (err) {}
     applyFilter();
   }
 
@@ -220,7 +224,7 @@
     var tf = D.TYPEFACE;
     var P = D.PLATFORMS[platform];
 
-    var html = group("Typeface", "1 family", null,
+    var typefaceGroup = group("Typeface", "1 family", null,
       '<article class="card typeface" data-name="typeface poppins font family weights characters">' +
         '<div class="typeface-specimen" aria-hidden="true">Aa</div>' +
         '<div class="typeface-info">' +
@@ -255,9 +259,9 @@
       '</div>' +
     '</div>';
 
-    html += group("Type styles", D.TYPE_STYLES.length + " styles · " + P.name, "Size / line height in px, weight, letter spacing.", switcher + cards);
+    var typeStylesGroup = group("Type styles", D.TYPE_STYLES.length + " styles · " + P.name, "Size / line height in px, weight, letter spacing.", switcher + cards);
 
-    html += group("Web vs mobile", "size / line height in px",
+    var responsiveGroup = group("Web vs mobile", "size / line height in px",
       "Headings shrink on mobile while body and labels grow — phones are held closer, but touch needs bigger labels and text fields need 16px.",
       '<article class="card card--pad"><div class="table-scroll"><table class="table">' +
         '<thead><tr><th>Style</th><th>Web</th><th>Mobile</th><th>Change</th><th>Weight</th><th>Letter spacing</th></tr></thead><tbody>' +
@@ -274,13 +278,39 @@
         }).join("") +
       '</tbody></table></div></article>');
 
-    html += group("In use", null, "The same article header set in each platform's styles.",
+    var inUseGroup = group("In use", null, "The same article header set in each platform's styles.",
       '<div class="grid grid--2">' + ["web", "mobile"].map(function (p) {
         return '<article class="card" data-name="in use hierarchy example ' + p + '">' +
           '<div class="doc-body"><h3 class="doc-title">' + D.PLATFORMS[p].name + '</h3></div>' + inUse(p) + '</article>';
       }).join("") + '</div>');
 
+    var families = [
+      { id: "typeface", name: "Typeface", content: typefaceGroup },
+      { id: "styles", name: "Type styles", content: typeStylesGroup },
+      { id: "responsive", name: "Responsive", content: responsiveGroup },
+      { id: "in-use", name: "In use", content: inUseGroup }
+    ];
+    var html = '<nav class="typography-filters" aria-label="Typography filters">' +
+      '<button type="button" data-typography-filter="all" aria-pressed="' + (typographyFilter === "all") + '">All</button>' +
+      families.map(function (family) {
+        return '<button type="button" data-typography-filter="' + family.id + '" aria-pressed="' + (typographyFilter === family.id) + '">' + family.name + '</button>';
+      }).join("") + '</nav>' +
+      families.map(function (family) {
+        return '<div class="typography-family" data-typography-family="' + family.id + '">' + family.content + '</div>';
+      }).join("");
     $("body-typography").innerHTML = html;
+    applyTypographyFilter();
+  }
+
+  function applyTypographyFilter() {
+    var body = $("body-typography");
+    if (!body) return;
+    body.querySelectorAll("[data-typography-filter]").forEach(function (button) {
+      button.setAttribute("aria-pressed", button.getAttribute("data-typography-filter") === typographyFilter ? "true" : "false");
+    });
+    body.querySelectorAll("[data-typography-family]").forEach(function (family) {
+      family.hidden = typographyFilter !== "all" && family.getAttribute("data-typography-family") !== typographyFilter;
+    });
   }
 
   /* ================= COLOURS ================= */
@@ -330,7 +360,7 @@
   function renderColors() {
     var A = D.ACCENT;
 
-    var html = group("Colour language", "2 ideas", null,
+    var color = group("Colour language", "2 ideas", null,
       '<div class="color-language">' +
         '<article class="card color-language-card" data-name="solid shade tone color light dark">' +
           '<div class="color-language-swatch color-language-swatch--solid"><strong>Ink</strong><span>#171717</span></div>' +
@@ -342,8 +372,8 @@
         '</article>' +
       '</div>');
 
-    html += group("Accent", "1 colour", null,
-      '<article class="card accent-hero" data-name="accent teal brand gani">' +
+    var accent = group("Accent", "1 colour", null,
+      '<article class="card accent-hero" data-name="accent ink brand">' +
         '<div class="accent-hero-swatch">' +
           '<span class="accent-hero-name">' + A.name + '</span>' +
           '<span class="accent-hero-values">' + A.light.name + ' · ' + A.light.hex + '</span>' +
@@ -361,11 +391,11 @@
         '</div>' +
       '</article>');
 
-    html += group("Accent tones", D.ACCENT_SCALE.length + " solid colours",
+    accent += group("Accent tones", D.ACCENT_SCALE.length + " solid colours",
       "The default action colour is tagged. The ratio is the contrast of the label colour on that solid colour.",
       scaleStrip(D.ACCENT_SCALE, "accent", { 600: "Default" }));
 
-    html += group("Accent in use", D.ACCENT_USES.length + " roles",
+    var inUse = group("Accent in use", D.ACCENT_USES.length + " roles",
       "The same black doing different jobs. Each job is its own reusable variable.",
       '<div class="grid" style="--min:210px">' + D.ACCENT_USES.map(function (u) {
         return '<article class="card" data-name="' + key(["accent", u.name, u.variable, u.note]) + '">' +
@@ -376,11 +406,11 @@
         '</article>';
       }).join("") + '</div>');
 
-    html += group("Neutral tones", D.NEUTRAL_SCALE.length + " solid colours",
+    var neutral = group("Neutral tones", D.NEUTRAL_SCALE.length + " solid colours",
       "Every surface, text colour and border comes from this grayscale family.",
       scaleStrip(D.NEUTRAL_SCALE, "neutral"));
 
-    html += group("Status", D.STATUS.length + " colours",
+    color += group("Status", D.STATUS.length + " colours",
       "Reserved for meaning. They never decorate, and they never stand in for the accent.",
       '<div class="grid grid--3">' + D.STATUS.map(function (s) {
         return '<article class="card" data-name="' + key(["status", s.name, s.use]) + '">' +
@@ -395,7 +425,7 @@
         '</article>';
       }).join("") + '</div>');
 
-    html += group("Contrast", "WCAG 2.1",
+    var contrastGroup = group("Contrast", "WCAG 2.1",
       "AA needs 4.5:1 for normal text and 3:1 for large text (18px and up, or 14px bold).",
       '<article class="card card--pad"><div class="table-scroll"><table class="table">' +
         '<thead><tr><th>Where</th><th>Pair</th><th>Contrast</th></tr></thead><tbody>' +
@@ -409,7 +439,112 @@
         }).join("") +
       '</tbody></table></div></article>');
 
+    var families = [
+      { id: "color", name: "Color", content: color },
+      { id: "accent", name: "Accent", content: accent + inUse },
+      { id: "neutral", name: "Neutral", content: neutral },
+      { id: "contrast", name: "Contrast", content: contrastGroup }
+    ];
+    var html = '<nav class="color-filters" aria-label="Color filters">' +
+      '<button type="button" data-color-filter="all" aria-pressed="' + (colorFilter === "all") + '">All</button>' +
+      families.map(function (family) {
+        return '<button type="button" data-color-filter="' + family.id + '" aria-pressed="' + (colorFilter === family.id) + '">' + family.name + '</button>';
+      }).join("") + '</nav>' +
+      families.map(function (family) {
+        return '<div class="color-family" data-color-family="' + family.id + '">' + family.content + '</div>';
+      }).join("");
     $("body-colors").innerHTML = html;
+    applyColorFilter();
+  }
+
+  /* ================= ANIMATIONS ================= */
+  function motionCard(name, id) {
+    return '<article class="card motion-card" data-name="' + key([name, "animation motion"]) + '">' +
+      '<h3 class="doc-title">' + name + '</h3>' +
+      '<div class="motion-stage"><span class="motion-object motion-object--' + id + '"></span></div>' +
+    '</article>';
+  }
+
+  function renderAnimations() {
+    var entrances = [
+      ["Fade", "fade"], ["Slide up", "slide-up"], ["Slide down", "slide-down"],
+      ["Slide left", "slide-left"], ["Slide right", "slide-right"], ["Scale", "scale"], ["Pop", "pop"]
+    ];
+    var attention = [["Bounce", "bounce"], ["Shake", "shake"], ["Rotate", "rotate"], ["Pulse", "pulse"]];
+    var loops = [["Loading", "loading"], ["Shimmer", "shimmer"]];
+    var effects = [["Ripple", "ripple"], ["Glow", "glow"], ["Float", "float"], ["Morph", "morph"], ["Blur", "blur"]];
+    $("body-animations").innerHTML =
+      group("Entrance", null, null, '<div class="motion-grid">' + entrances.map(function (item) { return motionCard(item[0], item[1]); }).join("") + '</div>') +
+      group("Attention", null, null, '<div class="motion-grid">' + attention.map(function (item) { return motionCard(item[0], item[1]); }).join("") + '</div>') +
+      group("Loading", null, null, '<div class="motion-grid">' + loops.map(function (item) { return motionCard(item[0], item[1]); }).join("") + '</div>') +
+      group("Effects", null, null, '<div class="motion-grid">' + effects.map(function (item) { return motionCard(item[0], item[1]); }).join("") + '</div>');
+  }
+
+  /* ================= PRINCIPLES ================= */
+  function principleCard(title, text, visual, isLaw) {
+    return '<article class="card principle-card" data-name="' + key([title, text, "principle"]) + '">' +
+      '<div class="principle-visual' + (isLaw ? ' principle-visual--law' : '') + '">' + visual + '</div><h3 class="doc-title">' + title + '</h3><p>' + text + '</p></article>';
+  }
+
+  function lawVisual(type, number) {
+    var shapes = {
+      choices: '<i></i><i></i><i></i><i></i>',
+      target: '<i></i><i></i>',
+      patterns: '<i></i><i></i>',
+      chunks: '<i></i><i></i><i></i><i></i><i></i><i></i>',
+      gaps: '<i></i><i></i><i></i><i></i>',
+      complexity: '<i></i><i></i><i></i>',
+      response: '<i></i><i></i>',
+      peak: '<i></i><i></i><i></i><i></i>'
+    };
+    return '<div class="law-diagram law-diagram--' + type + '">' + shapes[type] + '</div><span class="law-number">' + number + '</span>';
+  }
+
+  function renderPrinciples() {
+    var ux = [
+      ["Start with the task", "Design around what people need to do, not the features available.", I.checkCircle],
+      ["Make status visible", "Show progress, results, and changes as they happen.", I.info],
+      ["Prevent mistakes", "Use clear constraints and sensible defaults before an error can occur.", I.alertCircle],
+      ["Support everyone", "Build for keyboard, screen readers, contrast, touch, and different contexts.", I.heart]
+    ];
+    var ui = [
+      ["Create hierarchy", "Use size, weight, spacing, and contrast to show what matters first.", I.arrowRight],
+      ["Be consistent", "Reuse patterns, labels, and component states so behaviour stays predictable.", I.check],
+      ["Keep it focused", "Show only what supports the current task; reveal detail when it is needed.", I.search],
+      ["Design responsive", "Keep content readable and controls reachable across every screen size.", I.replay]
+    ];
+    var product = [
+      ["Solve a real need", "Connect every experience to a clear customer problem and outcome.", I.plus],
+      ["Make value clear", "People should understand what they gain before they commit.", I.info],
+      ["Learn from use", "Measure behaviour, listen to feedback, and improve the next decision.", I.replay],
+      ["Build trust", "Use honest language, clear choices, and reliable behaviour at every step.", I.checkCircle]
+    ];
+    var laws = [
+      ["Hick’s Law", "More choices take longer to decide. Prioritise and group options.", lawVisual("choices", "01")],
+      ["Fitts’s Law", "Large, nearby targets are faster to use. Make frequent actions easy to reach.", lawVisual("target", "02")],
+      ["Jakob’s Law", "People expect familiar patterns. Follow conventions before inventing new ones.", lawVisual("patterns", "03")],
+      ["Miller’s Law", "Working memory is limited. Break information into smaller, meaningful chunks.", lawVisual("chunks", "04")],
+      ["Law of Proximity", "Items placed together are understood as related. Use spacing to show groups.", lawVisual("gaps", "05")],
+      ["Tesler’s Law", "Every task has complexity. Move unavoidable complexity away from the user.", lawVisual("complexity", "06")],
+      ["Doherty Threshold", "Fast feedback keeps people engaged. Aim for responses within about 400 ms.", lawVisual("response", "07")],
+      ["Peak-End Rule", "People remember the high point and ending. Design key moments and completion well.", lawVisual("peak", "08")]
+    ];
+    $("body-principles").innerHTML =
+      group("UX", null, null, '<div class="principles-grid">' + ux.map(function (item) { return principleCard(item[0], item[1], item[2]); }).join("") + '</div>') +
+      group("UI", null, null, '<div class="principles-grid">' + ui.map(function (item) { return principleCard(item[0], item[1], item[2]); }).join("") + '</div>') +
+      group("Product", null, null, '<div class="principles-grid">' + product.map(function (item) { return principleCard(item[0], item[1], item[2]); }).join("") + '</div>') +
+      group("Laws", null, null, '<div class="principles-grid">' + laws.map(function (item) { return principleCard(item[0], item[1], item[2], true); }).join("") + '</div>');
+  }
+
+  function applyColorFilter() {
+    var body = $("body-colors");
+    if (!body) return;
+    body.querySelectorAll("[data-color-filter]").forEach(function (button) {
+      button.setAttribute("aria-pressed", button.getAttribute("data-color-filter") === colorFilter ? "true" : "false");
+    });
+    body.querySelectorAll("[data-color-family]").forEach(function (family) {
+      family.hidden = colorFilter !== "all" && family.getAttribute("data-color-family") !== colorFilter;
+    });
   }
 
   /* ================= VARIABLES ================= */
@@ -444,34 +579,57 @@
   }
 
   function renderVariables() {
-    var html = group("Color", D.COLOR_VARIABLES.length + " variables",
+    var filters = [{ id: "all", name: "All" }, { id: "color", name: "Color" }].concat(D.VARIABLE_COLLECTIONS.map(function (c) {
+      return { id: c.id, name: c.name };
+    }));
+    var html = '<nav class="variable-filters" aria-label="Variable filters">' + filters.map(function (filter) {
+      return '<button type="button" data-variable-filter="' + filter.id + '" aria-pressed="' + (filter.id === variableFilter) + '">' + filter.name + '</button>';
+    }).join("") + '</nav>';
+    html += '<div class="variable-family" data-variable-family="color">' + group("Color", D.COLOR_VARIABLES.length + " variables",
       "Use these in designs — never a raw hex. Each is a reusable light-theme role.",
+      '<div class="color-mode-switch btn-group" role="group" aria-label="Color mode">' +
+        ["light", "dark"].map(function (mode) {
+          return '<button class="btn btn--secondary btn--sm" type="button" data-color-variable-mode="' + mode + '" aria-pressed="' + (mode === colorVariableMode) + '">' + (mode === "light" ? "Light" : "Dark") + '</button>';
+        }).join("") +
+      '</div>' +
       '<div class="variable-grid variable-grid--color">' +
         D.COLOR_VARIABLES.map(function (v) {
-          return '<article class="card variable-card variable-card--color" data-name="' + key([v.name, v.light[0], v.light[1], v.use]) + '">' +
-            '<div class="var-preview"><span class="role-dot" style="background:' + v.light[1] + '"></span></div>' +
-            '<div class="var-name">' + v.name + '</div>' +
-            '<div class="var-mode var-mode--light"><span class="role-dot" style="background:' + v.light[1] + '"></span><span>' + modeValue(v.light) + '</span></div>' +
+          var color = v[colorVariableMode];
+          var colorCode = color[1].indexOf("rgba(") === 0 ? "" : " · " + color[1];
+          return '<article class="card variable-card variable-card--color" data-name="' + key([v.name, color[0], color[1], v.use]) + '">' +
+            '<div class="var-color-line"><span class="role-dot" style="background:' + color[1] + '"></span>' +
+              '<div><div class="var-name">' + v.name + '</div><div class="var-color-code">' + color[0] + colorCode + '</div></div></div>' +
             '<div class="var-use">' + v.use + '</div>' +
           '</article>';
         }).join("") +
-      '</div>');
+      '</div>') + '</div>';
 
     D.VARIABLE_COLLECTIONS.forEach(function (c) {
-      html += group(c.name, c.rows.length + " variables", c.desc,
+      html += '<div class="variable-family" data-variable-family="' + c.id + '">' + group(c.name, c.rows.length + " variables", c.desc,
         '<div class="variable-grid">' +
           c.rows.map(function (row) {
-            return '<article class="card variable-card" data-name="' + key([c.name, row[0], row[2]]) + '">' +
-              '<div class="var-preview">' + varPreview(c, row) + '</div>' +
+            return '<article class="card variable-card variable-card--token" data-name="' + key([c.name, row[0], row[2]]) + '">' +
+              '<div class="token-preview"><div class="var-preview">' + varPreview(c, row) + '</div><span class="var-value">' + varValue(c, row) + '</span></div>' +
               '<div class="var-name">' + row[0] + '</div>' +
-              '<div class="var-value">' + varValue(c, row) + '</div>' +
               '<div class="var-use">' + row[2] + '</div>' +
             '</article>';
           }).join("") +
-        '</div>');
+        '</div>') + '</div>';
     });
 
     $("body-variables").innerHTML = html;
+    applyVariableFilter();
+  }
+
+  function applyVariableFilter() {
+    var body = $("body-variables");
+    if (!body) return;
+    body.querySelectorAll("[data-variable-filter]").forEach(function (button) {
+      button.setAttribute("aria-pressed", button.getAttribute("data-variable-filter") === variableFilter ? "true" : "false");
+    });
+    body.querySelectorAll("[data-variable-family]").forEach(function (family) {
+      family.hidden = variableFilter !== "all" && family.getAttribute("data-variable-family") !== variableFilter;
+    });
   }
 
   /* ================= BUTTONS ================= */
@@ -637,8 +795,8 @@
         demo: '<div class="state-grid">' +
           cell("", textField("tf-default", { state: "Default" })) +
           cell("", textField("tf-hover", { cls: "is-hover", state: "Hover" })) +
-          cell("", textField("tf-focus", { cls: "is-focus", value: "alex@gani", state: "Focused" })) +
-          cell("", textField("tf-filled", { value: "alex@gani.design", state: "Filled" })) +
+          cell("", textField("tf-focus", { cls: "is-focus", value: "alex@design", state: "Focused" })) +
+          cell("", textField("tf-filled", { value: "alex@design.system", state: "Filled" })) +
           cell("", textField("tf-error", { error: true, value: "alex@", state: "Error" })) +
           cell("", textField("tf-disabled", { disabled: true, state: "Disabled" })) +
         '</div>',
@@ -726,7 +884,7 @@
         demo: '<div class="basic-rail"><span class="is-active">Home</span><span>Work</span><span>Saved</span></div>',
         specs: [["Width", 80], ["Destinations", "3–7"], ["Active", "Tint"], ["Placement", "Medium"]] }),
       doc({ name: "Navigation drawer", keys: "side navigation menu destinations",
-        demo: '<div class="basic-drawer"><strong>Gani</strong><span class="is-active">Overview</span><span>Libraries</span><span>Settings</span></div>',
+        demo: '<div class="basic-drawer"><strong>Workspace</strong><span class="is-active">Overview</span><span>Libraries</span><span>Settings</span></div>',
         specs: [["Width", 220], ["Padding", 12], ["Active", "accent/tint"], ["Placement", "Expanded"]] })
     ];
 
@@ -892,7 +1050,7 @@
   /* ================= APPEARANCE ================= */
   function applyTheme() {
     document.documentElement.setAttribute("data-theme", "light");
-    try { localStorage.removeItem("ganiTheme"); } catch (err) {}
+    try { localStorage.removeItem("designSystemTheme"); } catch (err) {}
   }
 
   /* ================= EVENTS ================= */
@@ -911,6 +1069,38 @@
 
     var navLink = t.closest(".nav-link");
     if (navLink) { show(navLink.getAttribute("data-section")); window.scrollTo(0, 0); return; }
+
+    var typographyFilterBtn = t.closest("[data-typography-filter]");
+    if (typographyFilterBtn) {
+      typographyFilter = typographyFilterBtn.getAttribute("data-typography-filter");
+      applyTypographyFilter();
+      window.scrollTo({ top: document.querySelector(".typography-filters").getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+      return;
+    }
+
+    var colorFilterBtn = t.closest("[data-color-filter]");
+    if (colorFilterBtn) {
+      colorFilter = colorFilterBtn.getAttribute("data-color-filter");
+      applyColorFilter();
+      window.scrollTo({ top: document.querySelector(".color-filters").getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+      return;
+    }
+
+    var colorModeBtn = t.closest("[data-color-variable-mode]");
+    if (colorModeBtn) {
+      colorVariableMode = colorModeBtn.getAttribute("data-color-variable-mode");
+      renderVariables();
+      applyFilter();
+      return;
+    }
+
+    var variableFilterBtn = t.closest("[data-variable-filter]");
+    if (variableFilterBtn) {
+      variableFilter = variableFilterBtn.getAttribute("data-variable-filter");
+      applyVariableFilter();
+      window.scrollTo({ top: document.querySelector(".variable-filters").getBoundingClientRect().top + window.scrollY - 112, behavior: "smooth" });
+      return;
+    }
 
     var componentFilter = t.closest("[data-component-filter]");
     if (componentFilter) {
@@ -934,7 +1124,7 @@
         renderTypography();
         applyFilter();
         document.querySelector('[data-platform="' + next + '"]').focus();
-        try { localStorage.setItem("ganiPlatform", next); } catch (err) {}
+        try { localStorage.setItem("designSystemPlatform", next); } catch (err) {}
       }
       return;
     }
@@ -986,8 +1176,8 @@
   /* ================= INIT ================= */
   var saved = {};
   try {
-    saved.section = localStorage.getItem("ganiSection");
-    saved.platform = localStorage.getItem("ganiPlatform");
+    saved.section = localStorage.getItem("designSystemSection");
+    saved.platform = localStorage.getItem("designSystemPlatform");
   } catch (err) {}
   if (saved.platform === "mobile") { platform = "mobile"; }
 
@@ -995,6 +1185,8 @@
   renderPages();
   renderTypography();
   renderColors();
+  renderAnimations();
+  renderPrinciples();
   renderVariables();
   renderButtons();
   renderComponents();
