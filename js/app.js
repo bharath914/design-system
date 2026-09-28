@@ -1182,5 +1182,5 @@
   renderVariables();
   renderButtons();
   renderComponents();
-  show(location.hash.slice(1) || saved.section || "typography");
+  show(location.hash.slice(1) || "components");
 })();
